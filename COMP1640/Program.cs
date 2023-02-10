@@ -11,7 +11,10 @@ var configuration = builder.Configuration;
 var environment = builder.Environment;
 
 services
-    .AddDatabase(configuration);
+    .AddDatabase(configuration)
+    .AddServices()
+    .AddRepositoriesBase()
+    .AddUnitOfWork();
 
 var app = builder.Build();
 
