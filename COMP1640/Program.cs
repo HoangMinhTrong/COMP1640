@@ -13,7 +13,6 @@ var environment = builder.Environment;
 services
     .AddDatabase(configuration);
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
