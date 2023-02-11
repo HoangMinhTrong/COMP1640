@@ -1,13 +1,12 @@
-﻿namespace Domain
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Domain
 {
-    public class Role
+    public class Role : IdentityRole<int>
     {
         public Role()
         {
         }
-
-        public RoleTypeEnum Id { get; set; }
-        public string Name { get; set; }
 
         public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
     }
