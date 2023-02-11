@@ -1,5 +1,7 @@
-﻿using Infrastructure;
+﻿using Domain.Interfaces;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Utilities;
 
 namespace COMP1640.Extentions
 {
@@ -7,12 +9,28 @@ namespace COMP1640.Extentions
     {
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            var t = configuration.GetConnectionString("Local");
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("Local"));
+                options.UseNpgsql(configuration.GetConnectionString("Localhost"));
             });
 
+            return services;
+        }
+
+        public static IServiceCollection AddRepositoriesBase(this IServiceCollection services)
+        {
+            return
+                services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>))
+                        .AddImplementationInterfaces(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        }
+
+        public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
+        {
+            return
+                services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
             return services;
         }
     }
