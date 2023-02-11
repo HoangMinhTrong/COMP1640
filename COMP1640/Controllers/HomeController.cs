@@ -20,5 +20,9 @@ namespace COMP1640.Controllers
         {
             return View();
         }
+        public IActionResult LoginPage()
+        {
+            return View();
+        }
     }
 }
