@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 1,
+    "CustomerId": 100,
+    "Total": 204000,
+    "State": "Ordering"
+  },
+  {
+    "Id": 2,
+    "CustomerId": 101,
+    "Total": 132000,
+    "State": "Ordering"
+  },
+  {
+    "Id": 3,
+    "CustomerId": 100,
+    "Total": 251000,
+    "State": "Success"
+  },
+  {
+    "Id": 4,
+    "CustomerId": 100,
+    "Total": 181000,
+    "State": "Success"
+  },
+  {
+    "Id": 5,
+    "CustomerId": 102,
+    "Total": 268000,
+    "State": "Success"
+  },
+  {
+    "Id": 6,
+    "CustomerId": 103,
+    "Total": 145000,
+    "State": "Cancel"
+  }
+]

@@ -1,4 +1,6 @@
 using COMP1640.Extentions;
+using Domain;
+using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +12,16 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 var environment = builder.Environment;
 
+services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 services
     .AddDatabase(configuration)
     .AddServices()
     .AddRepositoriesBase()
     .AddUnitOfWork();
+
+services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -37,4 +44,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
 app.Run();

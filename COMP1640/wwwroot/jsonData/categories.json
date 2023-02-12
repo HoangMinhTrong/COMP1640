@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "Name": "signal_processing",
+    "CreatedBy": 999
+  },
+  {
+    "Id": 2,
+    "Name": "data_science",
+    "CreatedBy": 999
+  },
+  {
+    "Id": 3,
+    "Name": "mathematics",
+    "CreatedBy": 999
+  },
+  {
+    "Id": 4,
+    "Name": "economics",
+    "CreatedBy": 999
+  },
+  {
+    "Id": 5,
+    "Name": "history",
+    "CreatedBy": 999
+  },
+  {
+    "Id": 6,
+    "Name": "science",
+    "CreatedBy": 999
+  },
+  {
+    "Id": 7,
+    "Name": "psychology",
+    "CreatedBy": 109
+  },
+  {
+    "Id": 8,
+    "Name": "fiction",
+    "CreatedBy": 109
+  },
+  {
+    "Id": 9,
+    "Name": "computer_science",
+    "CreatedBy": 109
+  },
+  {
+    "Id": 10,
+    "Name": "nonfiction",
+    "CreatedBy": 109
+  },
+  {
+    "Id": 11,
+    "Name": "philosophy",
+    "CreatedBy": 109
+  },
+  {
+    "Id": 12,
+    "Name": "comic",
+    "CreatedBy": 109
+  }
+]
