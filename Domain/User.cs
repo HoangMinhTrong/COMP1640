@@ -6,6 +6,7 @@ namespace Domain
     {
         public User()
         {
+
         }
 
         public DateTime? Birthday { get; set; }

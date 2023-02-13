@@ -12,7 +12,7 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 var environment = builder.Environment;
 
-services.AddIdentity<User, Role>()
+services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 services

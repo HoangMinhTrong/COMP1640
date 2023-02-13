@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Infrastructure.SeedData;
 
 namespace Infrastructure
 {
@@ -16,13 +17,27 @@ namespace Infrastructure
         public virtual DbSet<Reaction> Reactions { get; set; }
         public virtual DbSet<Tenant> Tenants { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            OnModelCreatingPartial(modelBuilder);
+            base.OnModelCreating(builder);
+
+            // Update default Asp table name
+            RemoveDefaultAspTableName(builder);
+
+            // Seeding data here
+            IdentitySeeder.Seeds(builder);
         }
 
-        private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+        public void RemoveDefaultAspTableName(ModelBuilder builder)
         {
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                var tableName = entityType.GetTableName();
+                if (tableName.StartsWith("AspNet"))
+                {
+                    entityType.SetTableName(tableName.Substring(6));
+                }
+            }
         }
     }
 }
