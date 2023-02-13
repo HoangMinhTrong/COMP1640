@@ -320,12 +320,12 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "4c015519-a567-4887-9ae3-1930331bcc6e", "Admin", null });
+                values: new object[] { 1, "6057acd3-e9ee-4acd-bac9-97dc5daecd69", "Admin", null });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Birthday", "ConcurrencyStamp", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, null, "0e76df63-bcdc-404b-9c28-4a7f1b211f73", "admin@gmail.com", false, null, false, null, null, null, "AQAAAAEAACcQAAAAEOVGW6riwn748V1zbc1L2f73vV+3E6HkuXciVTj46MENAAYr19oZJjx7wmKnqMIq1g==", null, false, "c93f1851-e0f1-4a14-a50b-f97dbb3af408", false, "admin@gmail.com" });
+                values: new object[] { 1, 0, null, "54f514ec-92b0-4bbe-b5ae-767376e7e136", "admin@gmail.com", false, (byte)1, false, null, null, "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEO5ujSx7BYqEanmKngrkA9qJRLHjPXI+VcH0skpt+MfvB9XfZ4EFAb6/0KlKS2zCKA==", null, false, "a172ff38-6472-46ee-860c-6a35f79137e1", false, "admin@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",

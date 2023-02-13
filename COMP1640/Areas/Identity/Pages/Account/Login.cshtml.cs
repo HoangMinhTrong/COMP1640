@@ -14,8 +14,8 @@ namespace WebMVC.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager)
         {

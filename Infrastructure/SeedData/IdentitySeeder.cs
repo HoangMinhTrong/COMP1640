@@ -35,6 +35,8 @@ namespace Infrastructure.SeedData
                 Id = 1,
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
+                Gender = UserGenderEnum.Male,
+                NormalizedUserName = "admin@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
