@@ -1,0 +1,36 @@
+﻿@using COMP1640.ViewModels.HRM.Responses
+@model List<UserBasicInfoResponse>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tên</th>
+      <th scope="col">Email</th>
+      <th scope="col">Vai trò</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach(var item in Model)
+    {
+        <tr>
+            <th scope="row">-</th>
+            <td>@item.UserName</td>
+            <td>@item.Email</td>
+            <td>@item.Role.ToString()</td>  
+            <td>
+                <div class="align-items-center" style="text-align: center">
+                    <a class="btn btn-warning text-white text-center" style="cursor:pointer"
+                            asp-action="Edit"
+                            asp-route-id="@item.Id">
+                            <i class="material-icons text-white">
+                                mode_edit
+                            </i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    }
+  </tbody>
+</table>
+

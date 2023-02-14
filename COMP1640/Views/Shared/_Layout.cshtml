@@ -41,38 +41,7 @@
         <div class="row flex-grow-sm-1 flex-grow-0">
             <aside class="col-sm-4 flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0 pb-3">
                 <div class="bg-light border rounded-3 p-1 h-100 sticky-top">
-                    <ul class="nav nav-pills flex-sm-column flex-row mb-auto justify-content-between text-truncate">
-                        <li class="nav-item">
-                            <a class="nav-link px-2 text-truncate" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-house fs-5"></i>
-                                <span class="d-none d-sm-inline">Home</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link px-2 text-truncate" asp-controller="Home" asp-action="Privacy">
-                                <i class="bi bi-speedometer fs-5"></i>
-                                <span class="d-none d-sm-inline">Privacy</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link px-2 text-truncate">
-                                <i class="bi bi-card-text fs-5"></i>
-                                <span class="d-none d-sm-inline">Orders</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link px-2 text-truncate">
-                                <i class="bi bi-bricks fs-5"></i>
-                                <span class="d-none d-sm-inline">Products</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link px-2 text-truncate">
-                                <i class="bi bi-people fs-5"></i>
-                                <span class="d-none d-sm-inline">Customers</span>
-                            </a>
-                        </li>
-                    </ul>
+                    <partial name="_LayoutPartial"/>
                 </div>
             </aside>
             <main class="col overflow-auto h-100">

@@ -2,6 +2,7 @@
 {
     public interface IUserRepository : IBaseRepository<User>
     {
-        Task<User> GetAsync(string userName);
+        IQueryable<User> GetById(int id);
+
     }
 }
