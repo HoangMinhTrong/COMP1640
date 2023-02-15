@@ -1,4 +1,4 @@
-﻿name: Deploy to Railway
+﻿name: deploy to railway
 
 on:
   push:
@@ -14,10 +14,10 @@ jobs:
       - name: Checkout 👌👌👌👌👌👌
         uses: actions/checkout@v3
 
-      - name: Use Node 12
-        uses: actions/setup-node@v1
+      - name: Use Node 16
+        uses: actions/setup-node@v3
         with:
-          node-version: 12.x
+          node-version: 16.x
           
       - name: Install Railway
         run: npm i -g @railway/cli
