@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -10,9 +9,9 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public async Task<User> GetAsync(string userName)
+        public IQueryable<User> GetById(int id)
         {
-            return await GetQuery(_ => _.UserName == userName).FirstOrDefaultAsync();
+            return GetQuery(_ => _.Id == id);
         }
     }
 }
