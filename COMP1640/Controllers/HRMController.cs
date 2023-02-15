@@ -22,9 +22,9 @@ namespace COMP1640.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int userId)
+        public async Task<IActionResult> Edit([FromRoute] int id)
         {
-            var vm = await _hRMService.GetUserInfoDetailsAsync(userId);
+            var vm = await _hRMService.GetUserInfoDetailsAsync(id);
             return View(vm);
         }
     }
