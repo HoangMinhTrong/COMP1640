@@ -5,13 +5,27 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// For running in Railway
+var portVar = Environment.GetEnvironmentVariable("PORT");
+if (portVar is {Length: >0} && int.TryParse(portVar, out int port))
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(port);
+    });
+}
+
+// Load configuration
+var configuration = builder.Configuration
+    .AddJsonFile("appsettings.json", true, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddEnvironmentVariables()
+    .Build();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
 var services = builder.Services;
-var configuration = builder.Configuration;
-var environment = builder.Environment;
 
 services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
