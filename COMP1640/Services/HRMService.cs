@@ -49,6 +49,7 @@ namespace COMP1640.Services
 
         public Task CreateUserAsync(CreateUserRequest request)
         {
+            // TODO: Tuan Le - Implement the method
             throw new NotImplementedException();
         }
 
