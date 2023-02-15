@@ -22,10 +22,31 @@ namespace COMP1640.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit([FromRoute] int id)
+        public async Task<IActionResult> Account([FromRoute] int id)
         {
             var vm = await _hRMService.GetUserInfoDetailsAsync(id);
             return View(vm);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] EditUserRequest request)
+        {
+            await _hRMService.EditUserInfoAsync(request);
+            return View("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
+        {
+            await _hRMService.CreateUserAsync(request);
+            return View("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            await _hRMService.DeleteUserAsync(id);
+            return View("Index");
         }
     }
 }

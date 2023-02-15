@@ -46,5 +46,20 @@ namespace COMP1640.Services
                 })
                 .FirstOrDefaultAsync();
         }
+
+        public Task CreateUserAsync(CreateUserRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task EditUserInfoAsync(EditUserRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteUserAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
