@@ -5,14 +5,29 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// For running in Railway
+var portVar = Environment.GetEnvironmentVariable("PORT");
+if (portVar is {Length: >0} && int.TryParse(portVar, out int port))
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(port);
+    });
+}
+
+// Load configuration
+var configuration = builder.Configuration
+    .AddJsonFile("appsettings.json", true, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddEnvironmentVariables()
+    .Build();
+
 // Add services to the container.
 builder.Services
     .AddControllersWithViews()
     .AddRazorRuntimeCompilation();
 
 var services = builder.Services;
-var configuration = builder.Configuration;
-var environment = builder.Environment;
 
 services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -35,13 +50,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-/*using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var servicesMigration = scope.ServiceProvider;
 
     var context = servicesMigration.GetRequiredService<ApplicationDbContext>();
     context.Database.Migrate();
-}*/
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

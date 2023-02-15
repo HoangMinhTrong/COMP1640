@@ -12,7 +12,7 @@ namespace COMP1640.Extentions
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("Localhost"));
+                options.UseNpgsql(Environment.GetEnvironmentVariable("DatabaseConnectionString") ?? configuration.GetConnectionString("Localhost"));
             });
 
             return services;
