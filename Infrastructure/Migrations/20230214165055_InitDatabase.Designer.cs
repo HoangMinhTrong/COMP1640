@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230213140209_initial")]
-    partial class initial
+    [Migration("20230214165055_InitDatabase")]
+    partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -160,7 +160,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "6057acd3-e9ee-4acd-bac9-97dc5daecd69",
+                            ConcurrencyStamp = "94b24aec-7e03-490b-bce4-9a91231fdc4b",
                             Name = "Admin"
                         });
                 });
@@ -259,15 +259,15 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "54f514ec-92b0-4bbe-b5ae-767376e7e136",
+                            ConcurrencyStamp = "42436114-b9c3-4956-8ed7-29610e50a1e5",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             Gender = (byte)1,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEO5ujSx7BYqEanmKngrkA9qJRLHjPXI+VcH0skpt+MfvB9XfZ4EFAb6/0KlKS2zCKA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKwYse2Lnt0COTyQ6z3EwR5qBhUVSpvV1bzCmVxtMrsmWuwVD8tfdl/9wFEwi/+QEA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a172ff38-6472-46ee-860c-6a35f79137e1",
+                            SecurityStamp = "fdf124cd-29f7-4bc8-8c85-00287627d78e",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         });
