@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -320,12 +320,12 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "6057acd3-e9ee-4acd-bac9-97dc5daecd69", "Admin", null });
+                values: new object[] { 1, "94b24aec-7e03-490b-bce4-9a91231fdc4b", "Admin", null });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Birthday", "ConcurrencyStamp", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, null, "54f514ec-92b0-4bbe-b5ae-767376e7e136", "admin@gmail.com", false, (byte)1, false, null, null, "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEO5ujSx7BYqEanmKngrkA9qJRLHjPXI+VcH0skpt+MfvB9XfZ4EFAb6/0KlKS2zCKA==", null, false, "a172ff38-6472-46ee-860c-6a35f79137e1", false, "admin@gmail.com" });
+                values: new object[] { 1, 0, null, "42436114-b9c3-4956-8ed7-29610e50a1e5", "admin@gmail.com", false, (byte)1, false, null, null, "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEKwYse2Lnt0COTyQ6z3EwR5qBhUVSpvV1bzCmVxtMrsmWuwVD8tfdl/9wFEwi/+QEA==", null, false, "fdf124cd-29f7-4bc8-8c85-00287627d78e", false, "admin@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
