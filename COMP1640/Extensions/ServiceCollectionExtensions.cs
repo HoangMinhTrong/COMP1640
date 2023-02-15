@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using COMP1640.Services;
+using Domain.Interfaces;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Utilities;
@@ -31,7 +32,8 @@ namespace COMP1640.Extentions
         }
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            return services;
+            return 
+                services.AddScoped<HRMService>();
         }
     }
 }

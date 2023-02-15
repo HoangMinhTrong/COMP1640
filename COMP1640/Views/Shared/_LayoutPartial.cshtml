@@ -1,0 +1,38 @@
+﻿<ul class="navbar-nav mx-auto">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole(RoleTypeEnum.Admin.ToString()))
+        {
+            <li class="nav-item">
+                <a class="nav-link px-2 text-truncate" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-house fs-5"></i>
+                    <span class="d-none d-sm-inline">Home</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link px-2 text-truncate" asp-controller="HRM" asp-action="Index">
+                    <i class="bi bi-speedometer fs-5"></i>
+                    <span class="d-none d-sm-inline">HRM</span>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a class="nav-link px-2 text-truncate" asp-controller="Home" asp-action="Privacy">
+                    <i class="bi bi-speedometer fs-5"></i>
+                    <span class="d-none d-sm-inline">Employee</span>
+                </a>
+            </li>
+        }
+    }
+    else
+    {
+        <li>
+            <a class="nav-link px-2 text-truncate" asp-controller="Home" asp-action="Privacy">
+                <i class="bi bi-speedometer fs-5"></i>
+                <span class="d-none d-sm-inline">CustomerPage</span>
+            </a>
+        </li>
+    }
+</ul>

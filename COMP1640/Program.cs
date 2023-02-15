@@ -6,8 +6,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-
+builder.Services
+    .AddControllersWithViews()
+    .AddRazorRuntimeCompilation();
 
 var services = builder.Services;
 var configuration = builder.Configuration;
@@ -34,13 +35,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-using (var scope = app.Services.CreateScope())
+/*using (var scope = app.Services.CreateScope())
 {
     var servicesMigration = scope.ServiceProvider;
 
     var context = servicesMigration.GetRequiredService<ApplicationDbContext>();
     context.Database.Migrate();
-}
+}*/
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
