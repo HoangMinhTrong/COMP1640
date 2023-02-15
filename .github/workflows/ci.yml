@@ -2,7 +2,16 @@
 
 on:
   pull_request:
+    paths:
+      - '**/COMP1640/**'
+      - '**/Domain/**'
+      - '**/Infrastructure/**'
+      - '**/Utilities/**'
+      - '**/UnitTest/**'
+      - '**/Dockerfile'
     branches:
+      - develop
+      - main
       
 jobs:
   build:
