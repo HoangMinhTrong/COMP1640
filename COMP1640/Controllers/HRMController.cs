@@ -48,5 +48,9 @@ namespace COMP1640.Controllers
             await _hRMService.DeleteUserAsync(id);
             return View("Index");
         }
+
+
+        // TODO: Create action to view users profile
+
     }
 }
