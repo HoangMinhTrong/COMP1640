@@ -2,16 +2,16 @@
 @model List<UserBasicInfoResponse>
 
  <div class="container">
-    <div id="addUserBtn" class="pt-3 pb-4 d-flex">
-         <div class="align-items-center">
-             <a class="btn btn-info text-white text-center">
+    <div class="pt-3 pb-4 d-block">
+        <div class="align-items-center">
+            <a class="btn btn-info text-white text-center" id="addUserBtn">
                  <i class="material-icons text-white">
                      Add
                  </i>
              </a>
          </div>
      </div>
-     <div id="addUserModal" class="modal">
+    <div id="addUserModal" class="modalAdd">
         <!-- Modal content -->
         <div class="modal-content bg-dark w-50">
             <span class="close">&times;</span>
@@ -19,7 +19,7 @@
                 <div class="col-md-6 col-xl-4">
                     <div class="col-md-8 col-xl-6 text-center mx-auto">
                         <p class="fw-bold text-success mb-2">Add new User</p>
-                        <h5 class="fw-bold">Please fill out the blank</h5>
+                        <h6 class="fw-bold">Please fill out the blank</h6>
                     </div>
                     <form method="post">
                          <div class="mb-3"><input class="form-control" type="text" name="username" placeholder="Username" /></div>
@@ -59,30 +59,11 @@
                                 </a>
                             </div>
                             <div class="align-items-center">
-                                <a class="btn btn-warning text-white text-center" style="cursor:pointer" id="editUserBtn">
+                                <a class="btn btn-warning text-white text-center editUserBtn" style="cursor:pointer">
                                     <i class="bi bi-pen"></i>
                                 </a>
                             </div>
-                            <div id="editUserModal" class="modal">
-                                <!-- Modal content -->
-                                <div class="modal-content bg-dark w-50">
-                                    <span class="close">&times;</span>
-                                    <div class="row d-flex justify-content-center">
-                                        <div class="col-md-6 col-xl-4">
-                                            <div class="col-md-8 col-xl-6 text-center mx-auto">
-                                                <p class="fw-bold text-success mb-2">Edit User</p>
-                                                <h5 class="fw-bold">Change user Information</h5>
-                                            </div>
-                                            <form method="post">
-                                                <div class="mb-3"><input class="form-control" type="text" name="username" placeholder="Username" value="@item.UserName" /></div>
-                                                <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email" value="@item.Email" /></div>
-                                                <div class="mb-3"><input class="form-control" type="text" name="Role" placeholder="Role" value="@item.Role" /></div>
-                                                <div class="mb-3"><button class="btn btn-primary shadow d-block w-100" type="submit">Save</button></div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <partial name="_ModalEdit" model=@item />
                         </div>
                     </td>
                 </tr>

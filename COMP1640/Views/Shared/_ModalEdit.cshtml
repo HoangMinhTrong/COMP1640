@@ -1,0 +1,22 @@
+﻿@model dynamic
+
+<div class="modalEdit" id="editUserModal">
+    <!-- Modal content -->
+    <div class="modal-content bg-dark w-50">
+        <span class="close">&times;</span>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6 col-xl-4">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <p class="fw-bold text-success mb-2">Edit User</p>
+                    <h6 class="fw-bold">Change user Information</h6>
+                </div>
+                <form method="post">
+                    <div class="mb-3"><input class="form-control" type="text" name="username" placeholder="Username" value=@Model.UserName /></div>
+                    <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email" value="@Model.Email" /></div>
+                    <div class="mb-3"><input class="form-control" type="text" name="Role" placeholder="Role" value="@Model.Role" /></div>
+                    <div class="mb-3"><button class="btn btn-primary shadow d-block w-100" type="submit">Save</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
