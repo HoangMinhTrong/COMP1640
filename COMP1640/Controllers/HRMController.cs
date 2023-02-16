@@ -7,10 +7,13 @@ namespace COMP1640.Controllers
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
+        private readonly ILogger<HRMController> _logger;
 
-        public HRMController(HRMService hRMService)
+
+        public HRMController(HRMService hRMService, ILogger<HRMController> logger)
         {
             _hRMService = hRMService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -35,11 +38,23 @@ namespace COMP1640.Controllers
             return View("Index");
         }
 
+        [Route("[controller]")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
         {
-            await _hRMService.CreateUserAsync(request);
-            return View("Index");
+            try
+            {
+                var isSucceed =  await _hRMService.CreateUserAsync(request);
+                if(isSucceed) return RedirectToAction("Index");
+                
+                ModelState.AddModelError("create_failure","Failure to create an account.");
+                return RedirectToAction("Index");;
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("create_exception","Failure to create an account.");
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
@@ -47,6 +62,15 @@ namespace COMP1640.Controllers
         {
             await _hRMService.DeleteUserAsync(id);
             return View("Index");
+        }
+        
+        [HttpGet]
+        [Route("[controller]/role")]
+        [ProducesResponseType(typeof(List<string>), 200)]
+        public async Task<IActionResult> GetRoleEnums()
+        {
+            var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
+            return Ok(allowedRoleForCreateAccount);
         }
     }
 }
