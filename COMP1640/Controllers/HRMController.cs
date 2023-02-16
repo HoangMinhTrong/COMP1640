@@ -20,14 +20,6 @@ namespace COMP1640.Controllers
             return View(vm);
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> Account([FromRoute] int id)
-        {
-            var vm = await _hRMService.GetUserInfoDetailsAsync(id);
-            return View(vm);
-        }
-
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] EditUserRequest request)
         {
