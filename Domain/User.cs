@@ -15,8 +15,7 @@ namespace Domain
         public virtual ICollection<Idea> Ideas { get; set; } = new HashSet<Idea>();
         public virtual ICollection<Reaction> Reactions { get; set; } = new HashSet<Reaction>();
         public virtual ICollection<Department> Departments { get; set; } = new HashSet<Department>();
-        public virtual ICollection<Role> Role { get; set; } = new HashSet<Role>();
-        public virtual ICollection<Tenant> Tenants { get; set; } = new HashSet<Tenant>();
-
+        public virtual ICollection<Role> Roles { get; set; } = new HashSet<Role>();
+        public virtual ICollection<TenantUser> TenantUsers { get; set; } = new HashSet<TenantUser>();
     }
 }

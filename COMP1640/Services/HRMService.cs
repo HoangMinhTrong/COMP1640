@@ -28,7 +28,7 @@ namespace COMP1640.Services
                     Id = _.Id,
                     UserName = _.UserName,
                     Email = _.Email,
-                    Role = _.Role.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
+                    Role = _.Roles.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
                 })
                 .ToListAsync();
         }
@@ -42,7 +42,7 @@ namespace COMP1640.Services
                     Id = _.Id,
                     UserName = _.UserName,
                     Email = _.Email,
-                    Role = _.Role.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
+                    Role = _.Roles.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
                 })
                 .FirstOrDefaultAsync();
         }
