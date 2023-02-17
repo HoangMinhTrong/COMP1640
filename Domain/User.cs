@@ -17,5 +17,6 @@ namespace Domain
         public virtual ICollection<Department> Departments { get; set; } = new HashSet<Department>();
         public virtual ICollection<Role> Roles { get; set; } = new HashSet<Role>();
         public virtual ICollection<TenantUser> TenantUsers { get; set; } = new HashSet<TenantUser>();
+        public virtual ICollection<UserDepartment> UserDepartments { get; set; } = new HashSet<UserDepartment>();
     }
 }

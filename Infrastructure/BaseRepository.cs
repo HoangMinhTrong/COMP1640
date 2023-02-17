@@ -14,6 +14,11 @@ namespace Infrastructure
             DbContext = dbContext;
         }
 
+        public IQueryable<T> GetAll()
+        {
+            return Entities;
+        }
+
         public IQueryable<T> GetQuery(Expression<Func<T, bool>> expression)
         {
             return Entities.Where(expression);

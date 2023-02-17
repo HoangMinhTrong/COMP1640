@@ -13,6 +13,9 @@ namespace COMP1640.ViewModels.HRM.Requests
 
         [Required]
         public RoleTypeEnum Role { get; set; }
+        
+        [Required]
+        public int DepartmentId { get; set; }
 
         public DateTime? Birthday { get; set; }
         public UserGenderEnum? Gender { get; set; }
