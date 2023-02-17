@@ -1,4 +1,4 @@
-﻿using COMP1640.Services;
+using COMP1640.Services;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +42,7 @@ namespace COMP1640.Controllers
             return View("Index");
         }
 
+
         [HttpGet]
         public async Task<IActionResult> ViewProfile(int id)
         {
@@ -49,5 +50,10 @@ namespace COMP1640.Controllers
             return View(profile);
         }
         
+
+
+
+
+
     }
 }
