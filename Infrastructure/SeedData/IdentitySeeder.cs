@@ -34,21 +34,25 @@ namespace Infrastructure.SeedData
                 {
                     Id = (int)RoleTypeEnum.Admin,
                     Name = RoleTypeEnum.Admin.ToString(),
+                    NormalizedName = RoleTypeEnum.Admin.ToString().ToUpper()
                 },
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.Director,
                     Name = RoleTypeEnum.Director.ToString(),
+                    NormalizedName = RoleTypeEnum.Director.ToString().ToUpper()
                 },
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.Manager,
                     Name = RoleTypeEnum.Manager.ToString(),
+                    NormalizedName = RoleTypeEnum.Manager.ToString().ToUpper()
                 },
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.Staff,
                     Name = RoleTypeEnum.Staff.ToString(),
+                    NormalizedName = RoleTypeEnum.Staff.ToString().ToUpper()
                 }
             };
 
