@@ -1,5 +1,6 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.HRM.Requests;
+using COMP1640.ViewModels.HRM.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace COMP1640.Controllers
@@ -40,5 +41,13 @@ namespace COMP1640.Controllers
             await _hRMService.DeleteUserAsync(id);
             return View("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewProfile(int id)
+        {
+            var profile = await _hRMService.GetUserInfoDetailsAsync(id);
+            return View(profile);
+        }
+        
     }
 }
