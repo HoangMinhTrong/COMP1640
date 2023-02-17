@@ -1,9 +1,11 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.HRM.Requests;
+using COMP1640.ViewModels.HRM.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace COMP1640.Controllers
 {
+    [Route("[controller]")]
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
@@ -30,17 +32,19 @@ namespace COMP1640.Controllers
             return View("Index");
         }
 
-        [Route("[controller]")]
+      
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
+        [ActionName("Create")]
+        public async Task<IActionResult> Create(CreateUserRequest request)
         {
+            if (!ModelState.IsValid) return RedirectToAction("Index");
             try
             {
                 var isSucceed =  await _hRMService.CreateUserAsync(request);
                 if(isSucceed) return RedirectToAction("Index");
                 
                 ModelState.AddModelError("create_failure","Failure to create an account.");
-                return RedirectToAction("Index");;
+                return RedirectToAction("Index");
             }
             catch (Exception e)
             {
@@ -49,7 +53,7 @@ namespace COMP1640.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _hRMService.DeleteUserAsync(id);
@@ -57,8 +61,8 @@ namespace COMP1640.Controllers
         }
         
         [HttpGet]
-        [Route("[controller]/role")]
-        [ProducesResponseType(typeof(List<string>), 200)]
+        [Route("role")]
+        [ProducesResponseType(typeof(SelectPropertyForCreateAccountResponse), 200)]
         public async Task<IActionResult> GetRoleEnums()
         {
             var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();

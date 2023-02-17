@@ -18,6 +18,8 @@ namespace Infrastructure
         public virtual DbSet<Reaction> Reactions { get; set; }
         public virtual DbSet<Tenant> Tenants { get; set; }
         public virtual DbSet<TenantUser> TenantUsers { get; set; }
+        public virtual DbSet<UserDepartment> UserDepartments { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -48,6 +50,19 @@ namespace Infrastructure
                 .HasOne<Tenant>(tu => tu.Tenant)
                 .WithMany(t => t.TenantUsers)
                 .HasForeignKey(tu => tu.TenantId);
+            
+            builder.Entity<UserDepartment>()
+                .HasKey(ud => new {ud.UserId, ud.DepartmentId});
+            
+            builder.Entity<UserDepartment>()
+                .HasOne<User>(ud => ud.User)
+                .WithMany(u => u.UserDepartments)
+                .HasForeignKey(tu => tu.UserId);
+
+            builder.Entity<UserDepartment>()
+                .HasOne<Department>(ud => ud.Department)
+                .WithMany(t => t.UserDepartments)
+                .HasForeignKey(tu => tu.DepartmentId);
         }
 
         public void RemoveDefaultAspTableName(ModelBuilder builder)
