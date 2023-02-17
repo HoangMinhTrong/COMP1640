@@ -2,17 +2,16 @@
 @model List<UserBasicInfoResponse>
 
  <div class="container">
-    <div id="addUserBtn" class="pt-3 pb-4 d-flex">
-         <div class="align-items-center">
-             <a class="btn btn-info text-white text-center">
+    <div class="pt-3 pb-4 d-block">
+        <div class="align-items-center">
+            <a class="btn btn-info text-white text-center" id="addUserBtn">
                  <i class="material-icons text-white">
                      Add
                  </i>
              </a>
          </div>
      </div>
-     <div id="addUserModal" class="modal">
-
+    <div id="addUserModal" class="modalAdd">
         <!-- Modal content -->
         <div class="modal-content bg-dark w-50">
             <span class="close">&times;</span>
@@ -20,7 +19,7 @@
                 <div class="col-md-6 col-xl-4">
                     <div class="col-md-8 col-xl-6 text-center mx-auto">
                         <p class="fw-bold text-success mb-2">Add new User</p>
-                        <h5 class="fw-bold">Please fill out the blank</h5>
+                        <h6 class="fw-bold">Please fill out the blank</h6>
                     </div>
                     <form method="post">
                          <div class="mb-3"><input class="form-control" type="text" name="username" placeholder="Username" /></div>
@@ -33,15 +32,14 @@
                 </div>
             </div>  
         </div>
-
     </div>
     <table class="table table-hover table-bordered table-sencondary">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Tên</th>
+                <th scope="col">Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Vai trò</th>
+                <th scope="col">Role</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -56,23 +54,16 @@
                     <td>
                         <div class="d-flex justify-content-around">
                             <div class="align-items-center">
-                            <a class="btn btn-danger text-white text-center" style="cursor:pointer"
-                           asp-action="Account"
-                           asp-route-id="@item.Id">
-                                <i class="material-icons text-white">
-                                    Delete
-                                </i>
-                            </a>
-                        </div>
-                        <div class="align-items-center">
-                            <a class="btn btn-warning text-white text-center" style="cursor:pointer"
-                           asp-action="Account"
-                           asp-route-id="@item.Id">
-                                <i class="material-icons text-white">
-                                    Edit
-                                </i>
-                            </a>
-                        </div>
+                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" asp-action="Account"asp-route-id="@item.Id">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                            <div class="align-items-center">
+                                <a class="btn btn-warning text-white text-center editUserBtn" style="cursor:pointer">
+                                    <i class="bi bi-pen"></i>
+                                </a>
+                            </div>
+                            <partial name="_ModalEdit" model=@item />
                         </div>
                     </td>
                 </tr>

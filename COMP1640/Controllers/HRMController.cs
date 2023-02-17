@@ -1,5 +1,6 @@
-﻿using COMP1640.Services;
+using COMP1640.Services;
 using COMP1640.ViewModels.HRM.Requests;
+using COMP1640.ViewModels.HRM.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace COMP1640.Controllers
@@ -17,14 +18,6 @@ namespace COMP1640.Controllers
         public async Task<IActionResult> Index([FromQuery] GetListUserRequest request)
         {
             var vm = await _hRMService.GetListUserAsync(request);
-            return View(vm);
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> Account([FromRoute] int id)
-        {
-            var vm = await _hRMService.GetUserInfoDetailsAsync(id);
             return View(vm);
         }
 
@@ -50,7 +43,17 @@ namespace COMP1640.Controllers
         }
 
 
-        // TODO: Create action to view users profile
+        [HttpGet]
+        public async Task<IActionResult> ViewProfile(int id)
+        {
+            var profile = await _hRMService.GetUserInfoDetailsAsync(id);
+            return View(profile);
+        }
+        
+
+
+
+
 
     }
 }

@@ -1,0 +1,17 @@
+@using COMP1640.ViewModels.HRM.Responses
+@model UserProfileResponse
+
+<div>
+    <h4>Document</h4>
+    <hr />
+    <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+     
+</div>

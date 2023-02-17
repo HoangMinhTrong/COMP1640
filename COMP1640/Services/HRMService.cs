@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using System.Security.Claims;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
 using Domain;
@@ -12,11 +13,12 @@ namespace COMP1640.Services
     {
         private readonly IUserRepository _userRepo;
         private readonly IUnitOfWork _unitOfWork;
-
-        public HRMService(IUserRepository userRepo, IUnitOfWork unitOfWork)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public HRMService(IUserRepository userRepo, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _userRepo = userRepo;
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<List<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
@@ -28,21 +30,22 @@ namespace COMP1640.Services
                     Id = _.Id,
                     UserName = _.UserName,
                     Email = _.Email,
-                    Role = _.Role.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
+                    Role = _.Roles.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
                 })
                 .ToListAsync();
         }
 
-        public async Task<UserBasicInfoResponse> GetUserInfoDetailsAsync(int userId)
+        public async Task<UserProfileResponse> GetUserInfoDetailsAsync(int userId)
         {
+            var objId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            userId =  Int32.Parse(objId);
             return await _userRepo
                 .GetById(userId)
-                .Select(_ => new UserBasicInfoResponse
+                .Select(_ => new UserProfileResponse
                 {
                     Id = _.Id,
                     UserName = _.UserName,
                     Email = _.Email,
-                    Role = _.Role.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
                 })
                 .FirstOrDefaultAsync();
         }
