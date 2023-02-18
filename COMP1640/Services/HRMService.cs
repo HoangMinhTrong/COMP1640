@@ -37,8 +37,8 @@ namespace COMP1640.Services
 
         public async Task<UserProfileResponse> GetUserInfoDetailsAsync(int userId)
         {
-            var objId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            userId =  Int32.Parse(objId);
+/*            var objId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            userId = Int32.Parse(objId);*/
             return await _userRepo
                 .GetById(userId)
                 .Select(_ => new UserProfileResponse
