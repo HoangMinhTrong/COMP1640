@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Infrastructure.SeedData;
+using System.Reflection.Emit;
 
 namespace Infrastructure
 {
@@ -9,7 +10,6 @@ namespace Infrastructure
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
         }
 
         public virtual DbSet<Category> Categories { get; set; }
@@ -19,7 +19,6 @@ namespace Infrastructure
         public virtual DbSet<Tenant> Tenants { get; set; }
         public virtual DbSet<TenantUser> TenantUsers { get; set; }
         public virtual DbSet<UserDepartment> UserDepartments { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

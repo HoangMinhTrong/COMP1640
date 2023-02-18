@@ -3,11 +3,14 @@
 #nullable disable
 
 using Domain;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Utilities.Identity.DTOs;
 
 namespace WebMVC.Areas.Identity.Pages.Account
 {
@@ -15,13 +18,15 @@ namespace WebMVC.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly IUserRepository _userRepo;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager, IUserRepository userRepo)
         {
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
+            _userRepo = userRepo;
         }
 
         /// <summary>
@@ -110,6 +115,7 @@ namespace WebMVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    await CustomIdentityClaimsAsync();
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
@@ -122,6 +128,27 @@ namespace WebMVC.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task CustomIdentityClaimsAsync()
+        {
+            // Get the current user's identity
+            var userIdentity = (ClaimsIdentity)User.Identity;
+            var user = await _userRepo.FindByEmailAsync(Input.Email);
+            if (user == null)
+                return;
+
+            userIdentity.AddClaim(new Claim(AppClaimType.UserId, user.Id.ToString()));
+            userIdentity.AddClaim(new Claim(AppClaimType.UserName, user.UserName));
+            userIdentity.AddClaim(new Claim(AppClaimType.UserEmail, user.Email));
+            userIdentity.AddClaim(new Claim(AppClaimType.RoleId, user.Roles
+                .Select(_ => _.Id)
+                .FirstOrDefault()
+                .ToString()));
+            userIdentity.AddClaim(new Claim(AppClaimType.TenantId, user.TenantUsers
+                .Select(_ => _.TenantId)
+                .FirstOrDefault()
+                .ToString()));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -7,6 +8,11 @@ namespace Infrastructure.Repositories
     {
         public UserRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<User> FindByEmailAsync(string email)
+        {
+            return await GetQuery(_ => _.Email== email).FirstOrDefaultAsync();
         }
 
         public IQueryable<User> GetById(int id)
