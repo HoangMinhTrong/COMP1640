@@ -19,11 +19,13 @@ namespace COMP1640.Services
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly ILogger<HRMService> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
 
-
-        public HRMService(IUserRepository userRepo, IUnitOfWork unitOfWork, UserManager<User> userManager, RoleManager<Role> roleManager, ILogger<HRMService> logger, IDepartmentRepository departmentRepository)
+        public HRMService(IUserRepository userRepo, IUnitOfWork unitOfWork, UserManager<User> userManager, 
+            RoleManager<Role> roleManager, ILogger<HRMService> logger, 
+            IDepartmentRepository departmentRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepo = userRepo;
             _unitOfWork = unitOfWork;
@@ -31,6 +33,7 @@ namespace COMP1640.Services
             _roleManager = roleManager;
             _logger = logger;
             _departmentRepository = departmentRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<List<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
@@ -47,16 +50,26 @@ namespace COMP1640.Services
                 .ToListAsync();
         }
 
-        public async Task<UserBasicInfoResponse> GetUserInfoDetailsAsync(int userId)
+
+     
+
+
+        public async Task<UserProfileResponse> GetUserInfoDetailsAsync(int userId)
         {
+            /*            var objId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            userId = Int32.Parse(objId);*/
             return await _userRepo
                 .GetById(userId)
-                .Select(_ => new UserBasicInfoResponse
+                .Include(_ => _.Roles)
+                .Include(_ => _.Departments)
+                .Select(_ => new UserProfileResponse
                 {
                     Id = _.Id,
                     UserName = _.UserName,
                     Email = _.Email,
-                    Role = _.Roles.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
+                    Role = _.Roles.FirstOrDefault().Name,
+                    Department = _.Departments.FirstOrDefault().Name,
+                   
                 })
                 .FirstOrDefaultAsync();
         }

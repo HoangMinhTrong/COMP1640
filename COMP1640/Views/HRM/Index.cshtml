@@ -116,6 +116,19 @@
                                     <i class="bi bi-pen"></i>
                                 </a>
                             </div>
+
+
+                              <div class="align-items-center">
+                                <a href="@Url.Action("ViewProfile", "HRM", new {id = @item.Id})" class="btn btn-primary text-white text-center">
+                                 @*<span>View</span> *@   
+                                 <i class="bi bi-person"></i>
+
+                                </a>
+                                @*<a class="btn btn-primary text-white text-center editUserBtn" style="cursor:pointer">
+                                    <i class="bi bi-person"></i>
+                                </a>*@
+                            </div>
+
                             <partial name="_ModalEdit" model=@item />
                         </div>
                     </td>

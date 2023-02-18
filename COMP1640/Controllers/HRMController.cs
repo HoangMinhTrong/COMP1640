@@ -68,5 +68,13 @@ namespace COMP1640.Controllers
             var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
             return Ok(allowedRoleForCreateAccount);
         }
+
+        [HttpGet]
+        [Route("detail")]
+        public async Task<IActionResult> ViewProfile(int id)
+        {
+            var profile = await _hRMService.GetUserInfoDetailsAsync(id);
+            return View(profile);
+        }
     }
 }
