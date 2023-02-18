@@ -1,10 +1,24 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Utilities.Identity;
 
 namespace Utilities
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddCurrentUserInfo(this IServiceCollection services)
+        {
+            services.AddScoped(serviceProvider =>
+            {
+                var httpContext = serviceProvider.GetService<IHttpContextAccessor>().HttpContext;
+
+                return httpContext?.CurrentUser();
+            });
+
+            return services;
+        }
+
         public static IServiceCollection AddImplementationInterfaces(this IServiceCollection services
             , Type interfaceType
             , Type implementAssemblyType)
