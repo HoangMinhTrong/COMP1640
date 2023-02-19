@@ -14,7 +14,7 @@ namespace COMP1640.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task CreateIdeaAsync(CreateIdeaRequest request)
+        public Task<bool> CreateIdeaAsync(CreateIdeaRequest request)
         {
             throw new NotImplementedException();
         }

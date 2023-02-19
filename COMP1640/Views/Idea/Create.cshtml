@@ -3,23 +3,60 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Create Idea</h1>
 
-<div class="modal-content bg-dark w-50">
-            <span class="close">&times;</span>
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-6 col-xl-4">
-                    <div class="col-md-8 col-xl-6 text-center mx-auto">
-                        <p class="fw-bold text-success mb-2">Add new Idea</p>
-                        <h5 class="fw-bold">Please fill out the blank</h5>
-                    </div>
-                    <form method="post">
-                         <div class="mb-3"><input class="form-control" type="text" name="title" placeholder="Title" /></div>
-                         <div class="mb-3"><input class="form-control" type="text" name="content" placeholder="Content" /></div>
-                         <div class="mb-3"><input class="form-control" type="checkbox" name="content" placeholder="Content" /></div>
-                         
-                         <div class="mb-3"><button class="btn btn-primary shadow d-block w-100" type="submit">Add</button></div>
-                    </form>
-                </div>
-            </div>  
+  <div>
+        <header class="bg-dark"></header>
+    <div class="container-fluid">
+        <div class="card  mb-3">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 fw-bold">New Post</p>
+            </div>
         </div>
+    </div>
+    <section></section>
+    <div class="container-fluid">
+        <form>
+            <div class="card mb-3">
+                
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-7 col-lg-8">
+                            <div class="mb-3"><label class="form-label" for="service_name"><strong> Title*</strong></label><input id="service_name" class="form-control" type="text" placeholder="Idea's title" name="service_name" required /></div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <div class="mb-3"><label class="form-label" for="service_price"><strong>Attach file</strong><br /></label><input class="form-control" type="file" /></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3"><label class="form-label" for="client_description"><strong>Content*</strong><br /></label><textarea id="service_description" class="form-control" rows="4" name="service_description" placeholder="Idea's content" required></textarea></div>
+                    
+                    <div class="row mb-2">
+                        <div class="col">
+                            <div class="mb-3"><label class="form-label" for="service_client_start_date"><strong>Category*</strong></label>
+                                <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" style="padding-right: 102px;padding-left: 102px;">Dropdown </button>
+                                    <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+  <label class="form-check-label" for="defaultCheck1">
+    Is Anonymous
+  </label>
+</div>
+                   
+
+                    <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+  <label class="form-check-label" for="defaultCheck2">
+    I agree with our Terms and Conditions
+  </label>
+</div>
+                </div>
+            </div>
+            <div class="text-end mb-3"><button class="btn btn-primary btn-lg" type="submit">Submit</button><a class="btn btn-danger btn-lg" role="button" href="services.html">Cancel</a></div>
+        </form>
+    </div>
+   </div>
