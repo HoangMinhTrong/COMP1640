@@ -24,6 +24,13 @@ namespace COMP1640.Controllers
             return View(vm);
         }
 
+        [HttpGet("User/{id:int}")]
+        public async Task<IActionResult> GetUserInfo([FromRoute] int id)
+        {
+            var vm = await _hRMService.GetUserInfoDetailsAsync(id);
+            return Json(vm);
+        }
+
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] EditUserRequest request)
         {
@@ -32,7 +39,6 @@ namespace COMP1640.Controllers
         }
 
         [HttpPost]
-        [ActionName("Create")]
         public async Task<IActionResult> Create(CreateUserRequest request)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index");

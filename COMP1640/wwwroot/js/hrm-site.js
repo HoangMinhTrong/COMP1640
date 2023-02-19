@@ -37,27 +37,58 @@ function fillDropDownListForCreateAccount() {
     })
 }
 
+
 //Popup Edit User
-var editUserBtn = document.getElementsByClassName("editUserBtn");
 var editUserModal = document.getElementById("editUserModal");
+var editUserBtn = document.getElementsByClassName("editUserBtn");
 var editUserSpan = document.getElementsByClassName("close")[1];
 
-for (var i = 0; i < editUserBtn.length; i++) {
-    editUserBtn[i].onclick = function () {
-        editUserModal.style.display = "block";
-    }
+function ViewUserDetail(id) {
+    $.ajax({
+        url: window.location.origin + '/hrm/user/' + id,
+        type: 'GET',
+        success: function (user) {
+            editUserModal.style.display = "block";
+            fillDropDownListForEditAccount();
+            $(".info-username").val(user.userName);
+            $(".info-email").val(user.email);
+            $(".info-role").val(user.role);
+        }
+    });
 }
 
+function fillDropDownListForEditAccount() {
+    $('#roles_list_edit option:not(:first)').remove();
+    $('#departments_list_edit option:not(:first)').remove();
+    $.ajax({
+        url: window.location.origin + '/hrm/role',
+        type: "GET",
+        dataType: "JSON",
+        data: "",
+        success: function (data) {
+            var roles = data.roles;
+            var departments = data.departments;
+            $.each(roles, function (i, role) {
+                $("#roles_list_edit").append(
+                    $('<option></option>').val(role.id).html(role.name));
+            });
+            $.each(departments, function (i, department) {
+                $("#departments_list_edit").append(
+                    $('<option></option>').val(department.id).html(department.name));
+            });
+        }
+    })
+}
 
 editUserSpan.onclick = function () {
     editUserModal.style.display = "none";
 }
+
 window.onclick = function (event) {
     if (event.target == editUserModal) {
         editUserModal.style.display = "none";
     }
 }
-
 
 //Delete User
 function DeleteUser(id) {
