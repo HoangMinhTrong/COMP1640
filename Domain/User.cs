@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Utilities;
 
 namespace Domain
 {
@@ -7,6 +8,21 @@ namespace Domain
         public User()
         {
 
+        }
+
+        public User(string name, string email, DateTime? birthday, UserGenderEnum? gender, Role role, Department department)
+        {
+            var hasher = new PasswordHasher<User>();
+
+            UserName = name;
+            Email = email;
+            Birthday = birthday;
+            Gender = gender;
+            NormalizedUserName = name.ToUpper();
+            PasswordHash = hasher.HashPassword(this, DefaultUserProperty.DefaultAccountPassword);
+
+            Roles = new List<Role> { role };
+            Departments = new List<Department> { department };
         }
 
         public DateTime? Birthday { get; set; }

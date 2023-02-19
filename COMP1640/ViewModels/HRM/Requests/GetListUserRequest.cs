@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using COMP1640.ViewModels.HRM.Responses;
+using Domain;
 using System.Linq.Expressions;
 
 namespace COMP1640.ViewModels.HRM.Requests

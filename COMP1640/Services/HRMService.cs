@@ -1,12 +1,9 @@
 ﻿#nullable disable
 
-using System.Transactions;
-using COMP1640.Constants;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
 using Domain;
 using Domain.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace COMP1640.Services
@@ -14,36 +11,26 @@ namespace COMP1640.Services
     public class HRMService
     {
         private readonly IUserRepository _userRepo;
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IDepartmentRepository _departmentRepo;
+        private readonly IRoleRepository _roleRepo;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
-        private readonly ILogger<HRMService> _logger;
 
-
-
-
-        public HRMService(IUserRepository userRepo, IUnitOfWork unitOfWork, UserManager<User> userManager, RoleManager<Role> roleManager, ILogger<HRMService> logger, IDepartmentRepository departmentRepository)
+        public HRMService(IUserRepository userRepo
+            , IUnitOfWork unitOfWork
+            , IDepartmentRepository departmentRepo
+            , IRoleRepository roleRepo)
         {
             _userRepo = userRepo;
             _unitOfWork = unitOfWork;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _logger = logger;
-            _departmentRepository = departmentRepository;
+            _departmentRepo = departmentRepo;
+            _roleRepo = roleRepo;
         }
 
         public async Task<List<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
         {
             return await _userRepo
                 .GetQuery(request.Filter())
-                .Select(_ => new UserBasicInfoResponse
-                {
-                    Id = _.Id,
-                    UserName = _.UserName,
-                    Email = _.Email,
-                    Role = _.Roles.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
-                })
+                .Select(new UserBasicInfoResponse().GetSelection())
                 .ToListAsync();
         }
 
@@ -51,61 +38,35 @@ namespace COMP1640.Services
         {
             return await _userRepo
                 .GetById(userId)
-                .Select(_ => new UserBasicInfoResponse
-                {
-                    Id = _.Id,
-                    UserName = _.UserName,
-                    Email = _.Email,
-                    Role = _.Roles.Select(_ => (RoleTypeEnum)_.Id).FirstOrDefault(),
-                })
+                .Select(new UserBasicInfoResponse().GetSelection())
                 .FirstOrDefaultAsync();
         }
 
         public async Task<bool> CreateUserAsync(CreateUserRequest request)
         {
-            using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            try
-            {
-                IdentityResult result;
-                var user = new User()
-                {
-                    UserName = request.Email,
-                    Email = request.Email,
-                    Birthday = request.Birthday?.ToUniversalTime(),
-                    Gender = request.Gender,
-                    UserDepartments = new List<UserDepartment>()
-                    {
-                        new UserDepartment(){DepartmentId = request.DepartmentId}
-                    }
-                };
-
-                result = await _userManager.CreateAsync(user, DefaultUserProperty.DefaultAccountPassword);
-                
-                
-                if (!result.Succeeded)
-                {
-                    _logger.LogInformation($"Failure to create account for {user.Email}.");
-                    return false;
-                }
-
-                result = await _userManager.AddToRoleAsync(user, request.Role.ToString());
-
-                if (result.Succeeded)
-                {                    
-                    transaction.Complete();
-                    return true;
-                }
-                
-                _logger.LogInformation($"Failure to add user to role {user.Roles.ToString()}.");
-                transaction.Dispose();
+            var existedEmail = await _userRepo.AnyAsync(_ => _.Email == request.Email);
+            if (existedEmail)
                 return false;
-            }
-            catch (Exception e)
-            {
-                _logger.LogInformation($"An exception occurred while creating account for {request.Email}. {e.Message}");
-                transaction.Dispose();
-                throw;
-            }
+
+            var role = await _roleRepo.GetAsync(request.Role);
+            if (role == null)
+                return false;
+
+            var department = await _departmentRepo.GetAsync(request.DepartmentId);
+            if (department == null)
+                return false;
+
+            var user = new User(request.Name
+                , request.Email
+                , request.Birthday
+                , request.Gender
+                , role
+                , department);
+
+            await _userRepo.InsertAsync(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
         }
 
         public Task EditUserInfoAsync(EditUserRequest request)
@@ -113,45 +74,44 @@ namespace COMP1640.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteUserAsync(int id)
+        public async Task<bool> DeleteUserAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await _userRepo.GetById(id).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            await _userRepo.DeleteAsync(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
         }
-        
+
         public async Task<SelectPropertyForCreateAccountResponse> GetRolesForCreateAccountAsync()
         {
-            try
-            {
-                var roles = await _roleManager.Roles
-                    .Where(r => r.Name != RoleTypeEnum.Admin.ToString())
-                    .Select(_ => new DropDownListBaseResponse()
-                    {
-                        Id = _.Id,
-                        Name = _.Name
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
-
-                var departments = await _departmentRepository.GetAll()
-                    .Select(d => new DropDownListBaseResponse()
-                    {
-                        Id = d.Id,
-                        Name = d.Name
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
-                return new SelectPropertyForCreateAccountResponse()
+            var roles = await _roleRepo
+                .GetQuery(r => r.Id != (int)RoleTypeEnum.Admin)
+                .Select(_ => new DropDownListBaseResponse()
                 {
-                    Roles = roles,
-                    Departments = departments
-                };
-            }
-            catch (Exception e)
+                    Id = _.Id,
+                    Name = _.Name
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            var departments = await _departmentRepo.GetAll()
+                .Select(d => new DropDownListBaseResponse()
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            return new SelectPropertyForCreateAccountResponse()
             {
-                _logger.LogError($"An exception occurred while getting roles for create an account. {e.Message}");
-                throw;
-            }
-            
+                Roles = roles,
+                Departments = departments
+            };
         }
     }
 }

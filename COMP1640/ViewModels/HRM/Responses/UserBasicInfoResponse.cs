@@ -1,4 +1,5 @@
 ﻿using Domain;
+using System.Linq.Expressions;
 
 namespace COMP1640.ViewModels.HRM.Responses
 {
@@ -7,6 +8,17 @@ namespace COMP1640.ViewModels.HRM.Responses
         public int Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
-        public RoleTypeEnum Role { get; set; }
+        public string Role { get; set; }
+
+        public Expression<Func<User, UserBasicInfoResponse>> GetSelection()
+        {
+            return _ => new UserBasicInfoResponse
+            {
+                Id = _.Id,
+                UserName = _.UserName,
+                Email = _.Email,
+                Role = _.Roles.Select(_ => _.Name).FirstOrDefault(),
+            };
+        }
     }
 }

@@ -15,6 +15,8 @@ if (portVar is { Length: > 0 } && int.TryParse(portVar, out int port))
     });
 }
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 // Load configuration
 var configuration = builder.Configuration
     .AddJsonFile("appsettings.json", true, true)

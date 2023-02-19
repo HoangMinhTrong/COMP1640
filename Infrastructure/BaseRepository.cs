@@ -24,7 +24,7 @@ namespace Infrastructure
             return Entities.Where(expression);
         }
 
-        public async Task InsertAsync(T entity, bool saveChanges = true)
+        public async Task InsertAsync(T entity, bool saveChanges = false)
         {
             await Entities.AddAsync(entity);
 
@@ -32,7 +32,7 @@ namespace Infrastructure
                 await DbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(T entity, bool saveChanges = true)
+        public async Task DeleteAsync(T entity, bool saveChanges = false)
         {
             Entities.Remove(entity);
 
@@ -40,7 +40,7 @@ namespace Infrastructure
                 await DbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteRangeAsync(IEnumerable<T> entities, bool saveChanges = true)
+        public async Task DeleteRangeAsync(IEnumerable<T> entities, bool saveChanges = false)
         {
             if (entities.Any())
                 Entities.RemoveRange(entities);
