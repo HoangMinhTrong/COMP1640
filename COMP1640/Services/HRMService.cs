@@ -34,11 +34,11 @@ namespace COMP1640.Services
                 .ToListAsync();
         }
 
-        public async Task<UserBasicInfoResponse> GetUserInfoDetailsAsync(int userId)
+        public async Task<UserDetailInfoResponse> GetUserInfoDetailsAsync(int userId)
         {
             return await _userRepo
                 .GetById(userId)
-                .Select(new UserBasicInfoResponse().GetSelection())
+                .Select(new UserDetailInfoResponse().GetSelection())
                 .FirstOrDefaultAsync();
         }
 

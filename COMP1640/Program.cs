@@ -30,8 +30,10 @@ builder.Services
     .AddRazorRuntimeCompilation();
 
 var services = builder.Services;
+
 services.AddHttpContextAccessor();
-services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
+services
+    .AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 services
@@ -40,8 +42,7 @@ services
     .AddRepositoriesBase()
     .AddUnitOfWork();
 
-services
-    .AddCurrentUserInfo();
+services.AddCurrentUserInfo();
 
 services.AddRazorPages();
 

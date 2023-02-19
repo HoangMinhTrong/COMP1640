@@ -121,27 +121,27 @@ namespace Infrastructure.SeedData
 
         private static void SeedUserRoles(ModelBuilder builder)
         {
-            var userRoles = new List<IdentityUserRole<int>>()
+            var userRoles = new List<RoleUser>()
             {
-                new IdentityUserRole<int>
+                new RoleUser
                 {
                     // Admin
                     UserId = 1,
                     RoleId = (int)RoleTypeEnum.Admin,
                 },
-                new IdentityUserRole<int>
+                new RoleUser
                 {
                     // Director
                     UserId = 2,
                     RoleId = (int)RoleTypeEnum.Director,
                 },
-                new IdentityUserRole<int>
+                new RoleUser
                 {
                     // Manager
                     UserId = 3,
                     RoleId = (int)RoleTypeEnum.Manager,
                 },
-                new IdentityUserRole<int>
+                new RoleUser
                 {
                     // Staff
                     UserId = 4,
@@ -149,7 +149,7 @@ namespace Infrastructure.SeedData
                 },
             };
 
-            builder.Entity<IdentityUserRole<int>>().HasData(userRoles);
+            builder.Entity<RoleUser>().HasData(userRoles);
         }
         private static void SeedTenantUser(ModelBuilder builder)
         {
