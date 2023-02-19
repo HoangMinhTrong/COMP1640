@@ -37,27 +37,85 @@ function fillDropDownListForCreateAccount() {
     })
 }
 
+
 //Popup Edit User
-var editUserBtn = document.getElementsByClassName("editUserBtn");
 var editUserModal = document.getElementById("editUserModal");
+var editUserBtn = document.getElementsByClassName("editUserBtn");
 var editUserSpan = document.getElementsByClassName("close")[1];
 
-for (var i = 0; i < editUserBtn.length; i++) {
-    editUserBtn[i].onclick = function () {
-        editUserModal.style.display = "block";
-    }
+function EditUserInfo() {
+    var userId = $(".info-userId").val();
+    var myObject = {
+        Name: $(".info-username").val(),
+        Email: $(".info-email").val(),
+        RoleId: $(".info-role").val(),
+        DepartmentId: $(".info-department").val(),
+        Gender: $(".info-gender").val(),
+        Birthday: $(".info-birthday").val(),
+    };
+
+    $.ajax({
+        url: window.location.origin + '/hrm/user/' + userId,
+        type: 'PUT',
+        data: JSON.stringify(myObject),
+        contentType: 'application/json',
+        success: function () {
+            alert('Saved successfully.');
+            window.location.reload();
+        }
+    });
 }
 
+function ViewUserDetail(id) {
+    $.ajax({
+        url: window.location.origin + '/hrm/user/' + id,
+        type: 'GET',
+        success: function (user) {
+            editUserModal.style.display = "block";
+            fillDropDownListForEditAccount(user.roleId, user.departmentId)
+            $(".info-userId").val(user.id);
+            $(".info-username").val(user.userName);
+            $(".info-email").val(user.email);
+            $(".gender-" + user.gender).prop("selected", true);
+            $(".info-birthday").val(user.birthday);
+        }
+    });
+}
+
+function fillDropDownListForEditAccount(roleId, departmentId) {
+    $('#roles_list_edit option:not(:first)').remove();
+    $('#departments_list_edit option:not(:first)').remove();
+    $.ajax({
+        url: window.location.origin + '/hrm/role',
+        type: "GET",
+        dataType: "JSON",
+        data: "",
+        success: function (data) {
+            var roles = data.roles;
+            var departments = data.departments;
+            $.each(roles, function (i, role) {
+                $("#roles_list_edit").append(
+                    $('<option></option>').val(role.id).html(role.name).prop("selected", roleId == role.id)
+                );
+            });
+            $.each(departments, function (i, department) {
+                $("#departments_list_edit").append(
+                    $('<option></option>').val(department.id).html(department.name).prop("selected", departmentId == department.id)
+                );
+            });
+        }
+    })
+}
 
 editUserSpan.onclick = function () {
     editUserModal.style.display = "none";
 }
+
 window.onclick = function (event) {
     if (event.target == editUserModal) {
         editUserModal.style.display = "none";
     }
 }
-
 
 //Delete User
 function DeleteUser(id) {

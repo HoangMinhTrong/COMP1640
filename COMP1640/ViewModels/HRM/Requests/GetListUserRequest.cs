@@ -10,10 +10,13 @@ namespace COMP1640.ViewModels.HRM.Requests
 
         public Expression<Func<User, bool>> Filter()
         {
-            return _ =>
-                    string.IsNullOrEmpty(SearchTerm)
-                    ? true
-                    : (_.Email.Contains(SearchTerm) || _.UserName.Contains(SearchTerm));
+            return _ => !_.RoleUsers.Any(_ => _.RoleId == (int)RoleTypeEnum.Admin)
+                    &&
+                    (
+                        string.IsNullOrEmpty(SearchTerm)
+                        ? true
+                        : (_.Email.Contains(SearchTerm) || _.UserName.Contains(SearchTerm))
+                    );
         }
     }
 }

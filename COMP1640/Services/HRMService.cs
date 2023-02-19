@@ -31,14 +31,15 @@ namespace COMP1640.Services
             return await _userRepo
                 .GetQuery(request.Filter())
                 .Select(new UserBasicInfoResponse().GetSelection())
+                .OrderBy(_ => _.Id)
                 .ToListAsync();
         }
 
-        public async Task<UserBasicInfoResponse> GetUserInfoDetailsAsync(int userId)
+        public async Task<UserDetailInfoResponse> GetUserInfoDetailsAsync(int userId)
         {
             return await _userRepo
                 .GetById(userId)
-                .Select(new UserBasicInfoResponse().GetSelection())
+                .Select(new UserDetailInfoResponse().GetSelection())
                 .FirstOrDefaultAsync();
         }
 
@@ -69,9 +70,21 @@ namespace COMP1640.Services
             return true;
         }
 
-        public Task EditUserInfoAsync(EditUserRequest request)
+        public async Task<bool> EditUserInfoAsync(int id, EditUserRequest request)
         {
-            throw new NotImplementedException();
+            var user = await _userRepo.GetById(id).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            user.EditInfo(request.Name
+                , request.Email
+                , request.RoleId
+                , request.DepartmentId
+                , request.Gender
+                , request.Birthday);
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> DeleteUserAsync(int id)

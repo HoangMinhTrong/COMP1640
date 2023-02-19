@@ -24,15 +24,25 @@ namespace COMP1640.Controllers
             return View(vm);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] EditUserRequest request)
+        [HttpGet("User/{id:int}")]
+        public async Task<IActionResult> GetUserInfo([FromRoute] int id)
         {
-            await _hRMService.EditUserInfoAsync(request);
-            return View("Index");
+            var vm = await _hRMService.GetUserInfoDetailsAsync(id);
+            return Json(vm);
+        }
+
+        [HttpPut("User/{id:int}")]
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditUserRequest request)
+        {
+            if (!ModelState.IsValid) return RedirectToAction("Index");
+            var isSucceed = await _hRMService.EditUserInfoAsync(id, request);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an account.");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        [ActionName("Create")]
         public async Task<IActionResult> Create(CreateUserRequest request)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index");
@@ -48,7 +58,7 @@ namespace COMP1640.Controllers
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var isSucceed = await _hRMService.DeleteUserAsync(id);
-            if (isSucceed) return RedirectToPage("Index");
+            if (isSucceed) return Ok();
 
             ModelState.AddModelError("delete_failure", "Failure to delete an account.");
             return RedirectToAction("Index");

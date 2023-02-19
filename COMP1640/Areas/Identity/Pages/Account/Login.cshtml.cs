@@ -5,6 +5,7 @@
 using Domain;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,15 +18,14 @@ namespace WebMVC.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly IUserRepository _userRepo;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager, IUserRepository userRepo)
+        private readonly IUserRepository _userRepo;
+        public LoginModel(SignInManager<User> signInManager
+            , ILogger<LoginModel> logger
+            , IUserRepository userRepo)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _userManager = userManager;
             _userRepo = userRepo;
         }
 
@@ -138,17 +138,21 @@ namespace WebMVC.Areas.Identity.Pages.Account
             if (user == null)
                 return;
 
-            userIdentity.AddClaim(new Claim(AppClaimType.UserId, user.Id.ToString()));
-            userIdentity.AddClaim(new Claim(AppClaimType.UserName, user.UserName));
-            userIdentity.AddClaim(new Claim(AppClaimType.UserEmail, user.Email));
-            userIdentity.AddClaim(new Claim(AppClaimType.RoleId, user.Roles
-                .Select(_ => _.Id)
-                .FirstOrDefault()
-                .ToString()));
-            userIdentity.AddClaim(new Claim(AppClaimType.TenantId, user.TenantUsers
-                .Select(_ => _.TenantId)
-                .FirstOrDefault()
-                .ToString()));
+            // Create a claims identity for the user
+            userIdentity = new ClaimsIdentity(new[]
+            {
+                new Claim(AppClaimType.UserId, user.Id.ToString()),
+                new Claim(AppClaimType.UserName, user.UserName),
+                new Claim(AppClaimType.UserEmail, user.Email),
+                new Claim(AppClaimType.RoleId, user.RoleUsers
+                    .Select(_ => _.RoleId)
+                    .FirstOrDefault()
+                    .ToString()),
+                new Claim(AppClaimType.TenantId, user.TenantUsers
+                    .Select(_ => _.TenantId)
+                    .FirstOrDefault()
+                    .ToString()),
+            }, CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }
 }

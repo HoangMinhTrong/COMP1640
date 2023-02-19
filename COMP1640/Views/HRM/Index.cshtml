@@ -112,15 +112,15 @@
                                 </a>
                             </div>
                             <div class="align-items-center">
-                                <a class="btn btn-warning text-white text-center editUserBtn" style="cursor:pointer">
+                                <a class="btn btn-warning text-white text-center" style="cursor:pointer" onclick=ViewUserDetail(@item.Id)>
                                     <i class="bi bi-pen"></i>
                                 </a>
                             </div>
-                            <partial name="_ModalEdit" model=@item />
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+     <partial name="_ModalEdit"/>
  </div>
