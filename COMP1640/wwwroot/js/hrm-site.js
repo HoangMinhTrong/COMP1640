@@ -52,7 +52,10 @@ function ViewUserDetail(id) {
             fillDropDownListForEditAccount();
             $(".info-username").val(user.userName);
             $(".info-email").val(user.email);
-            $(".info-role").val(user.role);
+            $(".info-role").val(user.roleId);
+            $(".info-department").val(user.departmentId);
+            $(".info-gender").val(user.Gender);
+            $(".info-birthday").val(user.departmentId);
         }
     });
 }

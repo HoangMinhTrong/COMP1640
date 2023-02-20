@@ -31,6 +31,39 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="departments_list_edit" name="departmentId"
+                                        class="form-select" required="required"
+                                        oninvalid="this.setCustomValidity('Please select an item in the list')"
+                                        oninput="setCustomValidity('')">
+                                    <option class="info-department" disabled="disabled">Select Department</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select name="gender"
+                                        class="form-select">
+                                    <option disabled="disabled">Select Gender</option>
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input id="birthday" 
+                                name="birthday" 
+                                class="form-control info-birthday"
+                                placeholder="Birthday"
+                                type="text"
+                                onfocus="(this.type='date')"
+                                onblur="(this.type='text')"/>
+                    </div>
                 </form>
             </div>
         </div>

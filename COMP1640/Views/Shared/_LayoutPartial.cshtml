@@ -1,7 +1,7 @@
 ﻿<ul class="navbar-nav mx-auto">
     @if (SignInManager.IsSignedIn(User))
     {
-        if (User.IsInRole(RoleTypeEnum.Admin.ToString()))
+        if (CurrentUser.RoleId == (int)RoleTypeEnum.Admin)
         {
             <li class="nav-item">
                 <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
