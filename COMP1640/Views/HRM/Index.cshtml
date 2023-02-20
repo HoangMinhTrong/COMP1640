@@ -103,59 +103,24 @@
                     <th scope="row">-</th>
                     <td>@item.UserName</td>
                     <td>@item.Email</td>
-                    <td>@item.Role.ToString()</td>
+                    <td>@item.Role</td>
                     <td>
                         <div class="d-flex justify-content-around">
                             <div class="align-items-center">
-                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" asp-action="Account"asp-route-id="@item.Id">
+                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" onclick=DeleteUser(@item.Id)>
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </div>
                             <div class="align-items-center">
-                                <a class="btn btn-warning text-white text-center editUserBtn" style="cursor:pointer">
+                                <a class="btn btn-warning text-white text-center" style="cursor:pointer" onclick=ViewUserDetail(@item.Id)>
                                     <i class="bi bi-pen"></i>
                                 </a>
                             </div>
-
-
-                              <div class="align-items-center">
-                                <a href="@Url.Action("ViewProfile", "HRM", new {id = @item.Id})" class="btn btn-primary text-white text-center">
-                                 @*<span>View</span> *@   
-                                 <i class="bi bi-person"></i>
-
-                                </a>
-                                @*<a class="btn btn-primary text-white text-center editUserBtn" style="cursor:pointer">
-                                    <i class="bi bi-person"></i>
-                                </a>*@
-                            </div>
-
-                            <partial name="_ModalEdit" model=@item />
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+     <partial name="_ModalEdit"/>
  </div>
-
-
-@* @section Scripts { *@
-@*     <script> *@
-@*   function FillCity() { *@
-@*     $.ajax({ *@
-@*         url: window.location.origin + '/hrm/role', *@
-@*         type: "GET", *@
-@*         dataType: "JSON", *@
-@*         data: "", *@
-@*         success: function (roles) { *@
-@*             // $("#Country").html(""); // clear before appending new list *@
-@*             $.each(role, function (i, country) { *@
-@*                 $("#roles").append( *@
-@*                     $('<option></option>').val(role.id).html(role.name)); *@
-@*             }); *@
-@*         } *@
-@*     }); *@
-@*   } *@
-@*     </script> *@
-@* } *@
-    

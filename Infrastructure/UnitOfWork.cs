@@ -1,8 +1,8 @@
 ﻿using Domain.Base;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 using Utilities.Identity.Interfaces;
 
 namespace Infrastructure
@@ -18,6 +18,35 @@ namespace Infrastructure
             _serviceProvider = serviceProvider;
             _context = context;
             _currentUserInfo = currentUserInfo;
+        }
+
+        public async Task<TResult> ExecuteTransactionAsync<TResult>(Func<Task<TResult>> func)
+        {
+            if (_context.Database.CurrentTransaction == null)
+            {
+                var strategy = _context.Database.CreateExecutionStrategy();
+                var transResult = await strategy.ExecuteAsync(async () =>
+                {
+                    using (var trans = await _context.Database.BeginTransactionAsync())
+                    {
+                        try
+                        {
+                            var result = await func.Invoke();
+                            await trans.CommitAsync();
+                            return result;
+                        }
+                        catch (Exception)
+                        {
+                            await trans.RollbackAsync();
+                            throw;
+                        }
+                    }
+                });
+
+                return transResult;
+            }
+            else
+                return await func.Invoke();
         }
 
         public virtual IBaseRepository<T> Repository<T>() where T : class
@@ -59,7 +88,7 @@ namespace Infrastructure
             }
             else if (typeof(ITenantEntity).IsAssignableFrom(entry.Entity.GetType()))
             {
-                var entity  = (entry.Entity as ITenantEntity);
+                var entity = (entry.Entity as ITenantEntity);
                 entity.TenantId = _currentUserInfo.TenantId;
             }
         }

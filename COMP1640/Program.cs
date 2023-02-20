@@ -15,6 +15,8 @@ if (portVar is { Length: > 0 } && int.TryParse(portVar, out int port))
     });
 }
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 // Load configuration
 var configuration = builder.Configuration
     .AddJsonFile("appsettings.json", true, true)
@@ -28,8 +30,10 @@ builder.Services
     .AddRazorRuntimeCompilation();
 
 var services = builder.Services;
+
 services.AddHttpContextAccessor();
-services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
+services
+    .AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 services
@@ -38,8 +42,7 @@ services
     .AddRepositoriesBase()
     .AddUnitOfWork();
 
-services
-    .AddCurrentUserInfo();
+services.AddCurrentUserInfo();
 
 services.AddRazorPages();
 
