@@ -37,6 +37,40 @@ namespace Infrastructure.Migrations
                     b.ToTable("DepartmentUser");
                 });
 
+            modelBuilder.Entity("Domain.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Category 1",
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Category 2",
+                            TenantId = 1
+                        });
+                });
+
             modelBuilder.Entity("Domain.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -55,6 +89,26 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Computing",
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Business",
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Design",
+                            TenantId = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.Idea", b =>
@@ -64,6 +118,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -92,6 +149,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CreatedByNavigationId");
 
@@ -158,8 +217,30 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "94b24aec-7e03-490b-bce4-9a91231fdc4b",
-                            Name = "Admin"
+                            ConcurrencyStamp = "09935968-2921-490b-96de-fa3d64044656",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "50f3c1b6-47e2-4611-9eaa-8faf7c7c0500",
+                            Name = "Director",
+                            NormalizedName = "DIRECTOR"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ConcurrencyStamp = "52e7b6c3-9702-4391-8eb5-7326aebdc21f",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ConcurrencyStamp = "9ecd3724-e62a-4365-8b1d-a93f1d39ba2c",
+                            Name = "Staff",
+                            NormalizedName = "STAFF"
                         });
                 });
 
@@ -178,6 +259,50 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tenants");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Greenwich Danang"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.TenantUser", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "TenantId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("TenantUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            TenantId = 1
+                        });
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -257,18 +382,81 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "42436114-b9c3-4956-8ed7-29610e50a1e5",
+                            ConcurrencyStamp = "10bc9c66-b2bb-41d3-8c53-334e01d9f128",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             Gender = (byte)1,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKwYse2Lnt0COTyQ6z3EwR5qBhUVSpvV1bzCmVxtMrsmWuwVD8tfdl/9wFEwi/+QEA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJcYOBmkho5+HZ/izX0ibXYUzb+suPWEmQAkZEa4O2LiiCcPCZBawELU4wj1K7vYFg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fdf124cd-29f7-4bc8-8c85-00287627d78e",
+                            SecurityStamp = "ec0cb4e2-ead4-46b3-a5da-0d32b8baa505",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "bdc6e980-5b3a-4da6-a04b-b186af3ca263",
+                            Email = "director@gmail.com",
+                            EmailConfirmed = false,
+                            Gender = (byte)1,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "DIRECTOR@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMVo3p15vbtrsw8sDwlaUkKuXKvXNxgZWwc/d2jrq3adHiXrgWHt4MDNTcaXSeEnag==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "954c1446-4c1e-4622-8ee3-8bd20a7598f3",
+                            TwoFactorEnabled = false,
+                            UserName = "director@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "af496e2d-5484-4e58-a033-c03ff8cb66ee",
+                            Email = "manager@gmail.com",
+                            EmailConfirmed = false,
+                            Gender = (byte)1,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "MANAGER@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGQyN84Bh9sivob9WjbvO83yZ36H7vA8EB8Y8qAPsh3o5bMYdJx151U/uvUsfhJZsg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "65d7e844-a03b-441d-98bf-76f643a99517",
+                            TwoFactorEnabled = false,
+                            UserName = "manager@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c2bf8f5e-d781-4f14-bcee-9762014e6a99",
+                            Email = "staff@gmail.com",
+                            EmailConfirmed = false,
+                            Gender = (byte)1,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "STAFF@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMiDJLFwsujIn8OyCkn1TuX4VmiYWfLVtvS0LQPquIDvwn+sNSuD+JqP85CaIeyVpA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "1c1acc5e-3f78-4608-a65e-70f8d5899ca1",
+                            TwoFactorEnabled = false,
+                            UserName = "staff@gmail.com"
                         });
+                });
+
+            modelBuilder.Entity("Domain.UserDepartment", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "DepartmentId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("UserDepartments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -359,6 +547,21 @@ namespace Infrastructure.Migrations
                         {
                             UserId = 1,
                             RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            RoleId = 4
                         });
                 });
 
@@ -383,32 +586,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.Property<int>("RoleId")
+                    b.Property<int>("RolesId")
                         .HasColumnType("integer");
 
                     b.Property<int>("UsersId")
                         .HasColumnType("integer");
 
-                    b.HasKey("RoleId", "UsersId");
+                    b.HasKey("RolesId", "UsersId");
 
                     b.HasIndex("UsersId");
 
                     b.ToTable("RoleUser");
-                });
-
-            modelBuilder.Entity("TenantUser", b =>
-                {
-                    b.Property<int>("TenantsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("TenantsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("TenantUser");
                 });
 
             modelBuilder.Entity("DepartmentUser", b =>
@@ -428,6 +616,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Idea", b =>
                 {
+                    b.HasOne("Domain.Category", "Category")
+                        .WithMany("Ideas")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.User", "CreatedByNavigation")
                         .WithMany("Ideas")
                         .HasForeignKey("CreatedByNavigationId")
@@ -439,6 +633,8 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("CreatedByNavigation");
 
@@ -460,6 +656,44 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Idea");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.TenantUser", b =>
+                {
+                    b.HasOne("Domain.Tenant", "Tenant")
+                        .WithMany("TenantUsers")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("TenantUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.UserDepartment", b =>
+                {
+                    b.HasOne("Domain.Department", "Department")
+                        .WithMany("UserDepartments")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("UserDepartments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
 
                     b.Navigation("User");
                 });
@@ -519,7 +753,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Role", null)
                         .WithMany()
-                        .HasForeignKey("RoleId")
+                        .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -530,24 +764,16 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TenantUser", b =>
+            modelBuilder.Entity("Domain.Category", b =>
                 {
-                    b.HasOne("Domain.Tenant", null)
-                        .WithMany()
-                        .HasForeignKey("TenantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Ideas");
                 });
 
             modelBuilder.Entity("Domain.Department", b =>
                 {
                     b.Navigation("Ideas");
+
+                    b.Navigation("UserDepartments");
                 });
 
             modelBuilder.Entity("Domain.Idea", b =>
@@ -555,11 +781,20 @@ namespace Infrastructure.Migrations
                     b.Navigation("Reactions");
                 });
 
+            modelBuilder.Entity("Domain.Tenant", b =>
+                {
+                    b.Navigation("TenantUsers");
+                });
+
             modelBuilder.Entity("Domain.User", b =>
                 {
                     b.Navigation("Ideas");
 
                     b.Navigation("Reactions");
+
+                    b.Navigation("TenantUsers");
+
+                    b.Navigation("UserDepartments");
                 });
 #pragma warning restore 612, 618
         }

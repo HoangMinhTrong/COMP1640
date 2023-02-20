@@ -1,0 +1,38 @@
+﻿<div class="modalEdit" id="editUserModal">
+    <!-- Modal content -->
+    <div class="modal-content bg-dark w-50">
+        <span class="close">&times;</span>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6 col-xl-4">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <p class="fw-bold text-success mb-2">Edit User</p>
+                    <h6 class="fw-bold">Change user Information</h6>
+                </div>
+                <form method="post">
+                    <div class="mb-3">
+                        <input class="form-control info-username"
+                                type="text" name="name" placeholder="Full Name"
+                                required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-control info-email"
+                                type="text" name="email" placeholder="Email"
+                                required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="roles_list_edit" name="role"
+                                        class="form-select" required="required"
+                                        oninvalid="this.setCustomValidity('Please select an item in the list')"
+                                        oninput="setCustomValidity('')">
+                                    <option class="info-role" disabled="disabled">Select Role</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

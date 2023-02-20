@@ -1,19 +1,21 @@
 using COMP1640.Extentions;
 using Domain;
 using Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // For running in Railway
 var portVar = Environment.GetEnvironmentVariable("PORT");
-if (portVar is {Length: >0} && int.TryParse(portVar, out int port))
+if (portVar is { Length: > 0 } && int.TryParse(portVar, out int port))
 {
     builder.WebHost.ConfigureKestrel(options =>
     {
         options.ListenAnyIP(port);
     });
 }
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Load configuration
 var configuration = builder.Configuration
@@ -28,7 +30,7 @@ builder.Services
     .AddRazorRuntimeCompilation();
 
 var services = builder.Services;
-
+services.AddHttpContextAccessor();
 services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -37,6 +39,9 @@ services
     .AddServices()
     .AddRepositoriesBase()
     .AddUnitOfWork();
+
+services
+    .AddCurrentUserInfo();
 
 services.AddRazorPages();
 
@@ -50,13 +55,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-using (var scope = app.Services.CreateScope())
+/*using (var scope = app.Services.CreateScope())
 {
     var servicesMigration = scope.ServiceProvider;
 
     var context = servicesMigration.GetRequiredService<ApplicationDbContext>();
     context.Database.Migrate();
-}
+}*/
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Utilities;
 
 namespace COMP1640.Extentions
@@ -13,6 +14,7 @@ namespace COMP1640.Extentions
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(Environment.GetEnvironmentVariable("DatabaseConnectionString") ?? configuration.GetConnectionString("Localhost"));
+                options.UseLazyLoadingProxies();
             });
 
             return services;

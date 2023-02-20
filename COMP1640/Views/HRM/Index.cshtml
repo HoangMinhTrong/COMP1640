@@ -2,17 +2,16 @@
 @model List<UserBasicInfoResponse>
 
  <div class="container">
-    <div id="addUserBtn" class="pt-3 pb-4 d-flex">
-         <div class="align-items-center">
-             <a class="btn btn-info text-white text-center">
+    <div class="pt-3 pb-4 d-block">
+        <div class="align-items-center">
+            <a class="btn btn-info text-white text-center" id="addUserBtn">
                  <i class="material-icons text-white">
                      Add
                  </i>
              </a>
          </div>
      </div>
-     <div id="addUserModal" class="modal">
-
+    <div id="addUserModal" class="modalAdd">
         <!-- Modal content -->
         <div class="modal-content bg-dark w-50">
             <span class="close">&times;</span>
@@ -20,28 +19,80 @@
                 <div class="col-md-6 col-xl-4">
                     <div class="col-md-8 col-xl-6 text-center mx-auto">
                         <p class="fw-bold text-success mb-2">Add new User</p>
-                        <h5 class="fw-bold">Please fill out the blank</h5>
+                        <h6 class="fw-bold">Please fill out the blank</h6>
                     </div>
-                    <form method="post">
-                         <div class="mb-3"><input class="form-control" type="text" name="username" placeholder="Username" /></div>
-                         <div class="mb-3"><input class="form-control" type="email" name="password" placeholder="Email" /></div>
-                         <div class="mb-3"><input class="form-control" type="text" name="gender" placeholder="Gender" /></div>
-                         <div class="mb-3"><input class="form-control" type="text" name="dob" placeholder="Date of birth" /></div>
-                         <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password" /></div>
-                         <div class="mb-3"><button class="btn btn-primary shadow d-block w-100" type="submit">Add</button></div>
+                    <form method="post" asp-action="Create" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <input class="form-control"
+                                   type="text" name="name" placeholder="Full Name"
+                                   required="required"/>
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control"
+                                   type="email" name="email" placeholder="Email"
+                                   required="required"/>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="roles_list" name="role"
+                                            class="form-select" required="required"
+                                            oninvalid="this.setCustomValidity('Please select an item in the list')"
+                                            oninput="setCustomValidity('')">
+                                        <option value="" disabled="disabled" selected="">Select Role</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="departments_list" name="departmentId"
+                                            class="form-select" required="required"
+                                            oninvalid="this.setCustomValidity('Please select an item in the list')"
+                                            oninput="setCustomValidity('')">
+                                        <option value="" disabled="disabled" selected="">Select Department</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select name="gender"
+                                            class="form-select">
+                                        <option disabled="disabled" value="" selected="selected">Select Gender</option>
+                                        <option value="1" selected="selected">Male</option>
+                                        <option value="2" selected="selected">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input id="birthday" name="birthday" class="form-control"
+                                   placeholder="Birthday"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-primary shadow d-block w-100" type="submit">Add</button>
+                        </div>
                     </form>
                 </div>
             </div>  
         </div>
-
     </div>
     <table class="table table-hover table-bordered table-sencondary">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Tên</th>
+                <th scope="col">Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Vai trò</th>
+                <th scope="col">Role</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -52,33 +103,24 @@
                     <th scope="row">-</th>
                     <td>@item.UserName</td>
                     <td>@item.Email</td>
-                    <td>@item.Role.ToString()</td>
+                    <td>@item.Role</td>
                     <td>
                         <div class="d-flex justify-content-around">
                             <div class="align-items-center">
-                            <a class="btn btn-danger text-white text-center" style="cursor:pointer"
-                           asp-action="Account"
-                           asp-route-id="@item.Id">
-                                <i class="material-icons text-white">
-                                    Delete
-                                </i>
-                            </a>
-                        </div>
-                        <div class="align-items-center">
-                            <a class="btn btn-warning text-white text-center" style="cursor:pointer"
-                           asp-action="Account"
-                           asp-route-id="@item.Id">
-                                <i class="material-icons text-white">
-                                    Edit
-                                </i>
-                            </a>
-                        </div>
+                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" onclick=DeleteUser(@item.Id)>
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                            <div class="align-items-center">
+                                <a class="btn btn-warning text-white text-center" style="cursor:pointer" onclick=ViewUserDetail(@item.Id)>
+                                    <i class="bi bi-pen"></i>
+                                </a>
+                            </div>
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+     <partial name="_ModalEdit"/>
  </div>
-
-

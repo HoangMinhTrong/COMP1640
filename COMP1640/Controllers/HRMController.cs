@@ -1,9 +1,13 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.HRM.Requests;
+using COMP1640.ViewModels.HRM.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace COMP1640.Controllers
 {
+    [Route("hrm")]
+    [Authorize]
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
@@ -20,12 +24,11 @@ namespace COMP1640.Controllers
             return View(vm);
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> Account([FromRoute] int id)
+        [HttpGet("User/{id:int}")]
+        public async Task<IActionResult> GetUserInfo([FromRoute] int id)
         {
             var vm = await _hRMService.GetUserInfoDetailsAsync(id);
-            return View(vm);
+            return Json(vm);
         }
 
         [HttpPut]
@@ -36,17 +39,34 @@ namespace COMP1640.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
+        public async Task<IActionResult> Create(CreateUserRequest request)
         {
-            await _hRMService.CreateUserAsync(request);
-            return View("Index");
+            if (!ModelState.IsValid) return RedirectToAction("Index");
+
+            var isSucceed = await _hRMService.CreateUserAsync(request);
+            if (isSucceed) return RedirectToAction("Index");
+
+            ModelState.AddModelError("create_failure", "Failure to create an account.");
+            return RedirectToAction("Index");
         }
 
-        [HttpPost]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            await _hRMService.DeleteUserAsync(id);
-            return View("Index");
+            var isSucceed = await _hRMService.DeleteUserAsync(id);
+            if (isSucceed) return RedirectToPage("Index");
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an account.");
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Route("role")]
+        [ProducesResponseType(typeof(SelectPropertyForCreateAccountResponse), 200)]
+        public async Task<IActionResult> GetRoleEnums()
+        {
+            var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
+            return Ok(allowedRoleForCreateAccount);
         }
     }
 }
