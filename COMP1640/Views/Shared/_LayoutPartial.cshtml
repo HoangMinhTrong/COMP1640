@@ -15,24 +15,17 @@
             <li>
                 <a class="nav-link" asp-controller="Home" asp-action="Privacy">Employee</a>
             </li>
+
+
         }
+       
+
+        <li class="nav-item">
+
+            <a asp-controller="HRM" asp-action="ViewProfile"  style="margin-left:450px" id="view" class="btn btn-primary shadow">Hi</a>
 
 
-          @*form id="logoutForm" asp-controller="H" asp-action="ViewProfile" asp-route-returnUrl="@Url.Action("ViewProfile", "HRM", new { area = "" })">
-            <button id="logout" type="submit" class="btn btn-primary shadow">Hiiiii</button>
-        </form>*@
-     @*   <form id="profileView" asp-controller="HRM" asp-action="ViewProfile">
-            <button id="view" class="btn btn-primary shadow">Hiiiii</button>
-        </form>*@
-
-    <li class="nav-item">
-
-        @*<form id="profileView" asp-controller="HRM" asp-action="ViewProfile">*@
-            <a asp-controller="HRM" asp-action="ViewProfile" style="margin-left:450px" id="view" class="btn btn-primary shadow">Hi</a>
-        @*</form>*@
-
-
-    </li>
+        </li>
 
 
     }

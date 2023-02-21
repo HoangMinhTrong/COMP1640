@@ -1,121 +1,60 @@
 ﻿@using COMP1640.ViewModels.HRM.Responses
 @model UserProfileResponse
 
-@*<div class="container">
-    <h4>View User Profiles</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        dd
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-    <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-    <table class="table table-hover table-bordered table-sencondary">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Gender</th>
-                <th scope="col">PhoneNumber</th>
-                <th scope="col"></th>
-            </tr>            
-        </thead>
-        <tbody>
-            
-                <tr>
-                    <th scope="row">-</th>
-                    <td>@Html.DisplayFor(model => model.Id)</td>
-                    <td>@Html.DisplayFor(model => model.UserName)</td>
-                    <td>@Html.DisplayFor(model => model.Email)</td>
-                    <td>@Html.DisplayFor(model => model.Gender)</td>
-                    <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
-              
-                    <td>
-                        <div class="d-flex justify-content-around">
-                            <div class="align-items-center">
-                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" asp-action="Account"asp-route-id="@Html.DisplayFor">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </div>
-                            <div class="align-items-center">
-                                <a class="btn btn-warning text-white text-center editUserBtn" style="cursor:pointer">
-                                    <i class="bi bi-person"></i>
-                                </a>
-                            </div>
-                            <partial name="_ModalProfile" />
-                        </div>
-                    </td>
-                </tr>
-            
-        </tbody>
-    </table>
-     
-</div>*@
 
-                            <section class="vh-100" style="background-color: #f4f5f7;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col col-lg-6 mb-4 mb-lg-0">
-        <div class="card mb-3" style="border-radius: .5rem;">
-          <div class="row g-0">
-            <div class="col-md-4 gradient-custom text-center text-white"
-              style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
-              <h5>Thai Tuan </h5>
-              <p>Staff</p>
-              <i class="far fa-edit mb-5"></i>
+<section class="vh-100" style="background-color: #89c2d9;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-6 mb-4 mb-lg-0">
+                <div class="card mb-3" style="border-radius: .5rem;">
+                    <div class="row g-0">
+                        <div class="col-md-4 gradient-custom text-center text-white"
+                             style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                 alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+                            <h5>Thai Tuan </h5>
+                            <p>Staff</p>
+                            <i class="far fa-edit mb-5"></i>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body p-4">
+                                <h6 style="margin-bottom: 20px">User Information </h6>
+                                <hr class="mt-0 mb-4">
+                                <div class="row pt-1">
+                                    <div class="col-6 mb-3">
+                                        <h6>Email</h6>
+                                        <p class="text-muted">abc@gmail.com</p>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>Phone Number</h6>
+                                        <p class="text-muted">0123456</p>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>Username</h6>
+                                        <p class="text-muted">tuanle</p>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>Gender</h6>
+                                        <p class="text-muted">Male</p>
+                                    </div>
+                                </div>
+                                <hr class="mt-0 mb-4">
+                                <div class="row pt-1">
+                                    <div class="col-6 mb-3">
+                                        <h6>Role</h6>
+                                        <p class="text-muted">Staff</p>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>Department</h6>
+                                        <p class="text-muted">Department A</p>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-8">
-              <div class="card-body p-4">
-                <h6 style="margin-bottom: 20px">User Information </h6>
-                <hr class="mt-0 mb-4">
-                <div class="row pt-1">
-                  <div class="col-6 mb-3">
-                    <h6>Email</h6>
-                    <p class="text-muted">@Model.Email</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6>Phone Number</h6>
-                    <p class="text-muted">@Model.PhoneNumber</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6>Username</h6>
-                    <p class="text-muted">@Model.Email</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6>Gender</h6>
-                    <p class="text-muted">@Model.Gender</p>
-                  </div>
-                </div>
-                <hr class="mt-0 mb-4">
-                <div class="row pt-1">
-                  <div class="col-6 mb-3">
-                    <h6>Role</h6>
-                    <p class="text-muted">@Model.Role</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6>Department</h6>
-                    <p class="text-muted">@Model.Department</p>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-start">
-                  <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
-                  <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
-                  <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
