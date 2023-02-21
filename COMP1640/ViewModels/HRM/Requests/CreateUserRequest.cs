@@ -6,9 +6,6 @@ namespace COMP1640.ViewModels.HRM.Requests
     public class CreateUserRequest
     {
         [Required]
-        public string Name { get; set; }
-
-        [Required]
         public string Email { get; set; }
 
         [Required]

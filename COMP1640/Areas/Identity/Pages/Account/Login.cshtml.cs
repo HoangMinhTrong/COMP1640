@@ -115,7 +115,6 @@ namespace WebMVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    await CustomIdentityClaimsAsync();
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
@@ -128,31 +127,6 @@ namespace WebMVC.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private async Task CustomIdentityClaimsAsync()
-        {
-            // Get the current user's identity
-            var userIdentity = (ClaimsIdentity)User.Identity;
-            var user = await _userRepo.FindByEmailAsync(Input.Email);
-            if (user == null)
-                return;
-
-            // Create a claims identity for the user
-            userIdentity = new ClaimsIdentity(new[]
-            {
-                new Claim(AppClaimType.UserId, user.Id.ToString()),
-                new Claim(AppClaimType.UserName, user.UserName),
-                new Claim(AppClaimType.UserEmail, user.Email),
-                new Claim(AppClaimType.RoleId, user.RoleUsers
-                    .Select(_ => _.RoleId)
-                    .FirstOrDefault()
-                    .ToString()),
-                new Claim(AppClaimType.TenantId, user.TenantUsers
-                    .Select(_ => _.TenantId)
-                    .FirstOrDefault()
-                    .ToString()),
-            }, CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }
 }

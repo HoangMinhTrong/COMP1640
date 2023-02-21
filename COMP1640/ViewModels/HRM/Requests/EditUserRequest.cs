@@ -1,13 +1,9 @@
-﻿using Domain;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace COMP1640.ViewModels.HRM.Requests
 {
     public class EditUserRequest
     {
-
-        [Required]
-        public string Name { get; set; }
 
         [Required]
         public string Email { get; set; }
@@ -16,7 +12,7 @@ namespace COMP1640.ViewModels.HRM.Requests
         public int RoleId { get; set; }
 
         [Required]
-        public int  DepartmentId { get; set; }
+        public int DepartmentId { get; set; }
         public int? Gender { get; set; }
         public string? Birthday { get; set; }
     }

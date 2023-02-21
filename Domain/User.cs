@@ -10,16 +10,17 @@ namespace Domain
 
         }
 
-        public User(string name, string email, DateTime? birthday, UserGenderEnum? gender, Role role, Department department)
+        public User(string email, DateTime? birthday, UserGenderEnum? gender, Role role, Department department)
         {
             var hasher = new PasswordHasher<User>();
 
-            UserName = name;
+            UserName = email;
             Email = email;
             Birthday = birthday;
             Gender = gender;
-            NormalizedUserName = name.ToUpper();
+            NormalizedUserName = email.ToUpper();
             PasswordHash = hasher.HashPassword(this, DefaultUserProperty.DefaultAccountPassword);
+            SecurityStamp = Guid.NewGuid().ToString();
 
             RoleUsers = new List<RoleUser> { new RoleUser(this, role) };
             UserDepartments = new List<UserDepartment> { new UserDepartment(this, department) };
@@ -34,15 +35,16 @@ namespace Domain
         public virtual ICollection<TenantUser> TenantUsers { get; set; } = new HashSet<TenantUser>();
         public virtual ICollection<UserDepartment> UserDepartments { get; set; } = new HashSet<UserDepartment>();
 
-        public void EditInfo(string name
-            , string email
+        public void EditInfo(string email
             , int roleId
             , int departmentId
             , int? gender
             , string birthday)
         {
-            UserName = name;
+            UserName = email;
             Email = email;
+            NormalizedUserName = email.ToUpper();
+
             UpdateRole(roleId);
             UpdateDepartment(departmentId);
             UpdateGender(gender);

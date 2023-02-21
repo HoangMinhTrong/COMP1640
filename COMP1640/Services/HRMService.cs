@@ -57,8 +57,7 @@ namespace COMP1640.Services
             if (department == null)
                 return false;
 
-            var user = new User(request.Name
-                , request.Email
+            var user = new User(request.Email
                 , request.Birthday
                 , request.Gender
                 , role
@@ -76,8 +75,7 @@ namespace COMP1640.Services
             if (user == null)
                 return false;
 
-            user.EditInfo(request.Name
-                , request.Email
+            user.EditInfo(request.Email
                 , request.RoleId
                 , request.DepartmentId
                 , request.Gender

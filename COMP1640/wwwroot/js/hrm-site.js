@@ -46,7 +46,6 @@ var editUserSpan = document.getElementsByClassName("close")[1];
 function EditUserInfo() {
     var userId = $(".info-userId").val();
     var myObject = {
-        Name: $(".info-username").val(),
         Email: $(".info-email").val(),
         RoleId: $(".info-role").val(),
         DepartmentId: $(".info-department").val(),
@@ -74,7 +73,6 @@ function ViewUserDetail(id) {
             editUserModal.style.display = "block";
             fillDropDownListForEditAccount(user.roleId, user.departmentId)
             $(".info-userId").val(user.id);
-            $(".info-username").val(user.userName);
             $(".info-email").val(user.email);
             $(".gender-" + user.gender).prop("selected", true);
             $(".info-birthday").val(user.birthday);
