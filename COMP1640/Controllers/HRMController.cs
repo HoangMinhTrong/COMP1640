@@ -31,6 +31,17 @@ namespace COMP1640.Controllers
             return Json(vm);
         }
 
+
+
+        [HttpGet]
+        [Route("detail")]
+        public async Task<IActionResult> ViewProfile(int id)
+        {
+            var profile = await _hRMService.GetUserInfoDetailsAsync(id);
+            return View(profile);
+        }
+
+
         [HttpPut("User/{id:int}")]
         public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditUserRequest request)
         {
