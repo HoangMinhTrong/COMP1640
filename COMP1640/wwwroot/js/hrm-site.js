@@ -43,6 +43,28 @@ var editUserModal = document.getElementById("editUserModal");
 var editUserBtn = document.getElementsByClassName("editUserBtn");
 var editUserSpan = document.getElementsByClassName("close")[1];
 
+function EditUserInfo() {
+    var userId = $(".info-userId").val();
+    var myObject = {
+        Email: $(".info-email").val(),
+        RoleId: $(".info-role").val(),
+        DepartmentId: $(".info-department").val(),
+        Gender: $(".info-gender").val(),
+        Birthday: $(".info-birthday").val(),
+    };
+
+    $.ajax({
+        url: window.location.origin + '/hrm/user/' + userId,
+        type: 'PUT',
+        data: JSON.stringify(myObject),
+        contentType: 'application/json',
+        success: function () {
+            alert('Saved successfully.');
+            window.location.reload();
+        }
+    });
+}
+
 function ViewUserDetail(id) {
     $.ajax({
         url: window.location.origin + '/hrm/user/' + id,
@@ -50,9 +72,9 @@ function ViewUserDetail(id) {
         success: function (user) {
             editUserModal.style.display = "block";
             fillDropDownListForEditAccount(user.roleId, user.departmentId)
-            $(".info-username").val(user.userName);
+            $(".info-userId").val(user.id);
             $(".info-email").val(user.email);
-            $(".info-gender-" + user.gender).prop("selected", true);
+            $(".gender-" + user.gender).prop("selected", true);
             $(".info-birthday").val(user.birthday);
         }
     });
