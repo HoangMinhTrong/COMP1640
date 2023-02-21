@@ -10,5 +10,8 @@ namespace COMP1640.ViewModels.Idea.Requests
         public string Content { get; set; }
         [Required]
         public bool IsAnonymous { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
+
     }
 }

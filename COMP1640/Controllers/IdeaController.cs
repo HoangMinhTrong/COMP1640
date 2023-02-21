@@ -1,7 +1,9 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.Idea.Requests;
+using COMP1640.ViewModels.Idea.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace COMP1640.Controllers
 {
@@ -14,8 +16,14 @@ namespace COMP1640.Controllers
             _ideaService = ideaService;
         }
         [HttpGet]
-        public  IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
+            ViewBag.Message = category_list.Categories?.Select(c => new SelectListItem()
+            {
+                Text = c.Name,
+                Value = c.Id.ToString() 
+            }).ToList();
             return View();
         }
 
