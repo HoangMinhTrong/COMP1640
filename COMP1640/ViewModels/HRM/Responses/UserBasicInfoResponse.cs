@@ -17,7 +17,7 @@ namespace COMP1640.ViewModels.HRM.Responses
                 Id = _.Id,
                 UserName = _.UserName,
                 Email = _.Email,
-                Role = _.Roles.Select(_ => _.Name).FirstOrDefault(),
+                Role = _.RoleUsers.Select(_ => _.Role.Name).FirstOrDefault(),
             };
         }
     }

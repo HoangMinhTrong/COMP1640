@@ -6,6 +6,12 @@
         {
         }
 
+        public UserDepartment(User user, Department department)
+        {
+            User = user;
+            Department = department;
+        }
+
         public int UserId { get; set; }
         public int DepartmentId { get; set; }
         

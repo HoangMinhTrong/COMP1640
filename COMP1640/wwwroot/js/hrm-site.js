@@ -49,15 +49,16 @@ function ViewUserDetail(id) {
         type: 'GET',
         success: function (user) {
             editUserModal.style.display = "block";
-            fillDropDownListForEditAccount();
+            fillDropDownListForEditAccount(user.roleId, user.departmentId)
             $(".info-username").val(user.userName);
             $(".info-email").val(user.email);
-            $(".info-role").val(user.role);
+            $(".info-gender-" + user.gender).prop("selected", true);
+            $(".info-birthday").val(user.birthday);
         }
     });
 }
 
-function fillDropDownListForEditAccount() {
+function fillDropDownListForEditAccount(roleId, departmentId) {
     $('#roles_list_edit option:not(:first)').remove();
     $('#departments_list_edit option:not(:first)').remove();
     $.ajax({
@@ -70,11 +71,13 @@ function fillDropDownListForEditAccount() {
             var departments = data.departments;
             $.each(roles, function (i, role) {
                 $("#roles_list_edit").append(
-                    $('<option></option>').val(role.id).html(role.name));
+                    $('<option></option>').val(role.id).html(role.name).prop("selected", roleId == role.id)
+                );
             });
             $.each(departments, function (i, department) {
                 $("#departments_list_edit").append(
-                    $('<option></option>').val(department.id).html(department.name));
+                    $('<option></option>').val(department.id).html(department.name).prop("selected", departmentId == department.id)
+                );
             });
         }
     })
