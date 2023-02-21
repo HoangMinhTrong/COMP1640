@@ -17,20 +17,26 @@ public class CategoryService
         
     }
 
-    public async Task<InforCategoryResponse> CreateCategory(InforCategoryResponse categoryResponse)
+    public async Task<InforCategoryResponse> CreateCategory(CreateCategoryRequest categoryRequest)
     {
-        if (categoryResponse == null)
+        if (categoryRequest == null)
         {
             throw new Exception("Category information is null, please try again.");
         }
 
+        var infoCategory = new InforCategoryResponse()
+        {
+            Id = categoryRequest.Id,
+            Name = categoryRequest.Name,
+            TenantId = categoryRequest.TenantId,    
+        };
         var category = new Category()
         {
-            Id = categoryResponse.Id,
-            Name = categoryResponse.Name,
-            TenantId = categoryResponse.TenantId
+            Id = infoCategory.Id,
+            Name = infoCategory.Name,
+            TenantId = infoCategory.TenantId
         };
-
+        
         if (category.Id <= 0)
         {
             throw new Exception("Category ID is invalid, please try again.");
@@ -42,9 +48,7 @@ public class CategoryService
         {
             throw new Exception("Error while creating a category, please try again.");
         }
-
-        return categoryResponse;
-
+        return infoCategory;
     }
 
 }
