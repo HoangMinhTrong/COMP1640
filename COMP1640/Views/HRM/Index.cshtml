@@ -1,5 +1,5 @@
 ﻿@using COMP1640.ViewModels.HRM.Responses
-@model List<UserBasicInfoResponse>
+@model PagedList.IPagedList<UserBasicInfoResponse>
 
  <div class="container">
     <div class="pt-3 pb-4 d-block">
@@ -118,4 +118,18 @@
         </tbody>
     </table>
      <partial name="_ModalEdit"/>
- </div>
+
+     <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount 
+    <nav aria-label="...">
+      <ul class="pagination pagination-sm">
+        @for(var i = 1; i <= @Model.PageCount; i++)
+        {
+                <li class="page-item @(i == Model.PageNumber ? "active": "")">
+                    <a class="page-link" onclick="NavigatePage(@i)">@i</a>
+                </li>
+        }
+      </ul>
+    </nav>
+    
+</div>

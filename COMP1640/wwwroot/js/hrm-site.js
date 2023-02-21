@@ -129,3 +129,18 @@ function DeleteUser(id) {
         },
     });
 }
+
+
+// Navigate page
+function NavigatePage(pageNo) {
+    $.ajax({
+        url: window.location.origin + '/hrm',
+        type: 'GET',
+        data: {
+            PageNo: pageNo,
+        },
+        success: function (result) {
+            $('#mainbody').empty().html(result);
+        },
+    });
+}

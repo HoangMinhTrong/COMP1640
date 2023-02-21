@@ -5,6 +5,7 @@ using COMP1640.ViewModels.HRM.Responses;
 using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 
 namespace COMP1640.Services
 {
@@ -26,13 +27,13 @@ namespace COMP1640.Services
             _roleRepo = roleRepo;
         }
 
-        public async Task<List<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
+        public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
         {
-            return await _userRepo
+            return  _userRepo
                 .GetQuery(request.Filter())
                 .Select(new UserBasicInfoResponse().GetSelection())
                 .OrderBy(_ => _.Id)
-                .ToListAsync();
+                .ToPagedList(request.PageNo, request.PageSize);
         }
 
         public async Task<UserDetailInfoResponse> GetUserInfoDetailsAsync(int userId)

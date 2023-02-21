@@ -1,10 +1,10 @@
-﻿using COMP1640.ViewModels.HRM.Responses;
+﻿using COMP1640.ViewModels.Shared.Requests;
 using Domain;
 using System.Linq.Expressions;
 
 namespace COMP1640.ViewModels.HRM.Requests
 {
-    public class GetListUserRequest
+    public class GetListUserRequest : PagingRequest
     {
         public string SearchTerm { get; set; }
 
