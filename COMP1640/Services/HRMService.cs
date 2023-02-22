@@ -54,8 +54,6 @@ namespace COMP1640.Services
             if (department == null)
                 return false;
             
-            
-
             var role = await _roleRepo.GetAsync(request.Role);
             if (role == null || role.Id == (int)RoleTypeEnum.Admin)
                 return false;
