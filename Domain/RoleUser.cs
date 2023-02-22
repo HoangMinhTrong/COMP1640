@@ -13,6 +13,12 @@
             Role = role;
         }
 
+        public RoleUser(int userId, int roleId)
+        {
+            UserId = userId;
+            RoleId = roleId;
+        }
+
         public int RoleId { get; set; }
         public int UserId { get; set; }
 

@@ -31,11 +31,15 @@ namespace COMP1640.Controllers
             return Json(vm);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Edit(EditUserRequest request)
+        [HttpPut("User/{id:int}")]
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditUserRequest request)
         {
-            await _hRMService.EditUserInfoAsync(request);
-            return View("Index");
+            if (!ModelState.IsValid) return RedirectToAction("Index");
+            var isSucceed = await _hRMService.EditUserInfoAsync(id, request);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an account.");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

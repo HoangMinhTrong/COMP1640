@@ -8,10 +8,11 @@
                     <p class="fw-bold text-success mb-2">Edit User</p>
                     <h6 class="fw-bold">Change user Information</h6>
                 </div>
-                <form method="put" asp-action="Edit" enctype="multipart/form-data">
+                <form enctype="multipart/form-data">
                     <div class="mb-3">
-                        <input class="form-control info-username"
-                                type="text" name="name" placeholder="Full Name"
+                        <input class="form-control info-userId"
+                                hidden
+                                type="text"
                                 required="required"/>
                     </div>
                     <div class="mb-3">
@@ -23,10 +24,10 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <select id="roles_list_edit" name="role"
-                                        class="form-select" required="required"
+                                        class="form-select info-role" required="required"
                                         oninvalid="this.setCustomValidity('Please select an item in the list')"
                                         oninput="setCustomValidity('')">
-                                    <option class="info-role" disabled="disabled">Select Role</option>
+                                    <option disabled="disabled">Select Role</option>
                                 </select>
                             </div>
                         </div>
@@ -35,10 +36,10 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <select id="departments_list_edit" name="departmentId"
-                                        class="form-select" required="required"
+                                        class="form-select info-department" required="required"
                                         oninvalid="this.setCustomValidity('Please select an item in the list')"
                                         oninput="setCustomValidity('')">
-                                    <option class="info-department" disabled="disabled">Select Department</option>
+                                    <option disabled="disabled">Select Department</option>
                                 </select>
                             </div>
                         </div>
@@ -47,16 +48,17 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <select name="gender"
-                                        class="form-select">
+                                        class="form-select info-gender">
                                     <option disabled="disabled">Select Gender</option>
-                                    <option class="info-gender-1" value="1">Male</option>
-                                    <option class="info-gender-2" value="2">Female</option>
+                                    <option class="gender-1" value="1">Male</option>
+                                    <option class="gender-2" value="2">Female</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <input id="birthday" 
+                                hidden
                                 name="birthday" 
                                 class="form-control info-birthday"
                                 placeholder="Birthday"
@@ -64,7 +66,7 @@
                                 onblur="(this.type='text')"/>
                     </div>
                     <div class="mb-3">
-                        <button class="btn btn-primary shadow d-block w-100" type="submit">Save</button>
+                        <button class="btn btn-primary shadow d-block w-100" onclick="EditUserInfo()">Save</button>
                     </div>
                 </form>
             </div>

@@ -5,6 +5,7 @@ using COMP1640.ViewModels.HRM.Responses;
 using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 
 namespace COMP1640.Services
 {
@@ -26,12 +27,13 @@ namespace COMP1640.Services
             _roleRepo = roleRepo;
         }
 
-        public async Task<List<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
+        public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
         {
-            return await _userRepo
+            return  _userRepo
                 .GetQuery(request.Filter())
                 .Select(new UserBasicInfoResponse().GetSelection())
-                .ToListAsync();
+                .OrderBy(_ => _.Id)
+                .ToPagedList(request.PageNo, request.PageSize);
         }
 
         public async Task<UserDetailInfoResponse> GetUserInfoDetailsAsync(int userId)
@@ -56,8 +58,7 @@ namespace COMP1640.Services
             if (department == null)
                 return false;
 
-            var user = new User(request.Name
-                , request.Email
+            var user = new User(request.Email
                 , request.Birthday
                 , request.Gender
                 , role
@@ -69,9 +70,20 @@ namespace COMP1640.Services
             return true;
         }
 
-        public Task EditUserInfoAsync(EditUserRequest request)
+        public async Task<bool> EditUserInfoAsync(int id, EditUserRequest request)
         {
-            throw new NotImplementedException();
+            var user = await _userRepo.GetById(id).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            user.EditInfo(request.Email
+                , request.RoleId
+                , request.DepartmentId
+                , request.Gender
+                , request.Birthday);
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> DeleteUserAsync(int id)

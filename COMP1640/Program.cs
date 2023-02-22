@@ -1,6 +1,6 @@
 using COMP1640.Extentions;
-using Domain;
-using Infrastructure;
+using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
 using Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +16,7 @@ if (portVar is { Length: > 0 } && int.TryParse(portVar, out int port))
 }
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 // Load configuration
 var configuration = builder.Configuration
@@ -30,11 +31,9 @@ builder.Services
     .AddRazorRuntimeCompilation();
 
 var services = builder.Services;
-
 services.AddHttpContextAccessor();
-services
-    .AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+services.AddIdentity();
+services.AddScoped<IClaimsTransformation, MyClaimsTransformation>();
 
 services
     .AddDatabase(configuration)
