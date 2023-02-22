@@ -51,10 +51,10 @@ namespace Infrastructure
                 .HasOne<Tenant>(tu => tu.Tenant)
                 .WithMany(t => t.TenantUsers)
                 .HasForeignKey(tu => tu.TenantId);
-            
+
             builder.Entity<UserDepartment>()
                 .HasKey(ud => new {ud.UserId, ud.DepartmentId});
-            
+
             builder.Entity<UserDepartment>()
                 .HasOne<User>(ud => ud.User)
                 .WithMany(u => u.UserDepartments)
@@ -77,6 +77,11 @@ namespace Infrastructure
                 .HasOne<Role>(ru => ru.Role)
                 .WithMany(r => r.RoleUsers)
                 .HasForeignKey(ru => ru.RoleId);
+
+            builder.Entity<Department>()
+                .HasOne(d => d.QaCoordinator)
+                .WithOne()
+                .HasForeignKey<Department>(d => d.QaCoordinatorId);
         }
 
         public void RemoveDefaultAspTableName(ModelBuilder builder)

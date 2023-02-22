@@ -9,6 +9,8 @@ namespace Domain
         }
 
         public string Name { get; set; }
+        public int? QaCoordinatorId { get; set; }
+        public virtual User QaCoordinator { get; set; }
 
         public virtual ICollection<Idea> Ideas { get; set; } = new HashSet<Idea>();
         public virtual ICollection<UserDepartment> UserDepartments { get; set; } = new HashSet<UserDepartment>();
