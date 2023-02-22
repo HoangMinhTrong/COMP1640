@@ -13,5 +13,12 @@ namespace Infrastructure.Repositories
         {
             return await GetAsync(_ => _.Id == departmentId);
         }
+
+        public async Task AssignDepartmentQa(int departmentId, int userId)
+        {
+            var department = await GetAsync(departmentId);
+            department.QaCoordinatorId = userId;
+            await UpdateAsync(department);
+        }
     }
 }

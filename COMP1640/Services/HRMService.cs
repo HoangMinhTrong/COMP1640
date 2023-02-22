@@ -49,22 +49,34 @@ namespace COMP1640.Services
             var existedEmail = await _userRepo.AnyAsync(_ => _.Email == request.Email);
             if (existedEmail)
                 return false;
-
-            var role = await _roleRepo.GetAsync(request.Role);
-            if (role == null)
-                return false;
-
+            
             var department = await _departmentRepo.GetAsync(request.DepartmentId);
             if (department == null)
                 return false;
+            
+            
+
+            var role = await _roleRepo.GetAsync(request.Role);
+            if (role == null || role.Id == (int)RoleTypeEnum.Admin)
+                return false;
+
+            var isDepartmentRole = role.Id == (int)RoleTypeEnum.DepartmentQA;
+            if (isDepartmentRole)
+            {
+                if(department.QaCoordinatorId != null) return false;
+            }
 
             var user = new User(request.Email
                 , request.Birthday
                 , request.Gender
                 , role
                 , department);
-
+            
             await _userRepo.InsertAsync(user);
+            if (isDepartmentRole)
+            {
+                await _departmentRepo.AssignDepartmentQa(user.Id, department.Id);
+            }
             await _unitOfWork.SaveChangesAsync();
 
             return true;

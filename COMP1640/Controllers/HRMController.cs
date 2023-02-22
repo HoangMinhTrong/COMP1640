@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace COMP1640.Controllers
 {
     [Route("hrm")]
-    [Authorize]
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
