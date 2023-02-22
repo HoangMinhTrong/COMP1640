@@ -19,31 +19,24 @@ namespace COMP1640.Controllers
         public async Task<IActionResult> Create()
         {
             var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
-            ViewBag.Message = category_list.Categories?.Select(c => new SelectListItem()
+            ViewBag.Categories = category_list.Categories?.Select(c => new SelectListItem()
             {
+                Value = c.Id.ToString(),
                 Text = c.Name,
-                Value = c.Id.ToString() 
             }).ToList();
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateIdeaRequest request)
+        public async Task<IActionResult> Create(CreateIdeaRequest request)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
-            try
-            {
-                var isSucceed = await _ideaService.CreateIdeaAsync(request);
-                if (isSucceed) return RedirectToAction("Index", "Home");
+            
+            var isSucceed = await _ideaService.CreateIdeaAsync(request);
+            if (isSucceed) return RedirectToAction("Index", "Home");
 
-                ModelState.AddModelError("create_failure", "Failure to create a new idea.");
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("create_exception", "Failure to create a new idea.");
-                return RedirectToAction("Index", "Home");
-            }
+            ModelState.AddModelError("create_exception", "Failure to create a new idea.");
+            return View();
         }
     }
 }

@@ -25,13 +25,16 @@ namespace COMP1640.Services
             if (category == null)
                 return false;
 
-            /*var idea = new Idea
+            var idea = new Idea
                 (
-                    
+                    request.Title,
+                    request.Content,
+                    request.IsAnonymous,
+                    category
                 );
 
             await _ideaRepo.InsertAsync(idea);
-            await _unitOfWork.SaveChangesAsync();*/
+            await _unitOfWork.SaveChangesAsync();
 
             return true;
         }
