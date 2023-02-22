@@ -23,7 +23,7 @@ jobs:
       - name: Setup dotnet 🔧🔧🔧🔧
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.8'
+          dotnet-version: '6.0.x'
 
       - name: Restore dependencis 🔧🔧🔧🔧
         run: dotnet restore
@@ -35,4 +35,4 @@ jobs:
         run:  dotnet test -c Release --no-build
 
       - name: Publish app
-        run: dotnet publish -c Release -o ./app
+        run: dotnet publish -c Release
