@@ -3,25 +3,30 @@
 #nullable disable
 
 using Domain;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Utilities.Identity.DTOs;
 
 namespace WebMVC.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager)
+        private readonly IUserRepository _userRepo;
+        public LoginModel(SignInManager<User> signInManager
+            , ILogger<LoginModel> logger
+            , IUserRepository userRepo)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _userManager = userManager;
+            _userRepo = userRepo;
         }
 
         /// <summary>

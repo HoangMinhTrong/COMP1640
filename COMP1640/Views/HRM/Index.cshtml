@@ -1,5 +1,5 @@
 ﻿@using COMP1640.ViewModels.HRM.Responses
-@model List<UserBasicInfoResponse>
+@model PagedList.IPagedList<UserBasicInfoResponse>
 
  <div class="container">
     <div class="pt-3 pb-4 d-block">
@@ -22,11 +22,6 @@
                         <h6 class="fw-bold">Please fill out the blank</h6>
                     </div>
                     <form method="post" asp-action="Create" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <input class="form-control"
-                                   type="text" name="name" placeholder="Full Name"
-                                   required="required"/>
-                        </div>
                         <div class="mb-3">
                             <input class="form-control"
                                    type="email" name="email" placeholder="Email"
@@ -103,46 +98,38 @@
                     <th scope="row">-</th>
                     <td>@item.UserName</td>
                     <td>@item.Email</td>
-                    <td>@item.Role.ToString()</td>
+                    <td>@item.Role</td>
                     <td>
                         <div class="d-flex justify-content-around">
                             <div class="align-items-center">
-                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" asp-action="Account"asp-route-id="@item.Id">
+                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" onclick=DeleteUser(@item.Id)>
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </div>
                             <div class="align-items-center">
-                                <a class="btn btn-warning text-white text-center editUserBtn" style="cursor:pointer">
+                                <a class="btn btn-warning text-white text-center" style="cursor:pointer" onclick=ViewUserDetail(@item.Id)>
                                     <i class="bi bi-pen"></i>
                                 </a>
                             </div>
-                            <partial name="_ModalEdit" model=@item />
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
- </div>
+     <partial name="_ModalEdit"/>
 
-
-@* @section Scripts { *@
-@*     <script> *@
-@*   function FillCity() { *@
-@*     $.ajax({ *@
-@*         url: window.location.origin + '/hrm/role', *@
-@*         type: "GET", *@
-@*         dataType: "JSON", *@
-@*         data: "", *@
-@*         success: function (roles) { *@
-@*             // $("#Country").html(""); // clear before appending new list *@
-@*             $.each(role, function (i, country) { *@
-@*                 $("#roles").append( *@
-@*                     $('<option></option>').val(role.id).html(role.name)); *@
-@*             }); *@
-@*         } *@
-@*     }); *@
-@*   } *@
-@*     </script> *@
-@* } *@
+     <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount 
+    <nav aria-label="...">
+      <ul class="pagination pagination-sm">
+        @for(var i = 1; i <= @Model.PageCount; i++)
+        {
+                <li class="page-item @(i == Model.PageNumber ? "active": "")">
+                    <a class="page-link" onclick="NavigatePage(@i)">@i</a>
+                </li>
+        }
+      </ul>
+    </nav>
     
+</div>
