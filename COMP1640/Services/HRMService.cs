@@ -32,7 +32,8 @@ namespace COMP1640.Services
             return  _userRepo
                 .GetQuery(request.Filter())
                 .Select(new UserBasicInfoResponse().GetSelection())
-                .OrderBy(_ => _.Id)
+                .OrderBy(_ => _.RoleId)
+                .ThenBy(_ => _.Id)
                 .ToPagedList(request.PageNo, request.PageSize);
         }
 
@@ -83,6 +84,18 @@ namespace COMP1640.Services
                 , request.Birthday);
 
             await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ToggleActivateAsync(int id)
+        {
+            var user = await _userRepo.GetById(id).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            user.ToggleActivate();
+            await _unitOfWork.SaveChangesAsync();
+
             return true;
         }
 
