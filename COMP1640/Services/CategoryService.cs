@@ -31,11 +31,6 @@ public class CategoryService
             Id = ++count,
             Name = categoryRequest.Name,
             TenantId = categoryRequest.TenantId,
-        var infoCategory = new InforCategoryResponse()
-        {
-            Id = categoryRequest.Id,
-            Name = categoryRequest.Name,
-            TenantId = categoryRequest.TenantId,    
         };
         var category = new Category()
         {
