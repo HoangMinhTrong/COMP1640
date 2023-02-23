@@ -24,10 +24,10 @@ public class CategoryService
         {
             throw new Exception("Category information is null, please try again.");
         }
-
+        var count =  _category.GetAll().Count();
         var infoCategory = new InforCategoryResponse()
         {
-            Id = categoryRequest.Id,
+            Id = ++count,
             Name = categoryRequest.Name,
             TenantId = categoryRequest.TenantId,
         };
@@ -43,7 +43,7 @@ public class CategoryService
             throw new Exception("Category ID is invalid, please try again.");
         }
 
-        var obj = _category.Add(category);
+        var obj = await _category.Add(category);
 
         if (obj == null)
         {

@@ -37,17 +37,17 @@
                         <p class="fw-bold text-success mb-2">Add new category</p>
                         <h6 class="fw-bold">Please fill out the blank</h6>
                     </div>
-                    <form method="post" asp-action="Create" enctype="multipart/form-data">
+                    <form method="post" asp-action="CreateCategory" enctype="multipart/form-data">
                         <div class="mb-3">
                             <input class="form-control"
-                                   type="text" name="text" placeholder="Category"
+                                   type="text" name="name" placeholder="Name Category"
                                    required="required" />
                         </div>
- 
-
-
-           
-                     
+                        <div class="mb-3">
+                            <input class="form-control"
+                                   type="text" name="tenantId" placeholder="Tenant Id"
+                                   required="required" />
+                            </div>
                         <div class="mb-3">
                             <button class="btn btn-primary shadow d-block w-100" type="submit">Add</button>
                         </div>
@@ -75,7 +75,7 @@
                 <tr>
                     <th scope="row">-</th>
                     <td>@item.Name</td>
-
+                    
                     <td>
                         <div class="d-flex justify-content-around">
                             <div class="align-items-center">

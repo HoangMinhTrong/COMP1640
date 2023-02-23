@@ -100,9 +100,8 @@ namespace COMP1640.Controllers
 
         [HttpPost]
         [Route("createcategory")]
-        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request)
+        public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
         {
-
             await _categoryService.CreateCategory(request);
             return RedirectToAction("ViewCategory");
         }
