@@ -81,7 +81,9 @@ namespace Infrastructure
             builder.Entity<Department>()
                 .HasOne(d => d.QaCoordinator)
                 .WithOne()
-                .HasForeignKey<Department>(d => d.QaCoordinatorId);
+                .HasForeignKey<Department>(d => d.QaCoordinatorId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .IsRequired(false);
         }
 
         public void RemoveDefaultAspTableName(ModelBuilder builder)
