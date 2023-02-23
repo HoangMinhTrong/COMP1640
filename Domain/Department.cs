@@ -14,5 +14,10 @@ namespace Domain
 
         public virtual ICollection<Idea> Ideas { get; set; } = new HashSet<Idea>();
         public virtual ICollection<UserDepartment> UserDepartments { get; set; } = new HashSet<UserDepartment>();
+
+        public void UpdateQaCoordinator(int userId)
+        {
+            QaCoordinatorId = userId;
+        }
     }
 }

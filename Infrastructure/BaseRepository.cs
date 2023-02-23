@@ -58,13 +58,5 @@ namespace Infrastructure
         {
             return await GetQuery(expression).FirstOrDefaultAsync();
         }
-        
-        public async Task UpdateAsync(T entity, bool saveChanges = true)
-        {
-            Entities.Update(entity);
-
-            if (saveChanges)
-                await DbContext.SaveChangesAsync();
-        }
     }
 }

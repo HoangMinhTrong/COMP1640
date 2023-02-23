@@ -58,8 +58,8 @@ namespace COMP1640.Services
             if (role == null || role.Id == (int)RoleTypeEnum.Admin)
                 return false;
 
-            var isDepartmentRole = role.Id == (int)RoleTypeEnum.DepartmentQA;
-            if (isDepartmentRole)
+            var isDepartmentQARole = role.Id == (int)RoleTypeEnum.DepartmentQA;
+            if (isDepartmentQARole)
             {
                 if(department.QaCoordinatorId != null) return false;
             }
@@ -71,9 +71,9 @@ namespace COMP1640.Services
                 , department);
             
             await _userRepo.InsertAsync(user);
-            if (isDepartmentRole)
+            if (isDepartmentQARole)
             {
-                await _departmentRepo.AssignDepartmentQa(user.Id, department.Id);
+                department.UpdateQaCoordinator(user.Id);
             }
             await _unitOfWork.SaveChangesAsync();
 
