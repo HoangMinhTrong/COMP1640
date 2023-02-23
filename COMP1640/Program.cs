@@ -1,19 +1,22 @@
 using COMP1640.Extentions;
-using Domain;
-using Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
+using Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // For running in Railway
 var portVar = Environment.GetEnvironmentVariable("PORT");
-if (portVar is {Length: >0} && int.TryParse(portVar, out int port))
+if (portVar is { Length: > 0 } && int.TryParse(portVar, out int port))
 {
     builder.WebHost.ConfigureKestrel(options =>
     {
         options.ListenAnyIP(port);
     });
 }
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 // Load configuration
 var configuration = builder.Configuration
@@ -28,15 +31,17 @@ builder.Services
     .AddRazorRuntimeCompilation();
 
 var services = builder.Services;
-
-services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+services.AddHttpContextAccessor();
+services.AddIdentity();
+services.AddScoped<IClaimsTransformation, MyClaimsTransformation>();
 
 services
     .AddDatabase(configuration)
     .AddServices()
     .AddRepositoriesBase()
     .AddUnitOfWork();
+
+services.AddCurrentUserInfo();
 
 services.AddRazorPages();
 

@@ -1,18 +1,26 @@
+
 using COMP1640.Services;
+using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace COMP1640.Controllers
 {
+    [Route("hrm")]
+    [Authorize]
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
+        private readonly CategoryService _categoryService;
 
-        public HRMController(HRMService hRMService)
+        public HRMController(HRMService hRMService, CategoryService categoryService)
         {
             _hRMService = hRMService;
+            _categoryService = categoryService;
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] GetListUserRequest request)
@@ -21,27 +29,82 @@ namespace COMP1640.Controllers
             return View(vm);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] EditUserRequest request)
+        [HttpGet("user/{id:int}")]
+        public async Task<IActionResult> GetUserInfo([FromRoute] int id)
         {
-            await _hRMService.EditUserInfoAsync(request);
-            return View("Index");
+            var vm = await _hRMService.GetUserInfoDetailsAsync(id);
+            return Json(vm);
+        }
+
+        [HttpPut("user/{id:int}")]
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditUserRequest request)
+        {
+            if (!ModelState.IsValid) return RedirectToAction("Index");
+            var isSucceed = await _hRMService.EditUserInfoAsync(id, request);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an account.");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
+        public async Task<IActionResult> Create(CreateUserRequest request)
         {
-            await _hRMService.CreateUserAsync(request);
-            return View("Index");
+            if (!ModelState.IsValid) return RedirectToAction("Index");
+
+            var isSucceed = await _hRMService.CreateUserAsync(request);
+            if (isSucceed) return RedirectToAction("Index");
+
+            ModelState.AddModelError("create_failure", "Failure to create an account.");
+            return RedirectToAction("Index");
         }
 
-        [HttpPost]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            await _hRMService.DeleteUserAsync(id);
-            return View("Index");
+            var isSucceed = await _hRMService.DeleteUserAsync(id);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an account.");
+            return RedirectToAction("Index");
         }
 
+
+
+        [HttpPut("user/{id:int}/activate")]
+        public async Task<IActionResult> ToggleActivate([FromRoute] int id)
+        {
+            var isSucceed = await _hRMService.ToggleActivateAsync(id);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to activate an account.");
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Route("role")]
+        [ProducesResponseType(typeof(SelectPropertyForCreateAccountResponse), 200)]
+        public async Task<IActionResult> GetRoleEnums()
+        {
+            var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
+            return Ok(allowedRoleForCreateAccount);
+        }
+
+        [HttpGet]
+        [Route("viewcategory")]
+        public async Task<IActionResult> ViewCategory([FromQuery] GetListCategoryRequest request)
+        {
+            var category = await _categoryService.GetListCategory(request);
+            return View(category);
+        }
+
+        [HttpPost]
+        [Route("createcategory")]
+        public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
+        {
+            await _categoryService.CreateCategory(request);
+            return RedirectToAction("ViewCategory");
+        }
 
         [HttpGet]
         public async Task<IActionResult> ViewProfile(int id)
@@ -49,11 +112,6 @@ namespace COMP1640.Controllers
             var profile = await _hRMService.GetUserInfoDetailsAsync(id);
             return View(profile);
         }
-        
-
-
-
-
 
     }
 }

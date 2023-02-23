@@ -8,5 +8,10 @@ namespace Infrastructure.Repositories
         public DepartmentRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
+
+        public async Task<Department> GetAsync(int departmentId)
+        {
+            return await GetAsync(_ => _.Id == departmentId);
+        }
     }
 }

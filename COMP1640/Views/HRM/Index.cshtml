@@ -1,16 +1,26 @@
 ﻿@using COMP1640.ViewModels.HRM.Responses
-@model List<UserBasicInfoResponse>
+@model PagedList.IPagedList<UserBasicInfoResponse>
+@{
+    var pageNo = Model.PageNumber;
+    var pageSize = Model.PageSize;
+    var index = 0;
+
+    if(pageNo > 1)
+        index += pageSize;
+}
 
  <div class="container">
     <div class="pt-3 pb-4 d-block">
-        <div class="align-items-center">
+        <div class="align-items-center d-flex justify-content-between pb-3">
             <a class="btn btn-info text-white text-center" id="addUserBtn">
                  <i class="material-icons text-white">
                      Add
                  </i>
-             </a>
-         </div>
-     </div>
+            </a>
+            <div class="form-outline">
+                <input id="searching-input" type="search" type="button" class="form-control" placeholder="Search" onkeypress="Searching(event, this.value)" />
+            </div>
+        </div>
     <div id="addUserModal" class="modalAdd">
         <!-- Modal content -->
         <div class="modal-content bg-dark w-50">
@@ -21,13 +31,61 @@
                         <p class="fw-bold text-success mb-2">Add new User</p>
                         <h6 class="fw-bold">Please fill out the blank</h6>
                     </div>
-                    <form method="post">
-                         <div class="mb-3"><input class="form-control" type="text" name="username" placeholder="Username" /></div>
-                         <div class="mb-3"><input class="form-control" type="email" name="password" placeholder="Email" /></div>
-                         <div class="mb-3"><input class="form-control" type="text" name="gender" placeholder="Gender" /></div>
-                         <div class="mb-3"><input class="form-control" type="text" name="dob" placeholder="Date of birth" /></div>
-                         <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password" /></div>
-                         <div class="mb-3"><button class="btn btn-primary shadow d-block w-100" type="submit">Add</button></div>
+                    <form method="post" asp-action="Create" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <input class="form-control"
+                                   type="email" name="email" placeholder="Email"
+                                   required="required"/>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="roles_list" name="role"
+                                            class="form-select" required="required"
+                                            oninvalid="this.setCustomValidity('Please select an item in the list')"
+                                            oninput="setCustomValidity('')">
+                                        <option value="" disabled="disabled" selected="">Select Role</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="departments_list" name="departmentId"
+                                            class="form-select" required="required"
+                                            oninvalid="this.setCustomValidity('Please select an item in the list')"
+                                            oninput="setCustomValidity('')">
+                                        <option value="" disabled="disabled" selected="">Select Department</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select name="gender"
+                                            class="form-select">
+                                        <option disabled="disabled" value="" selected="selected">Select Gender</option>
+                                        <option value="1" selected="selected">Male</option>
+                                        <option value="2" selected="selected">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input id="birthday" name="birthday" class="form-control"
+                                   placeholder="Birthday"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-primary shadow d-block w-100" type="submit">Add</button>
+                        </div>
                     </form>
                 </div>
             </div>  
@@ -37,39 +95,79 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Role</th>
-                <th scope="col"></th>
+                <th scope="col">Department</th>
+                <th scope="col" style="width: 250px"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <th scope="row">-</th>
-                    <td>@item.UserName</td>
+                    <th scope="row">@(index += 1)</th>
                     <td>@item.Email</td>
-                    <td>@item.Role.ToString()</td>
+                    <td>@item.Role</td>
+                    <td>@item.Department</td>
                     <td>
                         <div class="d-flex justify-content-around">
                             <div class="align-items-center">
-                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" asp-action="Account"asp-route-id="@item.Id">
-                                    <i class="bi bi-trash"></i>
+                                <a class="btn text-white text-center @(@item.IsActive ? "btn-primary": "btn-danger")" style="cursor:pointer" onclick=ToggleActivateUser(@item.Id)>
+                                    @if (@item.IsActive)
+                                    {
+                                        <i class="bi bi-unlock"></i>
+                                    }else
+                                    {
+                                        <i class="bi bi-lock"></i>
+                                    }
                                 </a>
                             </div>
                             <div class="align-items-center">
-                                <a class="btn btn-warning text-white text-center editUserBtn" style="cursor:pointer">
+                                <a class="btn btn-warning text-white text-center" style="cursor:pointer" onclick=ViewUserDetail(@item.Id)>
                                     <i class="bi bi-pen"></i>
                                 </a>
                             </div>
-                            <partial name="_ModalEdit" model=@item />
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
- </div>
+     <partial name="_ModalEdit"/>
+
+     <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount 
+    <nav aria-label="...">
+      <ul class="pagination pagination-sm">
+        @for(var i = 1; i <= @Model.PageCount; i++)
+        {
+                <li class="page-item @(i == Model.PageNumber ? "active": "")">
+                    <a class="page-link" onclick="NavigatePage(@i)">@i</a>
+                </li>
+        }
+      </ul>
+    </nav>
+    </div>
+</div>
+
+    <script src="~/js/hrm-site.js" asp-append-version="true"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
