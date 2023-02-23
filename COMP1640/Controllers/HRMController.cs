@@ -30,14 +30,15 @@ namespace COMP1640.Controllers
             var vm = await _hRMService.GetUserInfoDetailsAsync(id);
             return Json(vm);
         }
-
-
-
+        
         [HttpGet]
         [Route("detail")]
-        public async Task<IActionResult> ViewProfile(int id)
+        public async Task<IActionResult> ViewProfile()
         {
-            var profile = await _hRMService.GetUserInfoDetailsAsync(id);
+            var profile = await _hRMService.GetPersonalProfileAsync();
+            if(profile == null)
+                ModelState.AddModelError("get_personal_profile", "Failure to get user profile details.");
+
             return View(profile);
         }
 
