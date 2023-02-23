@@ -24,8 +24,18 @@ namespace COMP1640.Controllers
             return View(vm);
         }
 
-        [HttpGet("User/{id:int}")]
+        [HttpGet("user/{id:int}")]
         public async Task<IActionResult> GetUserInfo([FromRoute] int id)
+        {
+            var vm = await _hRMService.GetUserInfoDetailsAsync(id);
+            return Json(vm);
+        }
+
+        [HttpPut("user/{id:int}")]
+        [HttpPut]
+        public async Task<IActionResult> Edit(EditUserRequest request)
+=========
+>>>>>>>>> Temporary merge branch 2
         {
             var vm = await _hRMService.GetUserInfoDetailsAsync(id);
             return Json(vm);
@@ -61,6 +71,17 @@ namespace COMP1640.Controllers
             if (isSucceed) return Ok();
 
             ModelState.AddModelError("delete_failure", "Failure to delete an account.");
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPut("user/{id:int}/activate")]
+        public async Task<IActionResult> ToggleActivate([FromRoute] int id)
+        {
+            var isSucceed = await _hRMService.ToggleActivateAsync(id);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to activate an account.");
             return RedirectToAction("Index");
         }
 

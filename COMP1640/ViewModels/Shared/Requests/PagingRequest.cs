@@ -3,7 +3,7 @@
     public class PagingRequest
     {
         private int _pageNo = 1;
-        private int _pageSize = 2;
+        private int _pageSize = 8;
         public int PageNo
         {
             get { return _pageNo; }

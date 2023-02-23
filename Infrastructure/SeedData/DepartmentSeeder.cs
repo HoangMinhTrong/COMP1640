@@ -14,18 +14,21 @@ namespace Infrastructure.SeedData
                     Id = 1,
                     Name = "Computing",
                     TenantId = tenant.Id,
+                    QaCoordinatorId = 3
                 },
                 new Department
                 {
                     Id = 2,
                     Name = "Business",
                     TenantId = tenant.Id,
+                    QaCoordinatorId = 4
                 },
                 new Department
                 {
                     Id = 3,
                     Name = "Design",
                     TenantId = tenant.Id,
+                    QaCoordinatorId = 5
                 }
             };
 

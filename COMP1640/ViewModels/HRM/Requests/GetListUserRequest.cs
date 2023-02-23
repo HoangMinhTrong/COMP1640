@@ -15,7 +15,11 @@ namespace COMP1640.ViewModels.HRM.Requests
                     (
                         string.IsNullOrEmpty(SearchTerm)
                         ? true
-                        : (_.Email.Contains(SearchTerm) || _.UserName.Contains(SearchTerm))
+                        : (_.Email.ToLower().Contains(SearchTerm) 
+                            || _.UserName.ToLower().Contains(SearchTerm) 
+                            || _.RoleUsers.Any(r => r.Role.Name.ToLower().Contains(SearchTerm))
+                            || _.UserDepartments.Any(d => d.Department.Name.ToLower().Contains(SearchTerm))
+                          )
                     );
         }
     }
