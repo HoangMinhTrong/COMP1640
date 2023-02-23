@@ -1,4 +1,5 @@
-﻿using COMP1640.Services;
+
+using COMP1640.Services;
 using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
@@ -69,6 +70,7 @@ namespace COMP1640.Controllers
         }
 
 
+
         [HttpPut("user/{id:int}/activate")]
         public async Task<IActionResult> ToggleActivate([FromRoute] int id)
         {
@@ -88,8 +90,6 @@ namespace COMP1640.Controllers
             return Ok(allowedRoleForCreateAccount);
         }
 
-
-
         [HttpGet]
         [Route("viewcategory")]
         public async Task<IActionResult> ViewCategory([FromQuery] GetListCategoryRequest request)
@@ -104,6 +104,13 @@ namespace COMP1640.Controllers
         {
             await _categoryService.CreateCategory(request);
             return RedirectToAction("ViewCategory");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewProfile(int id)
+        {
+            var profile = await _hRMService.GetUserInfoDetailsAsync(id);
+            return View(profile);
         }
 
     }

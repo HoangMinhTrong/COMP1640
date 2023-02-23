@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;

@@ -1,9 +1,11 @@
-﻿using COMP1640.ViewModels.Category.Requests;
+
+using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Category.Responses;
 using Domain;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace COMP1640.Services;
 
@@ -15,7 +17,6 @@ public class CategoryService
     {
         _category = category;
         _unitOfWork = unitOfWork;
-
     }
 
     public async Task<InforCategoryResponse> CreateCategory(CreateCategoryRequest categoryRequest)
@@ -30,6 +31,11 @@ public class CategoryService
             Id = ++count,
             Name = categoryRequest.Name,
             TenantId = categoryRequest.TenantId,
+        var infoCategory = new InforCategoryResponse()
+        {
+            Id = categoryRequest.Id,
+            Name = categoryRequest.Name,
+            TenantId = categoryRequest.TenantId,    
         };
         var category = new Category()
         {
@@ -51,6 +57,7 @@ public class CategoryService
         }
         return infoCategory;
     }
+
 
     public async Task<List<InforCategoryResponse>> GetListCategory(GetListCategoryRequest request)
     {

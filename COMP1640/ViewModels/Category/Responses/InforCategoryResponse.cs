@@ -1,4 +1,4 @@
-﻿namespace COMP1640.ViewModels.Category.Responses;
+namespace COMP1640.ViewModels.Category.Responses;
 
 public class InforCategoryResponse
 {

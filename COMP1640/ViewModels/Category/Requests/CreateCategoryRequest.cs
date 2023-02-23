@@ -1,4 +1,4 @@
-﻿namespace COMP1640.ViewModels.Category.Requests;
+namespace COMP1640.ViewModels.Category.Requests;
 
 public class CreateCategoryRequest
 {

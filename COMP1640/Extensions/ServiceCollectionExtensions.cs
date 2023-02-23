@@ -68,6 +68,11 @@ namespace COMP1640.Extentions
                    });
 
             return services;
+
+           services.AddScoped<HRMService>();
+           services.AddScoped<IdeaService>();
+           return services;
+
         }
     }
 }
