@@ -5,6 +5,7 @@ using COMP1640.ViewModels.HRM.Responses;
 using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 
 namespace COMP1640.Services
 {
@@ -26,19 +27,21 @@ namespace COMP1640.Services
             _roleRepo = roleRepo;
         }
 
-        public async Task<List<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
+        public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
         {
-            return await _userRepo
+            return  _userRepo
                 .GetQuery(request.Filter())
                 .Select(new UserBasicInfoResponse().GetSelection())
-                .ToListAsync();
+                .OrderBy(_ => _.RoleId)
+                .ThenBy(_ => _.Id)
+                .ToPagedList(request.PageNo, request.PageSize);
         }
 
-        public async Task<UserBasicInfoResponse> GetUserInfoDetailsAsync(int userId)
+        public async Task<UserDetailInfoResponse> GetUserInfoDetailsAsync(int userId)
         {
             return await _userRepo
                 .GetById(userId)
-                .Select(new UserBasicInfoResponse().GetSelection())
+                .Select(new UserDetailInfoResponse().GetSelection())
                 .FirstOrDefaultAsync();
         }
 
@@ -47,31 +50,63 @@ namespace COMP1640.Services
             var existedEmail = await _userRepo.AnyAsync(_ => _.Email == request.Email);
             if (existedEmail)
                 return false;
-
-            var role = await _roleRepo.GetAsync(request.Role);
-            if (role == null)
-                return false;
-
+            
             var department = await _departmentRepo.GetAsync(request.DepartmentId);
             if (department == null)
                 return false;
+            
+            var role = await _roleRepo.GetAsync(request.Role);
+            if (role == null || role.Id == (int)RoleTypeEnum.Admin)
+                return false;
 
-            var user = new User(request.Name
-                , request.Email
+            var isDepartmentQARole = role.Id == (int)RoleTypeEnum.DepartmentQA;
+            if (isDepartmentQARole)
+            {
+                if(department.QaCoordinatorId != null) return false;
+            }
+
+            var user = new User(request.Email
                 , request.Birthday
                 , request.Gender
                 , role
                 , department);
-
+            
             await _userRepo.InsertAsync(user);
+            if (isDepartmentQARole)
+            {
+                department.UpdateQaCoordinator(user.Id);
+            }
             await _unitOfWork.SaveChangesAsync();
 
             return true;
         }
 
-        public Task EditUserInfoAsync(EditUserRequest request)
+        public async Task<bool> EditUserInfoAsync(int id, EditUserRequest request)
         {
-            throw new NotImplementedException();
+            var user = await _userRepo.GetById(id).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            user.EditInfo(request.Email
+                , request.RoleId
+                , request.DepartmentId
+                , request.Gender
+                , request.Birthday);
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ToggleActivateAsync(int id)
+        {
+            var user = await _userRepo.GetById(id).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            user.ToggleActivate();
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<bool> DeleteUserAsync(int id)

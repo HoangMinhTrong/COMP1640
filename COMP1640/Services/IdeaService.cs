@@ -30,10 +30,12 @@ namespace COMP1640.Services
                     request.Title,
                     request.Content,
                     request.IsAnonymous,
-                    category
+                    request.CategoryId,
+                    1,
+                    1
                 );
 
-            await _ideaRepo.InsertAsync(idea);
+            await _ideaRepo.InsertAsync(idea, false);
             await _unitOfWork.SaveChangesAsync();
 
             return true;

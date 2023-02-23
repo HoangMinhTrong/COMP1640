@@ -8,6 +8,6 @@ namespace Domain
         {
         }
 
-        public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
+        public virtual ICollection<RoleUser> RoleUsers { get; set; } = new HashSet<RoleUser>();
     }
 }

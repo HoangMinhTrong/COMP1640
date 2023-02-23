@@ -1,8 +1,10 @@
 ﻿using COMP1640.Services;
+using Domain;
 using Domain.Interfaces;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Utilities;
 
 namespace COMP1640.Extentions
@@ -38,6 +40,34 @@ namespace COMP1640.Extentions
            services.AddScoped<IdeaService>();
            return services;
             
+        }
+
+        public static IServiceCollection AddIdentity(this IServiceCollection services)
+        {
+            services
+                    .AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthentication(options =>
+                    {
+                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    })
+                   .AddCookie()
+                   .AddOpenIdConnect(options =>
+                   {
+                       options.SignInScheme = "Cookies";
+                       options.Authority = "-your-identity-provider-";
+                       options.RequireHttpsMetadata = false;
+                       options.ClientId = "-your-clientid-";
+                       options.ClientSecret = "-your-client-secret-from-user-secrets-or-keyvault";
+                       options.ResponseType = "code";
+                       options.UsePkce = true;
+                       options.Scope.Add("profile");
+                       options.SaveTokens = true;
+                   });
+
+            return services;
         }
     }
 }

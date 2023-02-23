@@ -1,15 +1,26 @@
 ﻿@using COMP1640.ViewModels.HRM.Responses
-@model List<UserBasicInfoResponse>
+@model PagedList.IPagedList<UserBasicInfoResponse>
+@{
+    var pageNo = Model.PageNumber;
+    var pageSize = Model.PageSize;
+    var index = 0;
+
+    if(pageNo > 1)
+        index += pageSize;
+}
 
  <div class="container">
     <div class="pt-3 pb-4 d-block">
-        <div class="align-items-center">
+        <div class="align-items-center d-flex justify-content-between pb-3">
             <a class="btn btn-info text-white text-center" id="addUserBtn">
                  <i class="material-icons text-white">
                      Add
                  </i>
-             </a>
-         </div>
+            </a>
+            <div class="form-outline">
+                <input id="searching-input" type="search" type="button" class="form-control" placeholder="Search" onkeypress="Searching(event, this.value)" />
+            </div>
+        </>
      </div>
     <div id="addUserModal" class="modalAdd">
         <!-- Modal content -->
@@ -22,11 +33,6 @@
                         <h6 class="fw-bold">Please fill out the blank</h6>
                     </div>
                     <form method="post" asp-action="Create" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <input class="form-control"
-                                   type="text" name="name" placeholder="Full Name"
-                                   required="required"/>
-                        </div>
                         <div class="mb-3">
                             <input class="form-control"
                                    type="email" name="email" placeholder="Email"
@@ -89,25 +95,31 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Role</th>
-                <th scope="col"></th>
+                <th scope="col">Department</th>
+                <th scope="col" style="width: 250px"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <th scope="row">-</th>
-                    <td>@item.UserName</td>
+                    <th scope="row">@(index += 1)</th>
                     <td>@item.Email</td>
                     <td>@item.Role</td>
+                    <td>@item.Department</td>
                     <td>
                         <div class="d-flex justify-content-around">
                             <div class="align-items-center">
-                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" onclick=DeleteUser(@item.Id)>
-                                    <i class="bi bi-trash"></i>
+                                <a class="btn text-white text-center @(@item.IsActive ? "btn-primary": "btn-danger")" style="cursor:pointer" onclick=ToggleActivateUser(@item.Id)>
+                                    @if (@item.IsActive)
+                                    {
+                                        <i class="bi bi-unlock"></i>
+                                    }else
+                                    {
+                                        <i class="bi bi-lock"></i>
+                                    }
                                 </a>
                             </div>
                             <div class="align-items-center">
@@ -122,4 +134,18 @@
         </tbody>
     </table>
      <partial name="_ModalEdit"/>
- </div>
+
+     <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount 
+    <nav aria-label="...">
+      <ul class="pagination pagination-sm">
+        @for(var i = 1; i <= @Model.PageCount; i++)
+        {
+                <li class="page-item @(i == Model.PageNumber ? "active": "")">
+                    <a class="page-link" onclick="NavigatePage(@i)">@i</a>
+                </li>
+        }
+      </ul>
+    </nav>
+    
+</div>
