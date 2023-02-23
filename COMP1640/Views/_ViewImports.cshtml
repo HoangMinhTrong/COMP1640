@@ -1,6 +1,10 @@
 ﻿@inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject ICurrentUserInfo CurrentUser
+
 @using Microsoft.AspNetCore.Identity
+@using Utilities.Identity.Interfaces
 @using WebMVC
 @using Domain
+@using PagedList.Mvc;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

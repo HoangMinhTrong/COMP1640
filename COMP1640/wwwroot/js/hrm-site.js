@@ -43,21 +43,44 @@ var editUserModal = document.getElementById("editUserModal");
 var editUserBtn = document.getElementsByClassName("editUserBtn");
 var editUserSpan = document.getElementsByClassName("close")[1];
 
+function EditUserInfo() {
+    var userId = $(".info-userId").val();
+    var myObject = {
+        Email: $(".info-email").val(),
+        RoleId: $(".info-role").val(),
+        DepartmentId: $(".info-department").val(),
+        Gender: $(".info-gender").val(),
+        Birthday: $(".info-birthday").val(),
+    };
+
+    $.ajax({
+        url: window.location.origin + '/hrm/user/' + userId,
+        type: 'PUT',
+        data: JSON.stringify(myObject),
+        contentType: 'application/json',
+        success: function () {
+            alert('Saved successfully.');
+            window.location.reload();
+        }
+    });
+}
+
 function ViewUserDetail(id) {
     $.ajax({
         url: window.location.origin + '/hrm/user/' + id,
         type: 'GET',
         success: function (user) {
             editUserModal.style.display = "block";
-            fillDropDownListForEditAccount();
-            $(".info-username").val(user.userName);
+            fillDropDownListForEditAccount(user.roleId, user.departmentId)
+            $(".info-userId").val(user.id);
             $(".info-email").val(user.email);
-            $(".info-role").val(user.role);
+            $(".gender-" + user.gender).prop("selected", true);
+            $(".info-birthday").val(user.birthday);
         }
     });
 }
 
-function fillDropDownListForEditAccount() {
+function fillDropDownListForEditAccount(roleId, departmentId) {
     $('#roles_list_edit option:not(:first)').remove();
     $('#departments_list_edit option:not(:first)').remove();
     $.ajax({
@@ -70,11 +93,13 @@ function fillDropDownListForEditAccount() {
             var departments = data.departments;
             $.each(roles, function (i, role) {
                 $("#roles_list_edit").append(
-                    $('<option></option>').val(role.id).html(role.name));
+                    $('<option></option>').val(role.id).html(role.name).prop("selected", roleId == role.id)
+                );
             });
             $.each(departments, function (i, department) {
                 $("#departments_list_edit").append(
-                    $('<option></option>').val(department.id).html(department.name));
+                    $('<option></option>').val(department.id).html(department.name).prop("selected", departmentId == department.id)
+                );
             });
         }
     })
@@ -91,16 +116,50 @@ window.onclick = function (event) {
 }
 
 //Delete User
-function DeleteUser(id) {
-    var confirmResult = confirm("Are you sure you want to delete this item?");
+function ToggleActivateUser(id) {
+    var confirmResult = confirm("Are you sure?");
     if (!confirmResult)
         return;
 
     $.ajax({
-        url: window.location.origin + '/hrm/' + id,
-        type: 'DELETE',
+        url: window.location.origin + '/hrm/user/' + id +'/activate',
+        type: 'PUT',
         success: function () {
             window.location.reload();
         },
     });
+}
+
+
+// Navigate page
+function NavigatePage(pageNo) {
+    $.ajax({
+        url: window.location.origin + '/hrm',
+        type: 'GET',
+        data: {
+            PageNo: pageNo,
+        },
+        success: function (result) {
+            $('#mainbody').empty().html(result);
+        },
+    });
+}
+
+// Searching
+function Searching(e, searchTerm) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+
+        $.ajax({
+            url: window.location.origin + '/hrm',
+            type: 'GET',
+            data: {
+                SearchTerm: searchTerm.toLowerCase(),
+            },
+            success: function (result) {
+                $('#mainbody').empty().html(result);
+                $("#searching-input").val(searchTerm);
+            },
+        });
+    }
 }

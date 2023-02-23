@@ -1,13 +1,11 @@
 ﻿using Domain;
 using System.ComponentModel.DataAnnotations;
+using Utilities.ValidataionAttributes;
 
 namespace COMP1640.ViewModels.HRM.Requests
 {
     public class CreateUserRequest
     {
-        [Required]
-        public string Name { get; set; }
-
         [Required]
         public string Email { get; set; }
 
@@ -17,7 +15,9 @@ namespace COMP1640.ViewModels.HRM.Requests
         [Required]
         public int DepartmentId { get; set; }
 
+        [DateOfBirth(MinAge = 18, MaxAge = 60)]
         public DateTime? Birthday { get; set; }
+        
         public UserGenderEnum? Gender { get; set; }
     }
 }

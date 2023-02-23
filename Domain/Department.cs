@@ -9,10 +9,15 @@ namespace Domain
         }
 
         public string Name { get; set; }
+        public int? QaCoordinatorId { get; set; }
+        public virtual User QaCoordinator { get; set; }
 
         public virtual ICollection<Idea> Ideas { get; set; } = new HashSet<Idea>();
-        public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
         public virtual ICollection<UserDepartment> UserDepartments { get; set; } = new HashSet<UserDepartment>();
 
+        public void UpdateQaCoordinator(int userId)
+        {
+            QaCoordinatorId = userId;
+        }
     }
 }
