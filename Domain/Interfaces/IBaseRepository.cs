@@ -13,7 +13,5 @@ namespace Domain.Interfaces
         Task DeleteAsync(T entity, bool saveChanges = true);
 
         Task DeleteRangeAsync(IEnumerable<T> entities, bool saveChanges = true);
-        Task UpdateAsync(T entity, bool saveChanges = true);
-
     }
 }
