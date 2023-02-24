@@ -45,6 +45,12 @@ namespace Utilities.Identity
             int.TryParse(GetClaimValue(context, AppClaimType.TenantId), out var tenantId);
             return tenantId;
         }
+        
+        public static int DepartmentId(this HttpContext context)
+        {
+            int.TryParse(GetClaimValue(context, AppClaimType.DepartmentId), out var departmentId);
+            return departmentId;
+        }
 
         public static ICurrentUserInfo CurrentUser(this HttpContext context)
         {
@@ -52,7 +58,8 @@ namespace Utilities.Identity
                 , context.UserName()
                 , context.UserEmail()
                 , context.RoleId()
-                , context.TenantId());
+                , context.TenantId()
+                , context.DepartmentId());
         }
     }
 }
