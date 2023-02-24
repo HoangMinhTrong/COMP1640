@@ -33,13 +33,14 @@ namespace COMP1640.Controllers
 
 
 
-        [HttpGet]
+        
+        /*[HttpGet]
         [Route("detail")]
         public async Task<IActionResult> ViewProfile(int id)
         {
             var profile = await _hRMService.GetUserInfoDetailsAsync(id);
             return View(profile);
-        }
+        }*/
 
 
         [HttpPut("User/{id:int}")]
