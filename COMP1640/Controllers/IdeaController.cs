@@ -4,13 +4,13 @@ using COMP1640.ViewModels.Idea.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Controllers
 {
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;
-
         public IdeaController(IdeaService ideaService)
         {
             _ideaService = ideaService;

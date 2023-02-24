@@ -3,6 +3,7 @@ using COMP1640.ViewModels.Idea.Responses;
 using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Services
 {
@@ -11,12 +12,18 @@ namespace COMP1640.Services
         private readonly IIdeaRepository _ideaRepo;
         private readonly ICategoryRepository _categoryRepo;
         private readonly IUnitOfWork _unitOfWork;
-
-        public IdeaService(IIdeaRepository ideaRepo, IUnitOfWork unitOfWork, ICategoryRepository categoryRepo)
+        private readonly ICurrentUserInfo _current;
+        public IdeaService(
+            IIdeaRepository ideaRepo, 
+            IUnitOfWork unitOfWork, 
+            ICategoryRepository categoryRepo,
+            ICurrentUserInfo current)
         {
             _ideaRepo = ideaRepo;
             _unitOfWork = unitOfWork;
             _categoryRepo = categoryRepo;
+            _current = current;
+
         }
 
         public async Task<bool> CreateIdeaAsync(CreateIdeaRequest request)
@@ -25,6 +32,8 @@ namespace COMP1640.Services
             if (category == null)
                 return false;
 
+            var departmentId = _current.DepartmentId;
+
             var idea = new Idea
                 (
                     request.Title,
@@ -32,7 +41,7 @@ namespace COMP1640.Services
                     request.IsAnonymous,
                     request.CategoryId,
                     1,
-                    1
+                    departmentId
                 );
 
             await _ideaRepo.InsertAsync(idea, false);
