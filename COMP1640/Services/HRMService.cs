@@ -33,8 +33,7 @@ namespace COMP1640.Services
             _unitOfWork = unitOfWork;
             _departmentRepo = departmentRepo;
             _roleRepo = roleRepo;
-            _currentUser = currentUser;
-            _serviceProvider = serviceProvider;
+            _currentUser = currentUser;           
             _serviceProvider = serviceProvider;
         }
 
