@@ -38,5 +38,24 @@ namespace COMP1640.Controllers
             ModelState.AddModelError("create_exception", "Failure to create a new idea.");
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit()
+        {
+            //var vm = await _ideaService.GetIdeaDetailsAsync(ideaId);
+            return View();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit(EditIdeaRequest request)
+        {
+            if (!ModelState.IsValid) return RedirectToAction("Index");
+
+            var isSucceed = await _ideaService.EditIdeaAsync(request);
+            if (isSucceed) return RedirectToAction("Index", "Home");
+
+            ModelState.AddModelError("edit_failure", "Failure to edit an idea.");
+            return View();
+        }
     }
 }

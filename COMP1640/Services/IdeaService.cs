@@ -57,5 +57,18 @@ namespace COMP1640.Services
                 Categories = categories,
             };
         }
+        public Task<IdeaDetailsResponse> GetIdeaDetailsAsync(int ideaId)
+        {
+            //return await _ideaRepo
+            //    .GetById(ideaId)
+            //    .Select(new IdeaDetailsResponse().GetSelection())
+            //    .FirstOrDefaultAsync();
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> EditIdeaAsync(EditIdeaRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

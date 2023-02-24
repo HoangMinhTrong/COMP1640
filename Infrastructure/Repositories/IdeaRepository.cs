@@ -8,5 +8,10 @@ namespace Infrastructure.Repositories
         public IdeaRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
+
+        public IQueryable<Idea> GetById(int id)
+        {
+            return GetQuery(_ => _.Id == id);
+        }
     }
 }

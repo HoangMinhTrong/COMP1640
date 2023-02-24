@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Idea</h1>
+
+<div>
+	<header class="bg-dark"></header>
+	<div class="container-fluid">
+		<div class="card  mb-3">
+			<div class="card-header py-3">
+				<p class="text-primary m-0 fw-bold">Edit Post</p>
+			</div>
+		</div>
+	</div>
+	<section></section>
+	<div class="container-fluid">
+		<form method="put" asp-action="Edit" enctype="multipart/form-data">
+			<div class="card mb-3">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-sm-12 col-md-7 col-lg-8">
+							<div class="mb-3">
+								<label class="form-label" for="title"><strong> Title*</strong></label>
+								<input id="title" class="form-control" type="text" placeholder="Idea's title" name="title" required />
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-4 col-lg-4">
+							<div class="mb-3">
+								<label class="form-label" for="attach_file"><strong>Attach file</strong><br /></label>
+								<input class="form-control" type="file" id="attach_file" name="attach_file" />
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="content"><strong>Content*</strong><br /></label>
+						<textarea id="content" class="form-control" rows="4" name="content" placeholder="Idea's content" required></textarea>
+					</div>
+
+					<div class="row mb-2">
+						<div class="col">
+							<div class="mb-3">
+								<label class="form-label" for="category_list"><strong>Category*</strong></label>
+								<select id="category_list" name="CategoryId"
+										class="form-select" required="required"
+										asp-items="ViewBag.Categories">
+									<option value="" disabled>Select Category</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="true" id="isAnonymous" name="isAnonymous">
+						<input class="form-check-input" type="hidden" value="false" id="isAnonymous" name="isAnonymous">
+						<label class="form-check-label" for="isAnonymous">
+							Is Anonymous
+						</label>
+					</div>
+
+@*
+
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="defaultCheck2" required>
+						<label class="form-check-label" for="defaultCheck2">
+							I agree with our Terms and Conditions
+						</label>
+					</div>*@
+				</div>
+			</div>
+			<div class="text-end mb-3">
+				<button class="btn btn-primary btn-lg" type="submit">Edit</button>
+				<a class="btn btn-danger btn-lg" role="button" asp-controller="Home" asp-action="Index">Cancel</a>
+			</div>
+		</form>
+	</div>
+</div>

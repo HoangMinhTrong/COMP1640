@@ -2,5 +2,6 @@
 {
     public interface IIdeaRepository : IBaseRepository<Idea>
     {
+        IQueryable<Idea> GetById(int id);
     }
 }
