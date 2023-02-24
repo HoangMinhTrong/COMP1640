@@ -61,14 +61,14 @@ namespace Infrastructure
             {
                 switch (entry.State)
                 {
-                    case Microsoft.EntityFrameworkCore.EntityState.Added:
+                    case EntityState.Added:
                         OnEntryAdded(entry);
                         break;
 
-                    case Microsoft.EntityFrameworkCore.EntityState.Modified:
-                    case Microsoft.EntityFrameworkCore.EntityState.Detached:
-                    case Microsoft.EntityFrameworkCore.EntityState.Unchanged:
-                    case Microsoft.EntityFrameworkCore.EntityState.Deleted:
+                    case EntityState.Modified:
+                    case EntityState.Detached:
+                    case EntityState.Unchanged:
+                    case EntityState.Deleted:
                         break;
                 }
             }
