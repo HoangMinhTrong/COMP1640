@@ -2,7 +2,6 @@
 
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
-using COMP1640.ViewModels.PersonalDetail.Requests;
 using COMP1640.ViewModels.PersonalDetail.Responses;
 using Domain;
 using Domain.Interfaces;

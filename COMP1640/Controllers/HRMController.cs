@@ -24,26 +24,17 @@ namespace COMP1640.Controllers
             return View(vm);
         }
 
-        [HttpGet("User/{id:int}")]
+        [HttpGet("user/{id:int}")]
         public async Task<IActionResult> GetUserInfo([FromRoute] int id)
         {
             var vm = await _hRMService.GetUserInfoDetailsAsync(id);
             return Json(vm);
         }
-
-
-
         
-        /*[HttpGet]
-        [Route("detail")]
-        public async Task<IActionResult> ViewProfile(int id)
-        {
-            var profile = await _hRMService.GetUserInfoDetailsAsync(id);
-            return View(profile);
-        }*/
+        
 
 
-        [HttpPut("User/{id:int}")]
+        [HttpPut("user/{id:int}")]
         public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditUserRequest request)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index");
@@ -73,6 +64,17 @@ namespace COMP1640.Controllers
             if (isSucceed) return Ok();
 
             ModelState.AddModelError("delete_failure", "Failure to delete an account.");
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPut("user/{id:int}/activate")]
+        public async Task<IActionResult> ToggleActivate([FromRoute] int id)
+        {
+            var isSucceed = await _hRMService.ToggleActivateAsync(id);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to activate an account.");
             return RedirectToAction("Index");
         }
 

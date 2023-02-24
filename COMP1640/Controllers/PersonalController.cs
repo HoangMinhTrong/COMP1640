@@ -1,5 +1,4 @@
 ﻿using COMP1640.Services;
-using COMP1640.ViewModels.PersonalDetail.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace COMP1640.Controllers
