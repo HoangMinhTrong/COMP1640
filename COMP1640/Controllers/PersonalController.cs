@@ -5,7 +5,6 @@ namespace COMP1640.Controllers
 {
     public class PersonalController : Controller
     {
-
   
         private readonly PersonalService _personalService;
 
@@ -14,9 +13,6 @@ namespace COMP1640.Controllers
             _personalService = personalService;
 
         }
-
-
-
         [HttpGet]        
         public async Task<IActionResult> ViewProfile()
         {
@@ -26,17 +22,5 @@ namespace COMP1640.Controllers
             return View(pf);
         }
 
-
-
-        public IActionResult Index()
-        {
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
     }
 }
