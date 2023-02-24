@@ -9,6 +9,14 @@ namespace Domain
 
         }
 
+        public Idea(string title, string content, bool isAnonymous, Category category)
+        {
+            Title = title;
+            Content = content;
+            IsAnonymous = isAnonymous;
+            Category = category;
+        }
+
         public string Title { get; set; }
         public string Content { get; set; }
         public bool IsAnonymous { get; set; }

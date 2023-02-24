@@ -37,6 +37,10 @@ namespace COMP1640.Extentions
         }
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+           services.AddScoped<HRMService>();
+           services.AddScoped<IdeaService>();
+           return services;
+            
             services.AddScoped<HRMService>();
             services.AddScoped<PersonalService>();
 
