@@ -1,19 +1,19 @@
 ﻿//Popup Add User
-var addAcademicYearModel = document.getElementById("addAcademicYearModal");
+var addAcademicYearModal = document.getElementById("addAcademicYearModal");
 var addAcademicYearBtn = document.getElementById("addAcademicYearBtn");
-var addAcademicYearSpan = document.getElementsByClassName("close")[0];
+var addAcademicYearSpan = document.getElementById("close_addAcademicYearModal");
 var submitAcademicYearBtn = document.getElementById("submit-btn");
 const createAcademicYearForm = document.getElementById('create_academic_year_form');
 
 addAcademicYearBtn.onclick = function () {
-    addAcademicYearModel.style.display = "block";
+    addAcademicYearModal.style.display = "block";
 }
 addAcademicYearSpan.onclick = function () {
-    addAcademicYearModel.style.display = "none";
+    addAcademicYearModal.style.display = "none";
 }
 window.onclick = function (event) {
-    if (event.target == addAcademicYearModel) {
-        addAcademicYearModel.style.display = "none";
+    if (event.target == addAcademicYearModal) {
+        addAcademicYearModal.style.display = "none";
     }
 }
 
@@ -40,7 +40,7 @@ submitAcademicYearBtn.addEventListener('click', function(event) {
 // Edit Section --
 var editAcademicYearModal = document.getElementById("editAcademicYearModal");
 var editAcademicYearBtn = document.getElementsByClassName("editAcademicYearBtn");
-var editAcademicYearSpan = document.getElementsByClassName("close")[0];
+var editAcademicYearSpan = document.getElementById("close_editAcademicYearModal");
 
 window.onclick = function (event) {
     if (event.target == editAcademicYearModal) {
