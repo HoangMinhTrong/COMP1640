@@ -18,6 +18,12 @@ public class AcademicYearService
         _unitOfWork = unitOfWork;
     }
 
+    public async Task<AcademicYearResponse?> GetAcademicYearById(int id)
+    {
+        return await _academicYearRepository.GetQuery(a => a.Id == id)
+            .Select(new AcademicYearResponse().GetSelection())
+            .FirstOrDefaultAsync();
+    }
     public async Task<IEnumerable<AcademicYearResponse>> GetAcademicYearsAsync()
     {
         var academicYearResponses = await _academicYearRepository.GetAllQuery()
@@ -43,9 +49,24 @@ public class AcademicYearService
         return true;
     }
 
+    public async Task<bool> UpdateAcademicYearAsync(int academicYearId, UpsertAcademicYearRequest request)
+    {
+        // TODO: Clarify requirement, implement validation when update academic year.
+        var existedAcademicYear = await _academicYearRepository.GetQuery(a => a.Id == academicYearId)
+            .FirstOrDefaultAsync();
+        if (existedAcademicYear == null) return false;
+        
+        existedAcademicYear.UpdateAcademicYear(request.Name, request.ClosureDate, request.FinalClosureDate, request.EndDate);
+        
+        await _unitOfWork.SaveChangesAsync();
+
+        return true;
+    }
+    
     private async Task<bool> IsGreaterThanLatestAcademicYearAsync(DateTime requestClosureDate)
     {
         var latestAcademicYear = await _academicYearRepository.GetLatestAcademicYearAsync();
-        return requestClosureDate > latestAcademicYear?.EndDate;
+        if (latestAcademicYear == null) return true;
+        return requestClosureDate > latestAcademicYear.EndDate;
     }
 }

@@ -21,7 +21,7 @@
             </a>
         </div>
     </div>
-    <div id="addAcademicYearModel" class="modalAdd">
+    <div id="addAcademicYearModal" class="modalAdd">
         <!-- Modal content -->
         <div class="modal-content bg-dark w-50">
             <span class="close">&times;</span>
@@ -70,6 +70,55 @@
             </div>  
         </div>
     </div>
+    <div class="modalEdit" id="editAcademicYearModal">
+        <!-- Modal content -->
+        <div class="modal-content bg-dark w-50">
+            <span class="close">&times;</span>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 col-xl-4">
+                    <div class="col-md-8 col-xl-6 text-center mx-auto">
+                        <p class="fw-bold text-success mb-2">Edit Academic Year</p>
+                        <h6 class="fw-bold">Change Academic Year Information</h6>
+                    </div>
+                    <form id="edit_academic_year_form" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <input id="edit_name"
+                                    class="form-control"
+                                   type="text" name="name" placeholder="Academic Year"
+                                   required="required"/>
+                        </div>
+                        <div class="mb-3">
+                            <input id="edit_closure_date" name="closureDate" class="form-control"
+                                   placeholder="Closure Date"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <input id="edit_final_closure_date" name="finalClosureDate" class="form-control"
+                                   placeholder="Final Closure Date"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <input id="edit_end_date" name="endDate" class="form-control"
+                                   placeholder="End Date"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+                        <div class="mb-3">
+                            <button id="submit-edit-btn" class="btn btn-primary shadow d-block w-100">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <table class="table table-hover table-bordered table-sencondary">
         <thead class="thead-dark">
         <tr>
@@ -90,6 +139,19 @@
                 <td>@item.ClosureDate</td>
                 <td>@item.FinalClosureDate</td>
                 <td>@item.EndDate</td>
+                <td>
+                                        <div class="d-flex justify-content-around">
+                                            <div class="align-items-center">
+                                                           <a onclick="openEditModal(@item.Id)" class="editAcademicYearBtn btn btn-info text-white text-center">
+                                                               <i class="material-icons text-white">
+                                                                   Edit
+                                                               </i>
+                                                           </a>
+                                            </div>
+                                           
+                                        </div>
+                                    </td>
+                
             </tr>
         }
         </tbody>
