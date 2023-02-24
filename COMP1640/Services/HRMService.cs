@@ -8,6 +8,7 @@ using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
+using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Services
 {
@@ -20,17 +21,19 @@ namespace COMP1640.Services
         private readonly ICurrentUserInfo _currentUser;
         private readonly IServiceProvider _serviceProvider;
 
-
         public HRMService(IUserRepository userRepo
             , IUnitOfWork unitOfWork
             , IDepartmentRepository departmentRepo
-            , IRoleRepository roleRepo, ICurrentUserInfo currentUser)
+            , IRoleRepository roleRepo
+            , ICurrentUserInfo currentUser
+            , IServiceProvider serviceProvider)
         {
             _userRepo = userRepo;
             _unitOfWork = unitOfWork;
             _departmentRepo = departmentRepo;
             _roleRepo = roleRepo;
             _currentUser = currentUser;
+            _serviceProvider = serviceProvider;
             _serviceProvider = serviceProvider;
         }
 
