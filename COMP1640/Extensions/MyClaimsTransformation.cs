@@ -38,6 +38,10 @@ namespace COMP1640.Extentions
                     .Select(_ => _.TenantId)
                     .FirstOrDefault()
                     .ToString()),
+                new Claim(AppClaimType.DepartmentId, user.UserDepartments
+                    .Select(_ => _.DepartmentId)
+                    .FirstOrDefault()
+                    .ToString()),
             };
 
             claimsIdentity.AddClaims(claims);
