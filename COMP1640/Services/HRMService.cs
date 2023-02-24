@@ -6,6 +6,7 @@ using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
+using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Services
 {
@@ -15,16 +16,19 @@ namespace COMP1640.Services
         private readonly IDepartmentRepository _departmentRepo;
         private readonly IRoleRepository _roleRepo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserInfo _currentUser;
+
 
         public HRMService(IUserRepository userRepo
             , IUnitOfWork unitOfWork
             , IDepartmentRepository departmentRepo
-            , IRoleRepository roleRepo)
+            , IRoleRepository roleRepo, ICurrentUserInfo currentUser)
         {
             _userRepo = userRepo;
             _unitOfWork = unitOfWork;
             _departmentRepo = departmentRepo;
             _roleRepo = roleRepo;
+            _currentUser = currentUser;
         }
 
         public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
@@ -44,7 +48,15 @@ namespace COMP1640.Services
                 .Select(new UserDetailInfoResponse().GetSelection())
                 .FirstOrDefaultAsync();
         }
-
+        
+        public async Task<UserDetailInfoResponse> GetPersonalProfileAsync()
+        {
+            var userId = _currentUser.Id;
+            return await _userRepo
+                .GetById(userId)
+                .Select(new UserDetailInfoResponse().GetSelection())
+                .FirstOrDefaultAsync();
+        }
         public async Task<bool> CreateUserAsync(CreateUserRequest request)
         {
             var existedEmail = await _userRepo.AnyAsync(_ => _.Email == request.Email);
@@ -148,5 +160,6 @@ namespace COMP1640.Services
                 Departments = departments
             };
         }
+
     }
 }
