@@ -21,6 +21,7 @@ namespace COMP1640.Services
         private readonly ICurrentUserInfo _currentUser;
         private readonly IServiceProvider _serviceProvider;
 
+
         public HRMService(IUserRepository userRepo
             , IUnitOfWork unitOfWork
             , IDepartmentRepository departmentRepo
