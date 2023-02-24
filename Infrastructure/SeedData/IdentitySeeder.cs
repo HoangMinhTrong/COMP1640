@@ -19,6 +19,7 @@ namespace Infrastructure.SeedData
             SeedRoles(builder);
             SeedUsers(builder);
             SeedUserRoles(builder);
+            SeedUserDepartment(builder);
             SeedTenantUser(builder);
         }
 
@@ -70,6 +71,7 @@ namespace Infrastructure.SeedData
                 Id = 1,
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
+                NormalizedEmail = "admin@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
                 NormalizedUserName = "admin@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
@@ -82,6 +84,7 @@ namespace Infrastructure.SeedData
                 Id = 2,
                 UserName = "qamanager@gmail.com",
                 Email = "qamanager@gmail.com",
+                NormalizedEmail = "qamanager@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
                 NormalizedUserName = "qamanager@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
@@ -94,6 +97,7 @@ namespace Infrastructure.SeedData
                 Id = 3,
                 UserName = "computingdepartmentqa@gmail.com",
                 Email = "computingdepartmentqa@gmail.com",
+                NormalizedEmail = "computingdepartmentqa@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
                 NormalizedUserName = "computingdepartmentqa@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
@@ -106,6 +110,7 @@ namespace Infrastructure.SeedData
                 Id = 4,
                 UserName = "businessDepartmentQA@gmail.com",
                 Email = "businessDepartmentQA@gmail.com",
+                NormalizedEmail = "businessDepartmentQA@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
                 NormalizedUserName = "businessDepartmentQA@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
@@ -118,6 +123,7 @@ namespace Infrastructure.SeedData
                 Id = 5,
                 UserName = "designDepartmentQA@gmail.com",
                 Email = "designDepartmentQA@gmail.com",
+                NormalizedEmail = "designDepartmentQA@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
                 NormalizedUserName = "designDepartmentQA@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
@@ -130,6 +136,7 @@ namespace Infrastructure.SeedData
                 Id = 6,
                 UserName = "staff@gmail.com",
                 Email = "staff@gmail.com",
+                NormalizedEmail = "staff@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
                 NormalizedUserName = "staff@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
@@ -233,5 +240,58 @@ namespace Infrastructure.SeedData
             builder.Entity<TenantUser>().HasData(tenantUsers);
         }
 
+        private static void SeedUserDepartment(ModelBuilder builder)
+        {
+            var userRoles = new List<UserDepartment>()
+            {
+                new UserDepartment()
+                {
+                    // QA Computing
+                    UserId = 3,
+                    DepartmentId = 1
+                },
+                new UserDepartment()
+                {
+                    // QA Business
+                    UserId = 4,
+                    DepartmentId = 2
+                },
+                new UserDepartment()
+                {
+                    // QA Design
+                    UserId = 5,
+                    DepartmentId = 3
+                },
+                new UserDepartment()
+                {
+                    // Staff Computing
+                    UserId = 6,
+                    DepartmentId = 1
+                },
+                
+                new UserDepartment()
+                {
+                    // Admin Computing
+                    UserId = 1,
+                    DepartmentId = 1
+                },
+                
+                new UserDepartment()
+                {
+                    // Admin Computing
+                    UserId = 1,
+                    DepartmentId = 2
+                },
+                
+                new UserDepartment()
+                {
+                    // Admin Computing
+                    UserId = 1,
+                    DepartmentId = 3
+                }
+            };
+
+            builder.Entity<UserDepartment>().HasData(userRoles);
+        }
     }
 }
