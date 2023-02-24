@@ -1,0 +1,101 @@
+﻿@model List<COMP1640.ViewModels.AcademicYear.AcademicYearResponse>
+
+@{
+    int index = 0;
+}
+@{
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @Html.ValidationSummary()
+        </div>
+    }
+}
+<div class="container">
+    <div class="pt-3 pb-4 d-block">
+        <div class="align-items-center d-flex justify-content-between pb-3">
+            <a class="btn btn-info text-white text-center" id="addAcademicYearBtn">
+                <i class="material-icons text-white">
+                    Add
+                </i>
+            </a>
+        </div>
+    </div>
+    <div id="addAcademicYearModel" class="modalAdd">
+        <!-- Modal content -->
+        <div class="modal-content bg-dark w-50">
+            <span class="close">&times;</span>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 col-xl-4">
+                    <div class="col-md-8 col-xl-6 text-center mx-auto">
+                        <p class="fw-bold text-success mb-2">Add new Academic Year</p>
+                        <h6 class="fw-bold">Please fill out the blank</h6>
+                    </div>
+                    <form id="create_academic_year_form" method="post" asp-action="Create" enctype="multipart/form-data">
+                        
+                        <div class="mb-3">
+                            <input class="form-control"
+                                   type="text" name="name" placeholder="Academic Year"
+                                   required="required"/>
+                        </div>
+                        <div class="mb-3">
+                            <input id="closure_date" name="closureDate" class="form-control"
+                                   placeholder="Closure Date"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <input id="final_closure_date" name="finalClosureDate" class="form-control"
+                                   placeholder="Final Closure Date"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <input id="end_date" name="endDate" class="form-control"
+                                   placeholder="End Date"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <button id="submit-btn" class="btn btn-primary shadow d-block w-100" type="submit">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <table class="table table-hover table-bordered table-sencondary">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Closure Date</th>
+            <th scope="col">Final Closure Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col" style="width: 250px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@(index += 1)</th>
+                <td>@item.Name</td>
+                <td>@item.ClosureDate</td>
+                <td>@item.FinalClosureDate</td>
+                <td>@item.EndDate</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/academic-year-site.js" asp-append-version="true"></script>
+}

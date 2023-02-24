@@ -23,6 +23,10 @@
     </nav>
     <main class="bg-dark">
         @RenderBody()
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
     </main>
     <footer class="bg-dark">
         <div class="container py-4 py-lg-5">

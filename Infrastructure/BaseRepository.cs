@@ -14,7 +14,7 @@ namespace Infrastructure
             DbContext = dbContext;
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetAllQuery()
         {
             return Entities;
         }
