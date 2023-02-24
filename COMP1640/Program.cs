@@ -1,6 +1,8 @@
 using COMP1640.Extentions;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +43,15 @@ services
     .AddRepositoriesBase()
     .AddUnitOfWork();
 
-services.AddCurrentUserInfo();
+services
+    .AddMailgun(configuration)
+    .AddMailkit(configuration);
+
+services.AddMediatR(Assembly.GetExecutingAssembly());
+
+services
+    .AddCurrentUserInfo()
+    .AddEmailSender();
 
 services.AddRazorPages();
 
