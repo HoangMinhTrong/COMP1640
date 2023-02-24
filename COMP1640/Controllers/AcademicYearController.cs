@@ -51,10 +51,13 @@ public class AcademicYearController : Controller
         return  RedirectToAction("Index");
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> Delete(int academicYearId)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        throw new NotImplementedException();
+        var result = await _academicYearService.DeleteAcademicYearAsync(id);
+        
+        
+        return result.IsLeft ? Ok() : BadRequest(result.Right.ErrorMessage);
     }
     
     [HttpPut("{id:int}")]
@@ -64,6 +67,6 @@ public class AcademicYearController : Controller
 
         var isSuccess = await _academicYearService.UpdateAcademicYearAsync(id, request);
 
-        return isSuccess ? Ok() : BadRequest(); 
+        return isSuccess ? Ok() : BadRequest("Failure to update"); 
     }
 }

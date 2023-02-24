@@ -140,17 +140,27 @@
                 <td>@item.FinalClosureDate</td>
                 <td>@item.EndDate</td>
                 <td>
-                                        <div class="d-flex justify-content-around">
-                                            <div class="align-items-center">
-                                                           <a onclick="openEditModal(@item.Id)" class="editAcademicYearBtn btn btn-info text-white text-center">
-                                                               <i class="material-icons text-white">
-                                                                   Edit
-                                                               </i>
-                                                           </a>
-                                            </div>
-                                           
-                                        </div>
-                                    </td>
+                    <div class="d-flex justify-content-around">
+                        <div class="align-items-center">
+                            <a onclick="openEditModal(@item.Id)" class="editAcademicYearBtn btn btn-info text-white text-center">
+                                <i class="material-icons text-white">
+                                    Edit
+                                </i>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <div class="align-items-center">
+                            <a onclick="deleteAcademicYear(@item.Id)" class="deleteAcademicYearBtn btn btn-info text-white text-center">
+                                <i class="material-icons text-white">
+                                    Delete
+                                </i>
+                            </a>
+                        </div>
+
+                    </div>
+                </td>
                 
             </tr>
         }

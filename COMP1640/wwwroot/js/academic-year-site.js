@@ -35,11 +35,22 @@ submitAcademicYearBtn.addEventListener('click', function(event) {
     createAcademicYearForm.submit();
 });
 
-// Edit
-// Popup Edit
+
+
+// Edit Section --
 var editAcademicYearModal = document.getElementById("editAcademicYearModal");
 var editAcademicYearBtn = document.getElementsByClassName("editAcademicYearBtn");
 var editAcademicYearSpan = document.getElementsByClassName("close")[0];
+
+window.onclick = function (event) {
+    if (event.target == editAcademicYearModal) {
+        editAcademicYearModal.style.display = "none";
+    }
+}
+
+editAcademicYearSpan.onclick = function () {
+    editAcademicYearModal.style.display = "none";
+}
 
 var editAcademicYearId;
 
@@ -51,19 +62,8 @@ const editEndDate = document.getElementById('edit_end_date');
 
 // Form, btn
 var editAcademicYearSubmitBtn = document.getElementById("submit-edit-btn");
-var editAcademicYearForm = document.getElementById("edit_academic_year_form");
 
-
-// handle
-editAcademicYearSpan.onclick = function () {
-    editAcademicYearModal.style.display = "none";
-}
-window.onclick = function (event) {
-    if (event.target == editAcademicYearModal) {
-        editAcademicYearModal.style.display = "none";
-    }
-}
-
+// Edit Section End --
 editAcademicYearSubmitBtn.addEventListener('click', function(event) {
     // Prevent the form from submitting by default
     event.preventDefault();
@@ -105,6 +105,28 @@ async function openEditModal(id)
 }
 
 
+
+
+// Delete Section --
+function deleteAcademicYear(id) {
+    var confirmResult = confirm("Are you sure?");
+    if (!confirmResult)
+        return;
+
+    $.ajax({
+        url: window.location.origin + '/academic-year/' + id,
+        type: 'DELETE',
+        success: function () {
+            window.location.reload();
+        },
+        error: function (request, status, error) {
+            alert(request.responseText);
+        }
+    });
+}
+// Delete Section End --
+
+// Extension methods --
 function getAcademicYearById(id)
 {
     return new Promise((resolve, reject) => {
@@ -141,3 +163,4 @@ function validateClosureDates(closure, finalClosure, end) {
 
     return true;
 }
+// Extension methods End --
