@@ -1,4 +1,5 @@
 ﻿using COMP1640.Services;
+using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,11 @@ namespace COMP1640.Controllers
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
-
-        public HRMController(HRMService hRMService)
+        private readonly CategoryService _categoryService;
+        public HRMController(HRMService hRMService, CategoryService categoryService)
         {
             _hRMService = hRMService;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
@@ -94,6 +96,21 @@ namespace COMP1640.Controllers
         {
             var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
             return Ok(allowedRoleForCreateAccount);
+        }
+        [HttpGet]
+        [Route("viewcategory")]
+        public async Task<IActionResult> ViewCategory([FromQuery] GetListCategoryRequest request)
+        {
+            var category = await _categoryService.GetListCategory(request);
+            return View(category);
+        }
+
+        [HttpPost]
+        [Route("createcategory")]
+        public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
+        {
+            await _categoryService.CreateCategory(request);
+            return RedirectToAction("ViewCategory");
         }
     }
 }
