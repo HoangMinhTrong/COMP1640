@@ -3,9 +3,12 @@
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
 using Domain;
+using Domain.DomainEvents;
 using Domain.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
+using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Services
 {
@@ -15,16 +18,23 @@ namespace COMP1640.Services
         private readonly IDepartmentRepository _departmentRepo;
         private readonly IRoleRepository _roleRepo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserInfo _currentUser;
+        private readonly IServiceProvider _serviceProvider;
 
         public HRMService(IUserRepository userRepo
             , IUnitOfWork unitOfWork
             , IDepartmentRepository departmentRepo
-            , IRoleRepository roleRepo)
+            , IRoleRepository roleRepo
+            , ICurrentUserInfo currentUser
+            , IServiceProvider serviceProvider)
         {
             _userRepo = userRepo;
             _unitOfWork = unitOfWork;
             _departmentRepo = departmentRepo;
             _roleRepo = roleRepo;
+            _currentUser = currentUser;
+            _serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
@@ -44,7 +54,15 @@ namespace COMP1640.Services
                 .Select(new UserDetailInfoResponse().GetSelection())
                 .FirstOrDefaultAsync();
         }
-
+        
+        public async Task<UserDetailInfoResponse> GetPersonalProfileAsync()
+        {
+            var userId = _currentUser.Id;
+            return await _userRepo
+                .GetById(userId)
+                .Select(new UserDetailInfoResponse().GetSelection())
+                .FirstOrDefaultAsync();
+        }
         public async Task<bool> CreateUserAsync(CreateUserRequest request)
         {
             var existedEmail = await _userRepo.AnyAsync(_ => _.Email == request.Email);
@@ -78,6 +96,7 @@ namespace COMP1640.Services
             }
             await _unitOfWork.SaveChangesAsync();
 
+            await HandleSendMailOnCreateUserAsync(user);
             return true;
         }
 
@@ -148,5 +167,15 @@ namespace COMP1640.Services
                 Departments = departments
             };
         }
+
+
+        #region Send Mail
+        private async Task HandleSendMailOnCreateUserAsync(User user)
+        {
+            var mediator = _serviceProvider.GetService<IMediator>();
+            if (mediator != null)
+                 await mediator.Publish(new CreateUserDomainEvent(user));
+        }
+        #endregion
     }
 }

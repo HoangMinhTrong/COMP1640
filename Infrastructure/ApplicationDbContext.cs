@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Infrastructure.SeedData;
 using System.Reflection.Emit;
+using Infrastructure.Configurations;
 
 namespace Infrastructure
 {
@@ -84,6 +85,8 @@ namespace Infrastructure
                 .HasForeignKey<Department>(d => d.QaCoordinatorId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .IsRequired(false);
+
+            builder.ApplyConfiguration(new IdeaConfiguration());
         }
 
         public void RemoveDefaultAspTableName(ModelBuilder builder)
