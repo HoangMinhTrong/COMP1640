@@ -1,12 +1,19 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Utilities.EmailService;
+using Utilities.EmailService.Interface;
 using Utilities.Identity;
 
 namespace Utilities
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddEmailSender(this IServiceCollection services)
+        {
+            return services.AddSingleton<IEmailSender, EmailSender>();
+        }
+
         public static IServiceCollection AddCurrentUserInfo(this IServiceCollection services)
         {
             services.AddScoped(serviceProvider =>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
 using Utilities;
+using Utilities.EmailService.DTOs;
 
 namespace COMP1640.Extentions
 {
@@ -38,6 +39,7 @@ namespace COMP1640.Extentions
         {
            services.AddScoped<HRMService>();
            services.AddScoped<IdeaService>();
+           services.AddScoped<CategoryService>();
            return services;
             
         }
@@ -66,6 +68,24 @@ namespace COMP1640.Extentions
                        options.Scope.Add("profile");
                        options.SaveTokens = true;
                    });
+
+            return services;
+        }
+
+        public static IServiceCollection AddMailgun(this IServiceCollection services, IConfiguration configuration)
+        {
+            var existed = configuration.GetSection("MailgunSettings").Exists();
+            if (existed)
+                services.Configure<MailgunSetting>(configuration.GetSection("MailgunSettings"));
+
+            return services;
+        }
+
+        public static IServiceCollection AddMailkit(this IServiceCollection services, IConfiguration configuration)
+        {
+            var existed = configuration.GetSection("MailkitSetting").Exists();
+            if (existed)
+                services.Configure<MailkitSetting>(configuration.GetSection("MailkitSetting"));
 
             return services;
         }

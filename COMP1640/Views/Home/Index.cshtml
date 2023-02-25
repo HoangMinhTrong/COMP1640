@@ -1,20 +1,169 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    
-
-    <div id="addIdeaBtn" class="pt-3 pb-4 d-flex">
-         <div class="align-items-center">
-             <a class="btn btn-info text-white text-center" asp-controller="Idea" asp-action="Create">
-                 <i class="material-icons text-white">
-                     Add Idea
-                 </i>
-             </a>
-         </div>
-     </div>
-
+﻿<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+<div class="container">
+    <div class="row height d-flex justify-content-center align-items-center">
+        <div class="col-md-8 m-3">
+            <div class="search d-flex">
+                <input type="text" class="form-control" placeholder="Search here">
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
 </div>
+<section class="vh-100" style="background-color: #5f59f7;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+                <div id="addIdeaBtn" class="pt-3 pb-4 d-flex">
+                    <div class="align-items-center">
+                        <a class="btn btn-info text-white text-center" asp-controller="Idea" asp-action="Create">
+                            <i class="material-icons text-white">
+                                Add Idea
+                            </i>
+                        </a>
+                    </div>
+                </div>
+                <div class="btn-group ">
+                    <button type="button" class="btn btn-dark dropdown-toggle mb-4" data-bs-toggle="dropdown" aria-expanded="false">
+                        Most Popular Ideas
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Most Viewed</a></li>
+                        <li><a class="dropdown-item" href="#">Latest Ideas</a></li>
+                        <li><a class="dropdown-item" href="#">Latest Comments</a></li>
+                        <li><a class="dropdown-item" href="#">Latest Comments</a></li>
+
+                    </ul>
+                </div>
+                <div class="card mb-5" style="border-radius: 15px;">
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp"
+                                     alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                     style="width: 70px;">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex flex-row align-items-center mb-2">
+                                    <div class="flex-shrink-0">
+                                        <span class="mx-10"></span>
+                                        <strong>Vu Huong</strong> on 15 April , 2023
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="btn btn-outline-light btn-rounded btn-sm"
+                                         data-mdb-ripple-color="dark">
+                                        Staff
+                                    </div>
+                                    <div class="btn btn-outline-light btn-rounded btn-sm"
+                                         data-mdb-ripple-color="dark">
+                                        Department A
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="btn btn-outline-light btn-rounded btn-sm"
+                             data-mdb-ripple-color="dark">
+                            Category
+                        </div>
+                        <div class="d-flex justify-content-start align-items-center">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+                        </div>
+                        <hr />
+                        <div class="small d-flex justify-content-start">
+                            <a href="#!" class="d-flex align-items-center me-3">
+                                <i class="far fa-thumbs-up me-2"></i>
+                                <p class="mb-0">11</p>
+                            </a>
+
+                            <a href="#!" class="d-flex align-items-center me-3">
+                                <i class="far fa-thumbs-down me-2"></i>
+                                <p class="mb-0">22</p>
+                            </a>
+                            <a href="#!" class="d-flex align-items-center me-3">
+                                <i class="far fa-comment-dots me-2"></i>
+                                <p class="mb-0">12</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>     
+        </div>
+    </div>
+</section>
+
+
+<section class="vh-100" style="background-color: #5f59f7;">
+
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+                <div class="card mb-5" style="border-radius: 15px;">
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp"
+                                     alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                     style="width: 70px;">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <div class="d-flex flex-row align-items-center mb-2">
+                                    <div class="flex-shrink-0">
+                                        <span class="mx-10"></span>
+                                        <strong>Vu Huong</strong> on 15 April , 2023
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="btn btn-outline-light btn-rounded btn-sm"
+                                         data-mdb-ripple-color="dark">
+                                        Staff
+                                    </div>
+                                    <div class="btn btn-outline-light btn-rounded btn-sm"
+                                         data-mdb-ripple-color="dark">
+                                        Department A
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="btn btn-outline-light btn-rounded btn-sm"
+                             data-mdb-ripple-color="dark">
+                            Category
+                        </div>
+                        <div class="d-flex justify-content-start align-items-center">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+                        </div>
+                        <hr />
+                        <div class="small d-flex justify-content-start">
+                            <a href="#!" class="d-flex align-items-center me-3">
+                                <i class="far fa-thumbs-up me-2"></i>
+                                <p class="mb-0">11</p>
+                            </a>
+
+                            <a href="#!" class="d-flex align-items-center me-3">
+                                <i class="far fa-thumbs-down me-2"></i>
+                                <p class="mb-0">22</p>
+                            </a>
+                            <a href="#!" class="d-flex align-items-center me-3">
+                                <i class="far fa-comment-dots me-2"></i>
+                                <p class="mb-0">12</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>

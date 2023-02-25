@@ -9,28 +9,26 @@
         index += pageSize;
 }
 
- <div class="container">
+<div class="container">
     <div class="pt-3 pb-4 d-block">
         <div class="align-items-center d-flex justify-content-between pb-3">
             <a class="btn btn-info text-white text-center" id="addUserBtn">
-                 <i class="material-icons text-white">
-                     Add
-                 </i>
+               <i class="material-icons text-white">Add</i>
             </a>
             <div class="form-outline">
-                <input id="searching-input" type="search" type="button" class="form-control" placeholder="Search" onkeypress="Searching(event, this.value)" />
+                <input id="searching-input" type="search" class="form-control" placeholder="Search" onkeypress="Searching(event, this.value)" />
             </div>
-        </>
-     </div>
+        </div>
+    </div>
     <div id="addUserModal" class="modalAdd">
-        <!-- Modal content -->
+    <!-- Modal content -->
         <div class="modal-content bg-dark w-50">
             <span class="close">&times;</span>
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 col-xl-4">
                     <div class="col-md-8 col-xl-6 text-center mx-auto">
-                        <p class="fw-bold text-success mb-2">Add new User</p>
-                        <h6 class="fw-bold">Please fill out the blank</h6>
+                         <p class="fw-bold text-success mb-2">Add new User</p>
+                         <h6 class="fw-bold">Please fill out the blank</h6>
                     </div>
                     <form method="post" asp-action="Create" enctype="multipart/form-data">
                         <div class="mb-3">
@@ -50,7 +48,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <div class="form-group">
                                 <div class="input-group">
@@ -63,7 +60,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <div class="form-group">
                                 <div class="input-group">

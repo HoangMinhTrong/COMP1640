@@ -1,4 +1,5 @@
 ﻿using COMP1640.Services;
+using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.Idea.Responses;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Controllers
 {
+    [Route("idea")]
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;

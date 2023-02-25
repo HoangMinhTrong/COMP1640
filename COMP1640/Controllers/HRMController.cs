@@ -1,4 +1,5 @@
 ﻿using COMP1640.Services;
+using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +12,6 @@ namespace COMP1640.Controllers
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
-
         public HRMController(HRMService hRMService)
         {
             _hRMService = hRMService;
@@ -30,6 +30,18 @@ namespace COMP1640.Controllers
             var vm = await _hRMService.GetUserInfoDetailsAsync(id);
             return Json(vm);
         }
+        
+        [HttpGet]
+        [Route("detail")]
+        public async Task<IActionResult> ViewProfile()
+        {
+            var profile = await _hRMService.GetPersonalProfileAsync();
+            if(profile == null)
+                ModelState.AddModelError("get_personal_profile", "Failure to get user profile details.");
+
+            return View(profile);
+        }
+
 
         [HttpPut("user/{id:int}")]
         public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditUserRequest request)
@@ -63,8 +75,7 @@ namespace COMP1640.Controllers
             ModelState.AddModelError("delete_failure", "Failure to delete an account.");
             return RedirectToAction("Index");
         }
-
-
+        
         [HttpPut("user/{id:int}/activate")]
         public async Task<IActionResult> ToggleActivate([FromRoute] int id)
         {
@@ -83,5 +94,6 @@ namespace COMP1640.Controllers
             var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
             return Ok(allowedRoleForCreateAccount);
         }
+        
     }
 }
