@@ -5,6 +5,7 @@ using COMP1640.ViewModels.Idea.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Controllers
 {
@@ -12,11 +13,9 @@ namespace COMP1640.Controllers
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;
-        private readonly CategoryService _categoryService;
-        public IdeaController(IdeaService ideaService, CategoryService categoryService)
+        public IdeaController(IdeaService ideaService)
         {
             _ideaService = ideaService;
-            _categoryService = categoryService;
         }
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -41,21 +40,12 @@ namespace COMP1640.Controllers
             ModelState.AddModelError("create_exception", "Failure to create a new idea.");
             return View();
         }
-        
-        [HttpGet]
-        [Route("viewcategory")]
-        public async Task<IActionResult> ViewCategory([FromQuery] GetListCategoryRequest request)
-        {
-            var category = await _categoryService.GetListCategory(request);
-            return View(category);
-        }
 
-        [HttpPost]
-        [Route("createcategory")]
-        public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
+        [HttpGet]
+        public async Task<IActionResult> Index([FromQuery] GetListIdeaRequest request)
         {
-            await _categoryService.CreateCategory(request);
-            return RedirectToAction("ViewCategory");
+            var ideas = await _ideaService.GetListIdeas(request);
+            return View(ideas);
         }
     }
 }
