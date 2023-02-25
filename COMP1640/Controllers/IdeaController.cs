@@ -40,9 +40,9 @@ namespace COMP1640.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit([FromQuery] int ideaId)
+        public async Task<IActionResult> Edit([FromQuery] int id)
         {
-            var vm = await _ideaService.GetIdeaByIdAsync(ideaId);
+            var vm = await _ideaService.GetIdeaByIdAsync(id);
             var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
             var selectList = new SelectList(category_list.Categories, "Id", "Name");
             ViewBag.Categories = selectList;
@@ -52,7 +52,7 @@ namespace COMP1640.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditIdeaRequest request)
         {
-            if (!ModelState.IsValid) return RedirectToAction("Index");
+            if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
 
             var isSucceed = await _ideaService.EditIdeaAsync(request);
             if (isSucceed) return RedirectToAction("Index", "Home");

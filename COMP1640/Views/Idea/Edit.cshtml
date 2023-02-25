@@ -3,14 +3,11 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit Idea</h1>
-
-<div>
-	<header class="bg-dark"></header>
+<div style="width:80%; margin:auto">
 	<div class="container-fluid">
-		<div class="card  mb-3">
+		<div class="card mb-3">
 			<div class="card-header py-3">
-				<p class="text-primary m-0 fw-bold">Edit Post</p>
+				<p class="m-0 fw-bold text-center text-uppercase">Edit Idea</p>
 			</div>
 		</div>
 	</div>
@@ -21,13 +18,13 @@
 				<div class="card-body">
 					<input asp-for="Id" hidden="hidden" />
 					<div class="row">
-						<div class="col-sm-12 col-md-7 col-lg-8">
+						<div class="col-sm-12 col-md-6 col-lg-7">
 							<div class="mb-3">
 								<label class="form-label" for="title"><strong> Title*</strong></label>
 								<input asp-for="Title" id="title" class="form-control" type="text" placeholder="Idea's title" name="title" required />
 							</div>
 						</div>
-						<div class="col-sm-12 col-md-4 col-lg-4">
+						<div class="col-sm-12 col-md-6 col-lg-5">
 							<div class="mb-3">
 								<label class="form-label" for="attach_file"><strong>Attach file</strong><br /></label>
 								<input class="form-control" type="file" id="attach_file" name="attach_file" />

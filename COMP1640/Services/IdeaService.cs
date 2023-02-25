@@ -68,10 +68,11 @@ namespace COMP1640.Services
         }
         public async Task<IdeaDetailsResponse> GetIdeaByIdAsync(int ideaId)
         {
-            return await _ideaRepo
-                 .GetById(ideaId)
+            var idea = await _ideaRepo
+                .GetById(ideaId)
                 .Select(new IdeaDetailsResponse().GetSelection())
                 .FirstOrDefaultAsync();
+            return idea;
         }
 
         public async Task<bool> EditIdeaAsync(EditIdeaRequest request)
