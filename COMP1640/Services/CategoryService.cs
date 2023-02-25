@@ -40,8 +40,20 @@ public class CategoryService
                 Id = _.Id,
                 Name = _.Name,
                 TenantId = _.TenantId,
-            })
+                IsDelete = _.IsDeleted,
+            }).Where(x=>!x.IsDelete)
             .ToListAsync();
+    }
+    
+    public async Task<bool> DeleteCategory(int id)
+    {
+        var category = await _categoryRepository.GetById(id).FirstOrDefaultAsync();
+        if (category == null)
+            return false;
+
+        category.SoftDelete();
+        await _unitOfWork.SaveChangesAsync();
+        return true;
     }
 
 }

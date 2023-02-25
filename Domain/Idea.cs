@@ -31,5 +31,8 @@ namespace Domain
         public virtual Department Department { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<Reaction> Reactions { get; set; } = new HashSet<Reaction>();
+
+
+       
     }
 }
