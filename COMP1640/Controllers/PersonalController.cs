@@ -1,8 +1,10 @@
 ﻿using COMP1640.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace COMP1640.Controllers
 {
+    [Route("personal")]
     public class PersonalController : Controller
     {
   
@@ -13,14 +15,19 @@ namespace COMP1640.Controllers
             _personalService = personalService;
 
         }
-        [HttpGet]        
+        [HttpGet("profile")]        
         public async Task<IActionResult> ViewProfile()
         {
             var pf = await _personalService.GetProfileDetailsAsync();
-            if (pf == null)
-                ModelState.AddModelError("get_personal_profile", "Failure to get user profile details.");
-            return View(pf);
+            return Json(pf);
         }
+        
+        public IActionResult ViewYourIdea()        
+        {            
+            return View();
+        }
+
+       
 
     }
 }
