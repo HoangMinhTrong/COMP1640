@@ -13,5 +13,6 @@ namespace Infrastructure.Repositories
         {
             return await GetAsync(_ => _.Id == categoryId);
         }
+
     }
 }

@@ -41,6 +41,7 @@ namespace COMP1640.Extentions
            services.AddScoped<AcademicYearService>();
 
            services.AddScoped<IdeaService>();
+           services.AddScoped<CategoryService>();
            return services;
      
         }

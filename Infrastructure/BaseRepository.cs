@@ -24,29 +24,22 @@ namespace Infrastructure
             return Entities.Where(expression);
         }
 
-        public async Task InsertAsync(T entity, bool saveChanges = false)
+        public async Task InsertAsync(T entity)
         {
             await Entities.AddAsync(entity);
-
-            if (saveChanges)
-                await DbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(T entity, bool saveChanges = false)
+        public async Task DeleteAsync(T entity)
         {
             Entities.Remove(entity);
 
-            if (saveChanges)
-                await DbContext.SaveChangesAsync();
+        
         }
 
-        public async Task DeleteRangeAsync(IEnumerable<T> entities, bool saveChanges = false)
+        public async Task DeleteRangeAsync(IEnumerable<T> entities)
         {
             if (entities.Any())
                 Entities.RemoveRange(entities);
-
-            if (saveChanges)
-                await DbContext.SaveChangesAsync();
         }
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
