@@ -2,6 +2,7 @@ using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Category.Responses;
 using Domain;
 using Domain.Interfaces;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,52 +11,29 @@ namespace COMP1640.Services;
 
 public class CategoryService
 {
-    private readonly ICategoryRepository _category;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
     public CategoryService(ICategoryRepository category, IUnitOfWork unitOfWork)
     {
-        _category = category;
+        _categoryRepository = category;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<InforCategoryResponse> CreateCategory(CreateCategoryRequest categoryRequest)
+    public async Task<bool> CreateCategory(CreateCategoryRequest categoryRequest)
     {
-        if (categoryRequest == null)
-        {
-            throw new Exception("Category information is null, please try again.");
-        }
-        var count =  _category.GetAll().Count();
-        var infoCategory = new InforCategoryResponse()
-        {
-            Id = ++count,
-            Name = categoryRequest.Name,
-            TenantId = categoryRequest.TenantId,
-        };
-        var category = new Category()
-        {
-            Id = infoCategory.Id,
-            Name = infoCategory.Name,
-            TenantId = infoCategory.TenantId
-        };
+        var category = new Category(categoryRequest.Name);
 
-        if (category.Id <= 0)
-        {
-            throw new Exception("Category ID is invalid, please try again.");
-        }
 
-        var obj = await _category.Add(category);
+            await _categoryRepository.InsertAsync(category);
+            await _unitOfWork.SaveChangesAsync();
 
-        if (obj == null)
-        {
-            throw new Exception("Error while creating a category, please try again.");
-        }
-        return infoCategory;
+            return true;
     }
 
 
     public async Task<List<InforCategoryResponse>> GetListCategory(GetListCategoryRequest request)
     {
-        return await _category
+        return await _categoryRepository
             .GetQuery(request.Filter())
             .Select(_ => new InforCategoryResponse
             {

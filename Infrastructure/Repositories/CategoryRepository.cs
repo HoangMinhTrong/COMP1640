@@ -13,11 +13,6 @@ namespace Infrastructure.Repositories
         {
             return await GetAsync(_ => _.Id == categoryId);
         }
-        public async Task<Category> Add(Category category)
-        {
-            await  DbContext.Categories.AddAsync(category);
-            await DbContext.SaveChangesAsync();
-            return category;
-        }
+
     }
 }

@@ -77,8 +77,7 @@ namespace COMP1640.Controllers
             ModelState.AddModelError("delete_failure", "Failure to delete an account.");
             return RedirectToAction("Index");
         }
-
-
+        
         [HttpPut("user/{id:int}/activate")]
         public async Task<IActionResult> ToggleActivate([FromRoute] int id)
         {
@@ -97,20 +96,6 @@ namespace COMP1640.Controllers
             var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
             return Ok(allowedRoleForCreateAccount);
         }
-        [HttpGet]
-        [Route("viewcategory")]
-        public async Task<IActionResult> ViewCategory([FromQuery] GetListCategoryRequest request)
-        {
-            var category = await _categoryService.GetListCategory(request);
-            return View(category);
-        }
-
-        [HttpPost]
-        [Route("createcategory")]
-        public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
-        {
-            await _categoryService.CreateCategory(request);
-            return RedirectToAction("ViewCategory");
-        }
+        
     }
 }
