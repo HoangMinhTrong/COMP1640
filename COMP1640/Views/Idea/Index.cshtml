@@ -1,0 +1,119 @@
+﻿@using COMP1640.ViewModels.Idea.Responses
+@model List<IdeaContentResponse>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+
+
+<div class="container">
+    <div class="row height d-flex justify-content-center align-items-center">
+        <div class="col-md-8 m-3">
+            <div class="search d-flex">
+                <input type="text" class="form-control" placeholder="Search here">
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<section>
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center" title="Header-button">
+            <div class="pt-4 col col-xl-10">
+                <div class="d-flex justify-content-between align-self-center">
+                    <div id="addIdeaBtn" class="d-flex mb-4">
+                        <div class="align-items-center">
+                            <a class="btn btn-info text-white text-center" asp-controller="Idea" asp-action="Create">
+                                <i class="material-icons text-white">
+                                    Add Idea
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("Index", "HomeController", FormMethod.Get))
+                    {
+                        <div class="mb-4">
+                            <select name="filterOption" class="btn btn-success">
+                                <option value="option1">Lastest Ideas</option>
+                                <option value="option2">Most Viewed</option>
+                                <option value="option3">Lastest Comment</option>
+                            </select>
+                            <button type="submit" class="btn btn-light">Filter</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center align-items-center">
+            @foreach (var item in Model)
+            {
+
+                <div class="col col-xl-10" aria-label="Card example">
+                    <div class="card mb-5" style="border-radius: 15px;">
+                        <div class="card-body p-4">
+
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="flex-shrink-0">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp"
+                                     alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                     style="width: 70px;">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="d-flex flex-row align-items-center mb-2">
+                                        <div class="flex-shrink-0">
+                                            <span class="mx-10"></span>
+                                            <strong>@item.CreatedBy</strong> @item.CreatedOn
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="btn btn-outline-light btn-rounded btn-sm"
+                                         data-mdb-ripple-color="dark">
+                                            @item.UserRole
+                                        </div>
+                                        <div class="btn btn-outline-light btn-rounded btn-sm"
+                                         data-mdb-ripple-color="dark">
+                                            @item.Department
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="btn btn-outline-light btn-rounded btn-sm"
+                             data-mdb-ripple-color="dark">
+                                @item.Category
+                            </div>
+                            <div class="d-flex justify-content-start align-items-center">
+                                @item.Content
+                            </div>
+                            <hr />
+                            <div class="small d-flex justify-content-start">
+                                <a href="#!" class="d-flex align-items-center me-3">
+                                    <i class="far fa-thumbs-up me-2"></i>
+                                    <p class="mb-0">@item.LikeCount</p>
+                                </a>
+
+                                <a href="#!" class="d-flex align-items-center me-3">
+                                    <i class="far fa-thumbs-down me-2"></i>
+                                    <p class="mb-0">@item.DislikeCount</p>
+                                </a>
+                                <a href="#!" class="d-flex align-items-center me-3">
+                                    <i class="far fa-comment-dots me-2"></i>
+                                    <p class="mb-0">12</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <nav aria-label="Page navigation example" class="pb-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+</section>
+

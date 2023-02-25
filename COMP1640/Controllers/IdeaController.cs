@@ -38,5 +38,12 @@ namespace COMP1640.Controllers
             ModelState.AddModelError("create_exception", "Failure to create a new idea.");
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Index([FromQuery] GetListIdeaRequest request)
+        {
+            var ideas = await _ideaService.GetListIdeas(request);
+            return View(ideas);
+        }
     }
 }
