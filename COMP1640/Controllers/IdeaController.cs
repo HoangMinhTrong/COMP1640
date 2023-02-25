@@ -1,16 +1,18 @@
 ﻿using COMP1640.Services;
+using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.Idea.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Controllers
 {
+    [Route("idea")]
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;
-
         public IdeaController(IdeaService ideaService)
         {
             _ideaService = ideaService;
@@ -37,6 +39,13 @@ namespace COMP1640.Controllers
 
             ModelState.AddModelError("create_exception", "Failure to create a new idea.");
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index([FromQuery] GetListIdeaRequest request)
+        {
+            var ideas = await _ideaService.GetListIdeas(request);
+            return View(ideas);
         }
     }
 }

@@ -129,8 +129,9 @@
             }
         </tbody>
     </table>
-    <partial name="_ModalEdit"/>
-    <br />
+     <partial name="_ModalEdit"/>
+
+     <br />
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount 
     <nav aria-label="...">
       <ul class="pagination pagination-sm">
@@ -141,5 +142,6 @@
                 </li>
         }
       </ul>
-    </nav>  
+    </nav>
+    
 </div>

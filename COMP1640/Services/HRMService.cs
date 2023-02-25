@@ -36,7 +36,6 @@ namespace COMP1640.Services
             _currentUser = currentUser;           
             _serviceProvider = serviceProvider;
         }
-
         public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
         {
             return  _userRepo
