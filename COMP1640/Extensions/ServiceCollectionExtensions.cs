@@ -39,11 +39,11 @@ namespace COMP1640.Extentions
         {
            services.AddScoped<HRMService>();
            services.AddScoped<AcademicYearService>();
-
            services.AddScoped<IdeaService>();
            services.AddScoped<CategoryService>();
+           services.AddScoped<PersonalService>();
+
            return services;
-     
         }
 
         public static IServiceCollection AddIdentity(this IServiceCollection services)

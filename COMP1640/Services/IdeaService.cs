@@ -3,6 +3,7 @@ using COMP1640.ViewModels.Idea.Responses;
 using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Services
 {
@@ -11,12 +12,18 @@ namespace COMP1640.Services
         private readonly IIdeaRepository _ideaRepo;
         private readonly ICategoryRepository _categoryRepo;
         private readonly IUnitOfWork _unitOfWork;
-
-        public IdeaService(IIdeaRepository ideaRepo, IUnitOfWork unitOfWork, ICategoryRepository categoryRepo)
+        private readonly ICurrentUserInfo _current;
+        public IdeaService(
+            IIdeaRepository ideaRepo, 
+            IUnitOfWork unitOfWork, 
+            ICategoryRepository categoryRepo,
+            ICurrentUserInfo current)
         {
             _ideaRepo = ideaRepo;
             _unitOfWork = unitOfWork;
             _categoryRepo = categoryRepo;
+            _current = current;
+
         }
 
         public async Task<bool> CreateIdeaAsync(CreateIdeaRequest request)
@@ -25,12 +32,16 @@ namespace COMP1640.Services
             if (category == null)
                 return false;
 
+            var departmentId = _current.DepartmentId;
+
             var idea = new Idea
                 (
                     request.Title,
                     request.Content,
                     request.IsAnonymous,
-                    category
+                    request.CategoryId,
+                    1,
+                    departmentId
                 );
 
             await _ideaRepo.InsertAsync(idea);
@@ -55,5 +66,35 @@ namespace COMP1640.Services
                 Categories = categories,
             };
         }
+
+
+        public async Task<List<IdeaContentResponse>> GetListIdeas(GetListIdeaRequest request)
+        {
+            return await _ideaRepo
+                .GetQuery(request.Filter())
+                .Select(_ => new IdeaContentResponse
+                {
+                    Id = _.Id,
+                    Title = _.Title,
+                    Content = _.Content,
+                    Department = _.Department.Name,
+                    CreatedBy = _.CreatedByNavigation.UserName,
+                    CreatedOn = _.CreatedOn,
+                    UserRole = _.CreatedByNavigation
+                    .RoleUsers.Select(r => r.Role.Name).FirstOrDefault(),
+                    LikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.Like)
+                    .Count(),
+                    DislikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.DisLike)
+                    .Count(),
+                    Category = _.Category.Name,
+
+
+                })
+                .ToListAsync();
+        }
+
+
+
+
     }
 }
