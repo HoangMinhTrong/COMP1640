@@ -9,12 +9,14 @@ namespace Domain
 
         }
 
-        public Idea(string title, string content, bool isAnonymous, Category category)
+        public Idea(string title, string content, bool isAnonymous, int categoryId, int academicYearId, int departmentId)
         {
             Title = title;
             Content = content;
             IsAnonymous = isAnonymous;
-            Category = category;
+            CategoryId = categoryId;
+            AcademicYearId = academicYearId;
+            DepartmentId = departmentId;    
         }
 
         public string Title { get; set; }
