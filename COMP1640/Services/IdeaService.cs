@@ -44,7 +44,7 @@ namespace COMP1640.Services
                     departmentId
                 );
 
-            await _ideaRepo.InsertAsync(idea, false);
+            await _ideaRepo.InsertAsync(idea);
             await _unitOfWork.SaveChangesAsync();
 
             return true;

@@ -8,7 +8,7 @@ using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Controllers
 {
-    [Route("idea")]
+
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;
@@ -16,9 +16,12 @@ namespace COMP1640.Controllers
         {
             _ideaService = ideaService;
         }
-       /* [HttpGet]
+
+
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
+
             var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
             ViewBag.Categories = category_list.Categories?.Select(c => new SelectListItem()
             {
@@ -26,7 +29,8 @@ namespace COMP1640.Controllers
                 Text = c.Name,
             }).ToList();
             return View();
-        }*/
+ 
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateIdeaRequest request)
@@ -34,7 +38,7 @@ namespace COMP1640.Controllers
             if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
             
             var isSucceed = await _ideaService.CreateIdeaAsync(request);
-            if (isSucceed) return RedirectToAction("Index", "Home");
+            if (isSucceed) return RedirectToAction("Index", "Idea");
 
             ModelState.AddModelError("create_exception", "Failure to create a new idea.");
             return View();
