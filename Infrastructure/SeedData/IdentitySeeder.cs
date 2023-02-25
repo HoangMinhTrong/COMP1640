@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Utilities.Helpers;
 
 namespace Infrastructure.SeedData
 {
@@ -18,6 +19,7 @@ namespace Infrastructure.SeedData
             SeedRoles(builder);
             SeedUsers(builder);
             SeedUserRoles(builder);
+            SeedUserDepartment(builder);
             SeedTenantUser(builder);
         }
 
@@ -33,26 +35,26 @@ namespace Infrastructure.SeedData
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.Admin,
-                    Name = RoleTypeEnum.Admin.ToString(),
-                    NormalizedName = RoleTypeEnum.Admin.ToString().ToUpper()
+                    Name = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.Admin),
+                    NormalizedName = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.Admin).ToUpper()
                 },
                 new Role()
                 {
-                    Id = (int)RoleTypeEnum.Director,
-                    Name = RoleTypeEnum.Director.ToString(),
-                    NormalizedName = RoleTypeEnum.Director.ToString().ToUpper()
+                    Id = (int)RoleTypeEnum.QAManager,
+                    Name = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.QAManager),
+                    NormalizedName = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.QAManager).ToUpper()
                 },
                 new Role()
                 {
-                    Id = (int)RoleTypeEnum.Manager,
-                    Name = RoleTypeEnum.Manager.ToString(),
-                    NormalizedName = RoleTypeEnum.Manager.ToString().ToUpper()
+                    Id = (int)RoleTypeEnum.DepartmentQA,
+                    Name = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.DepartmentQA),
+                    NormalizedName = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.DepartmentQA).ToUpper()
                 },
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.Staff,
-                    Name = RoleTypeEnum.Staff.ToString(),
-                    NormalizedName = RoleTypeEnum.Staff.ToString().ToUpper()
+                    Name = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.Staff),
+                    NormalizedName = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.Staff).ToUpper()
                 }
             };
 
@@ -69,32 +71,61 @@ namespace Infrastructure.SeedData
                 Id = 1,
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
+                NormalizedEmail = "admin@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
                 NormalizedUserName = "admin@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
 
-            // Director 
+            // QA Manager 
             var director = new User
             {
                 Id = 2,
-                UserName = "director@gmail.com",
-                Email = "director@gmail.com",
+                UserName = "qamanager@gmail.com",
+                Email = "qamanager@gmail.com",
+                NormalizedEmail = "qamanager@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
-                NormalizedUserName = "director@gmail.com".ToUpper(),
+                NormalizedUserName = "qamanager@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
 
-            // Manager 
-            var manager = new User
+            // Department QA Coordinator 
+            var computingDepartmentQA = new User
             {
                 Id = 3,
-                UserName = "manager@gmail.com",
-                Email = "manager@gmail.com",
+                UserName = "computingdepartmentqa@gmail.com",
+                Email = "computingdepartmentqa@gmail.com",
+                NormalizedEmail = "computingdepartmentqa@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
-                NormalizedUserName = "manager@gmail.com".ToUpper(),
+                NormalizedUserName = "computingdepartmentqa@gmail.com".ToUpper(),
+                PasswordHash = hasher.HashPassword(null, "Default@123"),
+                SecurityStamp = Guid.NewGuid().ToString(),
+            };
+            
+            // Department QA Coordinator 
+            var businessDepartmentQA = new User
+            {
+                Id = 4,
+                UserName = "businessDepartmentQA@gmail.com",
+                Email = "businessDepartmentQA@gmail.com",
+                NormalizedEmail = "businessDepartmentQA@gmail.com".ToUpper(),
+                Gender = UserGenderEnum.Male,
+                NormalizedUserName = "businessDepartmentQA@gmail.com".ToUpper(),
+                PasswordHash = hasher.HashPassword(null, "Default@123"),
+                SecurityStamp = Guid.NewGuid().ToString(),
+            };
+            
+            // Department QA Coordinator 
+            var designDepartmentQA = new User
+            {
+                Id = 5,
+                UserName = "designDepartmentQA@gmail.com",
+                Email = "designDepartmentQA@gmail.com",
+                NormalizedEmail = "designDepartmentQA@gmail.com".ToUpper(),
+                Gender = UserGenderEnum.Male,
+                NormalizedUserName = "designDepartmentQA@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
@@ -102,9 +133,10 @@ namespace Infrastructure.SeedData
             // Staff 
             var staff = new User
             {
-                Id = 4,
+                Id = 6,
                 UserName = "staff@gmail.com",
                 Email = "staff@gmail.com",
+                NormalizedEmail = "staff@gmail.com".ToUpper(),
                 Gender = UserGenderEnum.Male,
                 NormalizedUserName = "staff@gmail.com".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
@@ -114,7 +146,9 @@ namespace Infrastructure.SeedData
             builder.Entity<User>().HasData(
                 admin,
                 director,
-                manager,
+                computingDepartmentQA,
+                businessDepartmentQA,
+                designDepartmentQA,
                 staff
             );
         }
@@ -131,20 +165,32 @@ namespace Infrastructure.SeedData
                 },
                 new RoleUser
                 {
-                    // Director
+                    // QA Manager
                     UserId = 2,
-                    RoleId = (int)RoleTypeEnum.Director,
+                    RoleId = (int)RoleTypeEnum.QAManager,
                 },
                 new RoleUser
                 {
-                    // Manager
+                    // Computing QA Coordinator
                     UserId = 3,
-                    RoleId = (int)RoleTypeEnum.Manager,
+                    RoleId = (int)RoleTypeEnum.DepartmentQA,
+                },
+                new RoleUser
+                {
+                    // Business QA Coordinator
+                    UserId = 4,
+                    RoleId = (int)RoleTypeEnum.DepartmentQA,
+                },
+                new RoleUser
+                {
+                    // Design QA Coordinator
+                    UserId = 5,
+                    RoleId = (int)RoleTypeEnum.DepartmentQA,
                 },
                 new RoleUser
                 {
                     // Staff
-                    UserId = 4,
+                    UserId = 6,
                     RoleId = (int)RoleTypeEnum.Staff,
                 },
             };
@@ -163,26 +209,89 @@ namespace Infrastructure.SeedData
                 },
                 new TenantUser
                 {
-                    // Director
+                    // QA Manager
                     UserId = 2,
                     TenantId = Tenant.Id,
                 },
                 new TenantUser
                 {
-                    // Manager
+                    // Department QA
                     UserId = 3,
                     TenantId = Tenant.Id,
                 }
                 ,new TenantUser
                 {
-                    // Staff
+                    // Department QA
                     UserId = 4,
                     TenantId = Tenant.Id,
+                },new TenantUser
+                {
+                    // Department QA
+                    UserId = 5,
+                    TenantId = Tenant.Id
+                },new TenantUser
+                {
+                    // Staff
+                    UserId = 6,
+                    TenantId = Tenant.Id
                 },
             };
 
             builder.Entity<TenantUser>().HasData(tenantUsers);
         }
 
+        private static void SeedUserDepartment(ModelBuilder builder)
+        {
+            var userRoles = new List<UserDepartment>()
+            {
+                new UserDepartment()
+                {
+                    // QA Computing
+                    UserId = 3,
+                    DepartmentId = 1
+                },
+                new UserDepartment()
+                {
+                    // QA Business
+                    UserId = 4,
+                    DepartmentId = 2
+                },
+                new UserDepartment()
+                {
+                    // QA Design
+                    UserId = 5,
+                    DepartmentId = 3
+                },
+                new UserDepartment()
+                {
+                    // Staff Computing
+                    UserId = 6,
+                    DepartmentId = 1
+                },
+                
+                new UserDepartment()
+                {
+                    // Admin Computing
+                    UserId = 1,
+                    DepartmentId = 1
+                },
+                
+                new UserDepartment()
+                {
+                    // Admin Computing
+                    UserId = 1,
+                    DepartmentId = 2
+                },
+                
+                new UserDepartment()
+                {
+                    // Admin Computing
+                    UserId = 1,
+                    DepartmentId = 3
+                }
+            };
+
+            builder.Entity<UserDepartment>().HasData(userRoles);
+        }
     }
 }

@@ -30,10 +30,12 @@ namespace COMP1640.Services
                     request.Title,
                     request.Content,
                     request.IsAnonymous,
-                    category
+                    request.CategoryId,
+                    1,
+                    1
                 );
 
-            await _ideaRepo.InsertAsync(idea);
+            await _ideaRepo.InsertAsync(idea, false);
             await _unitOfWork.SaveChangesAsync();
 
             return true;
@@ -54,6 +56,32 @@ namespace COMP1640.Services
             {
                 Categories = categories,
             };
+        }
+
+
+        public async Task<List<IdeaContentResponse>> GetListIdeas(GetListIdeaRequest request)
+        {
+            return await _ideaRepo
+                .GetQuery(request.Filter())
+                .Select(_ => new IdeaContentResponse
+                {
+                    Id = _.Id,
+                    Title = _.Title,
+                    Content = _.Content,
+                    Department = _.Department.Name,
+                    CreatedBy = _.CreatedByNavigation.UserName,
+                    CreatedOn =_.CreatedOn,
+                    UserRole = _.CreatedByNavigation
+                    .RoleUsers.Select(r => r.Role.Name).FirstOrDefault(),
+                    LikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.Like)
+                    .Count(),
+                    DislikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.DisLike)
+                    .Count(),
+                    Category = _.Category.Name,
+
+
+                })
+                .ToListAsync();
         }
     }
 }

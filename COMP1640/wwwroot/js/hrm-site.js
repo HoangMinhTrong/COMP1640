@@ -116,14 +116,14 @@ window.onclick = function (event) {
 }
 
 //Delete User
-function DeleteUser(id) {
-    var confirmResult = confirm("Are you sure you want to delete this item?");
+function ToggleActivateUser(id) {
+    var confirmResult = confirm("Are you sure?");
     if (!confirmResult)
         return;
 
     $.ajax({
-        url: window.location.origin + '/hrm/' + id,
-        type: 'DELETE',
+        url: window.location.origin + '/hrm/user/' + id +'/activate',
+        type: 'PUT',
         success: function () {
             window.location.reload();
         },
@@ -143,4 +143,42 @@ function NavigatePage(pageNo) {
             $('#mainbody').empty().html(result);
         },
     });
+}
+
+// Searching
+function Searching(e, searchTerm) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+
+        $.ajax({
+            url: window.location.origin + '/hrm',
+            type: 'GET',
+            data: {
+                SearchTerm: searchTerm.toLowerCase(),
+            },
+            success: function (result) {
+                $('#mainbody').empty().html(result);
+                $("#searching-input").val(searchTerm);
+            },
+        });
+    }
+}
+
+// Search_Idea
+function Search_Idea(e, searchTerm) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+
+        $.ajax({
+            url: window.location.origin + '/idea',
+            type: 'GET',
+            data: {
+                SearchTerm: searchTerm.toLowerCase(),
+            },
+            success: function (result) {
+                $('#mainbody').empty().html(result);
+                $("#searching-input-idea").val(searchTerm);
+            },
+        });
+    }
 }

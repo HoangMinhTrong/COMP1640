@@ -7,5 +7,7 @@
         public const string UserEmail = "UserEmail";
         public const string RoleId = "RoleId";
         public const string TenantId = "TenantId";
+        public const string DepartmentId = "DepartmentId";
+
     }
 }

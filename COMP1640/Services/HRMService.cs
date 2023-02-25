@@ -32,7 +32,8 @@ namespace COMP1640.Services
             return  _userRepo
                 .GetQuery(request.Filter())
                 .Select(new UserBasicInfoResponse().GetSelection())
-                .OrderBy(_ => _.Id)
+                .OrderBy(_ => _.RoleId)
+                .ThenBy(_ => _.Id)
                 .ToPagedList(request.PageNo, request.PageSize);
         }
 
@@ -49,22 +50,32 @@ namespace COMP1640.Services
             var existedEmail = await _userRepo.AnyAsync(_ => _.Email == request.Email);
             if (existedEmail)
                 return false;
-
-            var role = await _roleRepo.GetAsync(request.Role);
-            if (role == null)
-                return false;
-
+            
             var department = await _departmentRepo.GetAsync(request.DepartmentId);
             if (department == null)
                 return false;
+            
+            var role = await _roleRepo.GetAsync(request.Role);
+            if (role == null || role.Id == (int)RoleTypeEnum.Admin)
+                return false;
+
+            var isDepartmentQARole = role.Id == (int)RoleTypeEnum.DepartmentQA;
+            if (isDepartmentQARole)
+            {
+                if(department.QaCoordinatorId != null) return false;
+            }
 
             var user = new User(request.Email
                 , request.Birthday
                 , request.Gender
                 , role
                 , department);
-
+            
             await _userRepo.InsertAsync(user);
+            if (isDepartmentQARole)
+            {
+                department.UpdateQaCoordinator(user.Id);
+            }
             await _unitOfWork.SaveChangesAsync();
 
             return true;
@@ -83,6 +94,18 @@ namespace COMP1640.Services
                 , request.Birthday);
 
             await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ToggleActivateAsync(int id)
+        {
+            var user = await _userRepo.GetById(id).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            user.ToggleActivate();
+            await _unitOfWork.SaveChangesAsync();
+
             return true;
         }
 

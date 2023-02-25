@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Infrastructure.SeedData;
 using System.Reflection.Emit;
+using Infrastructure.Configurations;
 
 namespace Infrastructure
 {
@@ -51,10 +52,10 @@ namespace Infrastructure
                 .HasOne<Tenant>(tu => tu.Tenant)
                 .WithMany(t => t.TenantUsers)
                 .HasForeignKey(tu => tu.TenantId);
-            
+
             builder.Entity<UserDepartment>()
                 .HasKey(ud => new {ud.UserId, ud.DepartmentId});
-            
+
             builder.Entity<UserDepartment>()
                 .HasOne<User>(ud => ud.User)
                 .WithMany(u => u.UserDepartments)
@@ -77,6 +78,15 @@ namespace Infrastructure
                 .HasOne<Role>(ru => ru.Role)
                 .WithMany(r => r.RoleUsers)
                 .HasForeignKey(ru => ru.RoleId);
+
+            builder.Entity<Department>()
+                .HasOne(d => d.QaCoordinator)
+                .WithOne()
+                .HasForeignKey<Department>(d => d.QaCoordinatorId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .IsRequired(false);
+
+            builder.ApplyConfiguration(new IdeaConfiguration());
         }
 
         public void RemoveDefaultAspTableName(ModelBuilder builder)

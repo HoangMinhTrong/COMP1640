@@ -74,5 +74,10 @@ namespace Domain
         {
             Birthday = string.IsNullOrEmpty(birthday) ? DateTime.Parse(birthday) : null;
         }
+
+        public void ToggleActivate()
+        {
+            LockoutEnabled = !LockoutEnabled;
+        }
     }
 }

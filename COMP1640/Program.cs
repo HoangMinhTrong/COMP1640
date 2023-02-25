@@ -31,7 +31,6 @@ builder.Services
     .AddRazorRuntimeCompilation();
 
 var services = builder.Services;
-
 services.AddHttpContextAccessor();
 services.AddIdentity();
 services.AddScoped<IClaimsTransformation, MyClaimsTransformation>();
