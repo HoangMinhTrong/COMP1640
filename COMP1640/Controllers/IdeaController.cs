@@ -43,7 +43,7 @@ namespace COMP1640.Controllers
         }
         
         [HttpGet]
-        [Route("viewcategory")]
+        [Route("category")]
         public async Task<IActionResult> ViewCategory([FromQuery] GetListCategoryRequest request)
         {
             var category = await _categoryService.GetListCategory(request);
@@ -51,10 +51,20 @@ namespace COMP1640.Controllers
         }
 
         [HttpPost]
-        [Route("createcategory")]
+        [Route("category")]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
         {
             await _categoryService.CreateCategory(request);
+            return RedirectToAction("ViewCategory");
+        }
+        
+        [HttpPut("category/{id:int}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
+        {
+            var isSucceed = await _categoryService.DeleteCategory(id);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an category.");
             return RedirectToAction("ViewCategory");
         }
     }
