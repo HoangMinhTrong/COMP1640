@@ -41,7 +41,7 @@ namespace COMP1640.Services
 
         public async Task<CategoryForCreateIdeaResponse> GetCategoryForCreateIdeaAsync()
         {
-            var categories = await _categoryRepo.GetAll()
+            /*var categories = await _categoryRepo.GetAll()
                 .Select(c => new DropDownListBaseResponse()
                 {
                     Id = c.Id,
@@ -53,7 +53,8 @@ namespace COMP1640.Services
             return new CategoryForCreateIdeaResponse()
             {
                 Categories = categories,
-            };
+            };*/
+            throw new NotImplementedException();
         }
     }
 }
