@@ -61,8 +61,7 @@ namespace COMP1640.Controllers
             return View();
         }
 
-        [HttpPut("{id:int}")]
-        [Route("/idea/softdelete")]
+        [HttpPut("idea/softdelete/{id:int}")]
         public async Task<IActionResult> SoftDelete([FromRoute] int id)
         {
             var isSucceed = await _ideaService.SoftDeleteIdeaAsync(id);

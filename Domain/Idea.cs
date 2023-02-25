@@ -25,7 +25,6 @@ namespace Domain
         public int DepartmentId { get; set; }
         public int AcademicYearId { get; set; }
         public int CategoryId { get; set; }
-    
         public bool IsDeleted { get; set; }
 
         public virtual AcademicYear AcademicYear { get; set; }
