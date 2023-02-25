@@ -18,17 +18,17 @@ namespace COMP1640.Controllers
             _ideaService = ideaService;
             _categoryService = categoryService;
         }
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
-            ViewBag.Categories = category_list.Categories?.Select(c => new SelectListItem()
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name,
-            }).ToList();
-            return View();
-        }
+        // [HttpGet]
+        // public async Task<IActionResult> Create()
+        // {
+        //     var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
+        //     ViewBag.Categories = category_list.Categories?.Select(c => new SelectListItem()
+        //     {
+        //         Value = c.Id.ToString(),
+        //         Text = c.Name,
+        //     }).ToList();
+        //     return View();
+        // }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateIdeaRequest request)

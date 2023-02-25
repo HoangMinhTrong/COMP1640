@@ -13,12 +13,10 @@ public class CategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ApplicationDbContext _context;
-    public CategoryService(ICategoryRepository category, IUnitOfWork unitOfWork, ApplicationDbContext context)
+    public CategoryService(ICategoryRepository category, IUnitOfWork unitOfWork)
     {
         _categoryRepository = category;
         _unitOfWork = unitOfWork;
-        _context = context;
     }
 
     public async Task<bool> CreateCategory(CreateCategoryRequest categoryRequest)
