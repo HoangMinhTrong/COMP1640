@@ -32,6 +32,10 @@
         {
             <partial name="~/Views/Personal/Viewprofile.cshtml" />
         }
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
     </main>
     <footer class="navbar-dark">
         <div class="container py-4 py-lg-5">

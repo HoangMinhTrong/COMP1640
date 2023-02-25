@@ -52,7 +52,7 @@ namespace COMP1640.Services
 
         public async Task<CategoryForCreateIdeaResponse> GetCategoryForCreateIdeaAsync()
         {
-            var categories = await _categoryRepo.GetAll()
+            var categories = await _categoryRepo.GetAllQuery()
                 .Select(c => new DropDownListBaseResponse()
                 {
                     Id = c.Id,

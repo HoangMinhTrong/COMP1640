@@ -12,5 +12,11 @@ public class IdeaConfiguration : IEntityTypeConfiguration<Idea>
             .WithMany(u => u.Ideas)
             .HasForeignKey(i => i.CreatedBy)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(i => i.AcademicYear)
+            .WithMany(u => u.Ideas)
+            .HasForeignKey(i => i.AcademicYearId)
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
     }
 }
