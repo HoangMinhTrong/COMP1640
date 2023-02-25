@@ -26,7 +26,6 @@ namespace COMP1640.Services
             _departmentRepo = departmentRepo;
             _roleRepo = roleRepo;
         }
-
         public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
         {
             return  _userRepo
