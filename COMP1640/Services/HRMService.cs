@@ -21,6 +21,7 @@ namespace COMP1640.Services
         private readonly ICurrentUserInfo _currentUser;
         private readonly IServiceProvider _serviceProvider;
 
+
         public HRMService(IUserRepository userRepo
             , IUnitOfWork unitOfWork
             , IDepartmentRepository departmentRepo
@@ -32,8 +33,7 @@ namespace COMP1640.Services
             _unitOfWork = unitOfWork;
             _departmentRepo = departmentRepo;
             _roleRepo = roleRepo;
-            _currentUser = currentUser;
-            _serviceProvider = serviceProvider;
+            _currentUser = currentUser;           
             _serviceProvider = serviceProvider;
         }
         public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
@@ -54,14 +54,7 @@ namespace COMP1640.Services
                 .FirstOrDefaultAsync();
         }
         
-        public async Task<UserDetailInfoResponse> GetPersonalProfileAsync()
-        {
-            var userId = _currentUser.Id;
-            return await _userRepo
-                .GetById(userId)
-                .Select(new UserDetailInfoResponse().GetSelection())
-                .FirstOrDefaultAsync();
-        }
+       
         public async Task<bool> CreateUserAsync(CreateUserRequest request)
         {
             var existedEmail = await _userRepo.AnyAsync(_ => _.Email == request.Email);
