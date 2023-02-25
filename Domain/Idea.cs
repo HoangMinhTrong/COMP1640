@@ -25,6 +25,8 @@ namespace Domain
         public int DepartmentId { get; set; }
         public int AcademicYearId { get; set; }
         public int CategoryId { get; set; }
+    
+        public bool IsDeleted { get; set; }
 
         public virtual AcademicYear AcademicYear { get; set; }
         public virtual User CreatedByNavigation { get; set; }
@@ -41,6 +43,11 @@ namespace Domain
             Content = content;
             IsAnonymous = isAnonymous;
             CategoryId = categoryId;
+        }
+
+        public void SoftDelete()
+        {
+            IsDeleted = true;
         }
     }
 }

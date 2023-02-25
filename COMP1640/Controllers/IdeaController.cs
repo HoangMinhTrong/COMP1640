@@ -40,9 +40,9 @@ namespace COMP1640.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit([FromQuery] int ideaId)
+        public async Task<IActionResult> Edit([FromQuery] int id)
         {
-            var vm = await _ideaService.GetIdeaByIdAsync(ideaId);
+            var vm = await _ideaService.GetIdeaByIdAsync(id);
             var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
             var selectList = new SelectList(category_list.Categories, "Id", "Name");
             ViewBag.Categories = selectList;
@@ -61,10 +61,11 @@ namespace COMP1640.Controllers
             return View();
         }
 
-        //[HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        [HttpPut("{id:int}")]
+        [Route("/idea/softdelete")]
+        public async Task<IActionResult> SoftDelete([FromRoute] int id)
         {
-            var isSucceed = await _ideaService.DeleteIdeaAsync(id);
+            var isSucceed = await _ideaService.SoftDeleteIdeaAsync(id);
             if (isSucceed) return Ok();
 
             ModelState.AddModelError("delete_failure", "Failure to delete an idea.");

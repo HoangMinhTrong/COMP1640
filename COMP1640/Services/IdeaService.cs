@@ -69,7 +69,7 @@ namespace COMP1640.Services
         public async Task<IdeaDetailsResponse> GetIdeaByIdAsync(int ideaId)
         {
             return await _ideaRepo
-                 .GetById(ideaId)
+                .GetById(ideaId)
                 .Select(new IdeaDetailsResponse().GetSelection())
                 .FirstOrDefaultAsync();
         }
@@ -85,9 +85,15 @@ namespace COMP1640.Services
             return true;
         }
 
-        public Task<bool> DeleteIdeaAsync(int id)
+        public async Task<bool> SoftDeleteIdeaAsync(int ideaId)
         {
-            throw new NotImplementedException();
+            var existIdea = await _ideaRepo.GetAsync(_ => _.Id == ideaId);
+            if (existIdea == null) return false;
+
+            existIdea.SoftDelete();
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
     }
 }
