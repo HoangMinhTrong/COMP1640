@@ -17,7 +17,7 @@ namespace COMP1640.Controllers
         {
             _ideaService = ideaService;
         }
-        [HttpGet]
+/*        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
@@ -27,7 +27,7 @@ namespace COMP1640.Controllers
                 Text = c.Name,
             }).ToList();
             return View();
-        }
+        }*/
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateIdeaRequest request)
