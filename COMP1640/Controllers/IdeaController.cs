@@ -60,5 +60,15 @@ namespace COMP1640.Controllers
             ModelState.AddModelError("edit_failure", "Failure to edit an idea.");
             return View();
         }
+
+        //[HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var isSucceed = await _ideaService.DeleteIdeaAsync(id);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an idea.");
+            return RedirectToAction("Index");
+        }
     }
 }

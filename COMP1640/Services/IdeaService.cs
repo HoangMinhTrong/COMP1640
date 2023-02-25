@@ -83,7 +83,11 @@ namespace COMP1640.Services
 
             await _unitOfWork.SaveChangesAsync();
             return true;
+        }
 
+        public Task<bool> DeleteIdeaAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
