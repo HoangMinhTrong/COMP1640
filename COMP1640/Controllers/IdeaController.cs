@@ -40,13 +40,16 @@ namespace COMP1640.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit([FromQuery] int ideaId)
         {
-            //var vm = await _ideaService.GetIdeaDetailsAsync(ideaId);
-            return View();
+            var vm = await _ideaService.GetIdeaByIdAsync(ideaId);
+            var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
+            var selectList = new SelectList(category_list.Categories, "Id", "Name");
+            ViewBag.Categories = selectList;
+            return View(vm);
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(EditIdeaRequest request)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index");

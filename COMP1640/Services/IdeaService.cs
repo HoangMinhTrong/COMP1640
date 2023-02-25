@@ -66,18 +66,24 @@ namespace COMP1640.Services
                 Categories = categories,
             };
         }
-        public Task<IdeaDetailsResponse> GetIdeaDetailsAsync(int ideaId)
+        public async Task<IdeaDetailsResponse> GetIdeaByIdAsync(int ideaId)
         {
-            //return await _ideaRepo
-            //    .GetById(ideaId)
-            //    .Select(new IdeaDetailsResponse().GetSelection())
-            //    .FirstOrDefaultAsync();
-            throw new NotImplementedException();
+            return await _ideaRepo
+                 .GetById(ideaId)
+                .Select(new IdeaDetailsResponse().GetSelection())
+                .FirstOrDefaultAsync();
         }
 
-        public Task<bool> EditIdeaAsync(EditIdeaRequest request)
+        public async Task<bool> EditIdeaAsync(EditIdeaRequest request)
         {
-            throw new NotImplementedException();
+            var existIdea = await _ideaRepo.GetAsync(_ => _.Id == request.Id);
+            if (existIdea == null) return false;
+
+            existIdea.EditInfo(request.Title, request.Content, request.IsAnonymous, request.CategoryId);
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+
         }
     }
 }

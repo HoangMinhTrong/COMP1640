@@ -31,5 +31,16 @@ namespace Domain
         public virtual Department Department { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<Reaction> Reactions { get; set; } = new HashSet<Reaction>();
+
+        public void EditInfo(string title
+            , string content
+            , bool isAnonymous
+            , int categoryId)
+        {
+            Title = title;
+            Content = content;
+            IsAnonymous = isAnonymous;
+            CategoryId = categoryId;
+        }
     }
 }

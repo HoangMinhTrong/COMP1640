@@ -1,4 +1,4 @@
-﻿
+﻿@model COMP1640.ViewModels.Idea.Responses.IdeaDetailsResponse
 @{
     ViewData["Title"] = "Edit";
 }
@@ -16,14 +16,15 @@
 	</div>
 	<section></section>
 	<div class="container-fluid">
-		<form method="put" asp-action="Edit" enctype="multipart/form-data">
+		<form method="post" asp-action="Edit" enctype="multipart/form-data">
 			<div class="card mb-3">
 				<div class="card-body">
+					<input asp-for="Id" hidden="hidden" />
 					<div class="row">
 						<div class="col-sm-12 col-md-7 col-lg-8">
 							<div class="mb-3">
 								<label class="form-label" for="title"><strong> Title*</strong></label>
-								<input id="title" class="form-control" type="text" placeholder="Idea's title" name="title" required />
+								<input asp-for="Title" id="title" class="form-control" type="text" placeholder="Idea's title" name="title" required />
 							</div>
 						</div>
 						<div class="col-sm-12 col-md-4 col-lg-4">
@@ -36,14 +37,14 @@
 
 					<div class="mb-3">
 						<label class="form-label" for="content"><strong>Content*</strong><br /></label>
-						<textarea id="content" class="form-control" rows="4" name="content" placeholder="Idea's content" required></textarea>
+						<textarea asp-for="Content" id="content" class="form-control" rows="4" name="content" placeholder="Idea's content" required></textarea>
 					</div>
 
 					<div class="row mb-2">
 						<div class="col">
 							<div class="mb-3">
 								<label class="form-label" for="category_list"><strong>Category*</strong></label>
-								<select id="category_list" name="CategoryId"
+								<select asp-for="CategoryId" id="category_list" name="CategoryId"
 										class="form-select" required="required"
 										asp-items="ViewBag.Categories">
 									<option value="" disabled>Select Category</option>
@@ -52,21 +53,19 @@
 						</div>
 					</div>
 					<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="true" id="isAnonymous" name="isAnonymous">
+						<input asp-for="IsAnonymous" class="form-check-input" type="checkbox" value="true" id="isAnonymous" name="isAnonymous">
 						<input class="form-check-input" type="hidden" value="false" id="isAnonymous" name="isAnonymous">
 						<label class="form-check-label" for="isAnonymous">
 							Is Anonymous
 						</label>
 					</div>
 
-@*
-
 					<div class="form-check">
 						<input class="form-check-input" type="checkbox" value="" id="defaultCheck2" required>
 						<label class="form-check-label" for="defaultCheck2">
 							I agree with our Terms and Conditions
 						</label>
-					</div>*@
+					</div>
 				</div>
 			</div>
 			<div class="text-end mb-3">
