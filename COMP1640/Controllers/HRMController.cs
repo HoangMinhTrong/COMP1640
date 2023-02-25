@@ -12,11 +12,9 @@ namespace COMP1640.Controllers
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
-        private readonly CategoryService _categoryService;
-        public HRMController(HRMService hRMService, CategoryService categoryService)
+        public HRMController(HRMService hRMService)
         {
             _hRMService = hRMService;
-            _categoryService = categoryService;
         }
 
         [HttpGet]
