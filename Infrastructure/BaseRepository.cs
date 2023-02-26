@@ -33,7 +33,8 @@ namespace Infrastructure
         {
             Entities.Remove(entity);
 
-        
+            if (saveChanges)
+                await DbContext.SaveChangesAsync();
         }
 
         public async Task DeleteRangeAsync(IEnumerable<T> entities)
