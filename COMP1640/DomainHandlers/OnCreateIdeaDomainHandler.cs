@@ -1,4 +1,5 @@
-﻿using Domain.DomainEvents;
+﻿using COMP1640.ViewModels.Idea.Requests;
+using Domain.DomainEvents;
 using Domain.Interfaces;
 using MediatR;
 using Utilities.EmailService.Interface;
@@ -13,15 +14,18 @@ namespace COMP1640.DomainHandlers
         private readonly ICurrentUserInfo _currentUser;
         private readonly IEmailSender _emailSender;
         private readonly IDepartmentRepository _departmentRepo;
+        private readonly IConfiguration _configuration;
         public OnCreateIdeaDomainHandler(ICurrentUserInfo currentUserInfo
             , IEmailSender emailSender
             , IRazorViewRenderer razorViewRenderer
-            , IDepartmentRepository departmentRepo)
+            , IDepartmentRepository departmentRepo
+            , IConfiguration configuration)
         {
             _currentUser = currentUserInfo;
             _emailSender = emailSender;
             _razorViewRenderer = razorViewRenderer;
             _departmentRepo = departmentRepo;
+            _configuration = configuration;
         }
 
         public async Task Handle(CreateIdeaDomainEvent @event, CancellationToken cancellationToken)
@@ -31,7 +35,8 @@ namespace COMP1640.DomainHandlers
             if (QACoordinator == null)
                 return;
 
-            var body = await _razorViewRenderer.RenderToStringAsync("OnIdeaAddedEmailTemplate", @event.Idea);
+            var model = new IdeaAddedEmailModel(@event.Idea, _configuration.GetSection("APIRoute").Value);
+            var body = await _razorViewRenderer.RenderToStringAsync("OnIdeaAddedEmailTemplate", model);
             if (string.IsNullOrEmpty(body))
                 return;
 
@@ -39,7 +44,7 @@ namespace COMP1640.DomainHandlers
                 (
                     $"[COMP1640]: Idea \"{@event.Idea.Title}\" Was Created"
                     , body
-                    , new List<string> { "trongltgcd18787@fpt.edu.vn" }
+                    , new List<string> { QACoordinator.Email }
                 );
         }
     }
