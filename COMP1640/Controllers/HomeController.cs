@@ -28,21 +28,7 @@ namespace COMP1640.Controllers
                 IdeaIndexItems = ideas,
                 Categories = await _categoryService.GetCategoryPicklistAsync(),
                 SortOptionPicklist = IdeaIndexOption.SortOptionPicklist,
-                
-                // Comment sort option switch since just sort by descending
-                // PopularSortParm = request.SortOption == IdeaIndexOption.PopularIdeaSort
-                //     ? IdeaIndexOption.PopularIdeaSortDesc
-                //     : IdeaIndexOption.PopularIdeaSort,
-                // LatestIdeaSortParm = request.SortOption == IdeaIndexOption.LatestIdeaSort
-                //     ? IdeaIndexOption.LatestIdeaSortDesc
-                //     : IdeaIndexOption.LatestIdeaSort,
-                // LatestCommentSortParm = request.SortOption == IdeaIndexOption.LatestCommentSort
-                //     ? IdeaIndexOption.LatestCommentSortDesc 
-                //     : IdeaIndexOption.LatestCommentSort,
-                // ReactionSortParm = request.SortOption == IdeaIndexOption.ReactionSort
-                //     ? IdeaIndexOption.ReactionSortDesc 
-                //     : IdeaIndexOption.ReactionSort,
-                
+
                 CurrentSearchString = request.SearchString,
                 CurrentCategoryFilter = request.FilterOption,
                 CurrentSort = request.SortOption,
