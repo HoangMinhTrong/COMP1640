@@ -71,18 +71,10 @@ namespace Utilities.EmailService
 
             using (var smtpClient = new SmtpClient())
             {
-                try
-                {
-                    await smtpClient.ConnectAsync(_mailkitSettings.Host, _mailkitSettings.Port, SecureSocketOptions.StartTls);
-                    await smtpClient.AuthenticateAsync(_mailkitSettings.User, _mailkitSettings.Password);
-                    await smtpClient.SendAsync(mailMessage);
-                    await smtpClient.DisconnectAsync(true);
-                }
-                catch (Exception e)
-                {
-
-                    throw;
-                }
+                await smtpClient.ConnectAsync(_mailkitSettings.Host, _mailkitSettings.Port, SecureSocketOptions.StartTls);
+                await smtpClient.AuthenticateAsync(_mailkitSettings.User, _mailkitSettings.Password);
+                await smtpClient.SendAsync(mailMessage);
+                await smtpClient.DisconnectAsync(true);
             }
         }
 

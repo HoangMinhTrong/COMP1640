@@ -1,4 +1,6 @@
-﻿using COMP1640.ViewModels.Idea.Requests;
+﻿using COMP1640.Utils;
+using COMP1640.ViewModels.Common;
+using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.Idea.Responses;
 using Domain;
 using Domain.Interfaces;
@@ -52,7 +54,7 @@ namespace COMP1640.Services
 
         public async Task<CategoryForCreateIdeaResponse> GetCategoryForCreateIdeaAsync()
         {
-            var categories = await _categoryRepo.GetAll()
+            var categories = await _categoryRepo.GetAllQuery()
                 .Select(c => new DropDownListBaseResponse()
                 {
                     Id = c.Id,
@@ -66,7 +68,6 @@ namespace COMP1640.Services
                 Categories = categories,
             };
         }
-
 
         public async Task<List<IdeaContentResponse>> GetListIdeas(GetListIdeaRequest request)
         {
@@ -92,8 +93,69 @@ namespace COMP1640.Services
                 .ToListAsync();
         }
 
+        
+        public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request)
+        {
+            var queryable = _ideaRepo.GetAllQuery();
+        
+            // Filter
+            queryable = FilterQuery(request, queryable);
+            
+            // Sort
+            queryable = SortingQuery(request, queryable);
+            var totalCount = queryable.Count();
+            
+            queryable = PaginatedList<Idea>.CreatePangingQueryAsync(queryable, request.PageNumber ?? 1,
+                request.PageSize ?? IdeaPagingOption.DefaultPageSize);
 
+            var ideaIndexItems = await queryable
+                .Select(new IdeaIndexItem().GetSelection())
+                .AsNoTracking()
+                .AsSplitQuery()
+                .ToListAsync();
+            
+            return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNumber ?? 1,
+                request.PageSize ?? IdeaPagingOption.DefaultPageSize);
+        }
+        private static IQueryable<Idea> FilterQuery(GetIdeaIndexRequest request, IQueryable<Idea> queryable)
+        {
+            if (request.FilterOption.HasValue)
+                queryable = queryable.Where(idea => idea.CategoryId == request.FilterOption.Value);
 
+            // Check search string
+            if (!string.IsNullOrEmpty(request.SearchString))
+                request.PageNumber = 1;
+            else
+                request.SearchString = request.CurrentSearch;
 
+            // Filter by search string
+            if (!string.IsNullOrWhiteSpace(request.SearchString))
+                queryable = queryable.Where(idea =>
+                    idea.Title.ToLower().Contains(request.SearchString.ToLower()));
+
+            return queryable;
+        }
+        
+        private static IQueryable<Idea> SortingQuery(GetIdeaIndexRequest request, IQueryable<Idea> queryable)
+        {
+            queryable = request.SortOption switch
+            {
+                // TODO: Implement Views count
+                // case IdeaIndexOption.PopularIdeaSort:
+                // queryable = queryable.OrderByDescending(x => x.View); 
+                // break;
+                IdeaIndexOption.ReactionSort => queryable.OrderByDescending(x =>
+                    x.Reactions.Count(r => r.Status == ReactionStatusEnum.Like) -
+                    x.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike)),
+                
+                // TODO: Implement comment model
+                // case IdeaIndexOption.LatestCommentSort:
+                //     queryable = queryable.OrderBy(x => x.Price);
+                //     break;
+                IdeaIndexOption.LatestIdeaSort => queryable.OrderByDescending(x => x.CreatedOn),
+                _ => queryable.OrderByDescending(x => x.CreatedOn)
+            };
+            return queryable;
+        }
     }
 }

@@ -14,3 +14,17 @@ window.onclick = function (event) {
         addCategoryModal.style.display = "none";
     }
 }
+//Delete User
+function DeleteCategory(id) {
+    var confirmResult = confirm("Are you sure you want to delete this category?");
+    if (!confirmResult)
+        return;
+
+    $.ajax({
+        url: window.location.origin + '/idea/category/' + id,
+        type: 'PUT',
+        success: function () {
+            window.location.reload();
+        },
+    });
+}

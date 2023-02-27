@@ -72,14 +72,11 @@
                     <td>@item.Name</td>
                     
                     <td>
-                        <div class="d-flex justify-content-around">
-                            <div class="align-items-center">
-                                <a class="btn btn-danger text-white text-center" style="cursor:pointer" onclick="">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </div>
-                        </div>
+                        <a class="btn btn-danger text-white text-center" style="cursor:pointer" onclick=DeleteCategory(@item.Id)>
+                                                           <i class="bi bi-trash"></i>
+                                                       </a>
                     </td>
+                     
                 </tr>
             }
         </tbody>

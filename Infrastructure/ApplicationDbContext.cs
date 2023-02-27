@@ -33,6 +33,7 @@ namespace Infrastructure
             // Seeding data here
             var tenant = IdentitySeeder.Tenant;
             IdentitySeeder.Seeds(builder);
+            AcademicYearSeeder.Seeds(builder, tenant);
             DepartmentSeeder.Seeds(builder, tenant);
             CategorySeeder.Seeds(builder, tenant);
 

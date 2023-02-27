@@ -1,8 +1,9 @@
 ﻿using Domain.DomainEvents;
 using MediatR;
 using Utilities.EmailService.Interface;
+using Utilities.Helpers;
 
-namespace COMP1640.DomainHandler
+namespace COMP1640.DomainHandlers
 {
     public class OnCreateUserDomainHandler : INotificationHandler<CreateUserDomainEvent>
     {
@@ -15,12 +16,11 @@ namespace COMP1640.DomainHandler
 
         public async Task Handle(CreateUserDomainEvent @event, CancellationToken cancellationToken)
         {
+            var body = RazorViewRenderer.RenderToString("OnIdeaAddedEmailTemplate.cshtml", @event.user);
             // Testing for now
-            var result = _emailSender.SendEmailAsync("Test Mail"
+            await _emailSender.SendEmailAsync("Test Mail"
                 , "Test body message"
                 , new List<string> { @event.user.Email });
-
-            await Task.CompletedTask;
         }
     }
 }
