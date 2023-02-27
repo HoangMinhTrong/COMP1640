@@ -80,6 +80,7 @@ namespace COMP1640.Services
                     Department = _.Department.Name,
                     CreatedBy = _.CreatedByNavigation.UserName,
                     CreatedOn = _.CreatedOn,
+                    IsAnomymous = _.IsAnonymous,
                     UserRole = _.CreatedByNavigation
                     .RoleUsers.Select(r => r.Role.Name).FirstOrDefault(),
                     LikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.Like)
@@ -87,8 +88,6 @@ namespace COMP1640.Services
                     DislikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.DisLike)
                     .Count(),
                     Category = _.Category.Name,
-
-
                 })
                 .ToListAsync();
         }

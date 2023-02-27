@@ -9,7 +9,7 @@ using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Controllers
 {
-    [Route("idea")]
+ /*   [Route("idea")]*/
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;
@@ -42,6 +42,7 @@ namespace COMP1640.Controllers
         }
 
         [HttpGet]
+        [Route("viewidea")]
         public async Task<IActionResult> Index([FromQuery] GetListIdeaRequest request)
         {
             var ideas = await _ideaService.GetListIdeas(request);

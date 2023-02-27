@@ -13,6 +13,7 @@
         public int DislikeCount { get; set; }
         public int CommentCount { get; set; }
         public string Category { get; set; }
+        public bool IsAnomymous { get; set; }
         //public virtual User CreatedByNavigation { get; set; }
         //public virtual Department Department { get; set; }
         //public virtual ICollection<Reaction> Reactions { get; set; } = new HashSet<Reaction>();
