@@ -85,9 +85,9 @@ namespace COMP1640.Extentions
 
         public static IServiceCollection AddMailkit(this IServiceCollection services, IConfiguration configuration)
         {
-            var existed = configuration.GetSection("MailkitSetting").Exists();
+            var existed = configuration.GetSection("MailkitSettings").Exists();
             if (existed)
-                services.Configure<MailkitSetting>(configuration.GetSection("MailkitSetting"));
+                services.Configure<MailkitSetting>(configuration.GetSection("MailkitSettings"));
 
             return services;
         }

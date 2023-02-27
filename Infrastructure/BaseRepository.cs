@@ -32,8 +32,6 @@ namespace Infrastructure
         public async Task DeleteAsync(T entity)
         {
             Entities.Remove(entity);
-
-        
         }
 
         public async Task DeleteRangeAsync(IEnumerable<T> entities)
