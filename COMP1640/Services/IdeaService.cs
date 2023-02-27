@@ -52,21 +52,16 @@ namespace COMP1640.Services
             return true;
         }
 
-        public async Task<CategoryForCreateIdeaResponse> GetCategoryForCreateIdeaAsync()
+        public async Task<List<CategoryForCreateIdeaResponse>> GetCategoryForCreateIdeaAsync()
         {
-            var categories = await _categoryRepo.GetAllQuery()
-                .Select(c => new DropDownListBaseResponse()
+            return await _categoryRepo.GetAllQuery()
+                .Select(c => new CategoryForCreateIdeaResponse()
                 {
                     Id = c.Id,
                     Name = c.Name
                 })
                 .AsNoTracking()
                 .ToListAsync();
-
-            return new CategoryForCreateIdeaResponse()
-            {
-                Categories = categories,
-            };
         }
 
         public async Task<List<IdeaContentResponse>> GetListIdeas(GetListIdeaRequest request)
@@ -81,15 +76,10 @@ namespace COMP1640.Services
                     Department = _.Department.Name,
                     CreatedBy = _.CreatedByNavigation.UserName,
                     CreatedOn = _.CreatedOn,
-                    UserRole = _.CreatedByNavigation
-                    .RoleUsers.Select(r => r.Role.Name).FirstOrDefault(),
-                    LikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.Like)
-                    .Count(),
-                    DislikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.DisLike)
-                    .Count(),
+                    UserRole = _.CreatedByNavigation.RoleUsers.Select(r => r.Role.Name).FirstOrDefault(),
+                    LikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.Like).Count(),
+                    DislikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.DisLike).Count(),
                     Category = _.Category.Name,
-
-
                 })
                 .ToListAsync();
         }

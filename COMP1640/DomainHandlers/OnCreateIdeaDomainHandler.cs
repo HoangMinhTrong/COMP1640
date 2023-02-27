@@ -33,7 +33,7 @@ namespace COMP1640.DomainHandlers
 
             await _emailSender.SendEmailAsync
                 (
-                    $"{_currentUser.Name} was created idea: {@event.Idea.Title} "
+                    $"{_currentUser.Name} created a idea: {@event.Idea.Title}"
                     , body
                     , new List<string> { QACoordinator.Email }
                 );

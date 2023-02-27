@@ -15,9 +15,6 @@ namespace COMP1640.ViewModels.Idea.Requests
                         ? true
                          : (_.Title.Contains(SearchTerm)
                             || _.Content.Contains(SearchTerm));
-
-
-
         }
     }
 }
