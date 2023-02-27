@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230224125333_academic_year")]
-    partial class academic_year
+    [Migration("20230227075634_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,6 +81,9 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -96,12 +99,14 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            IsDeleted = false,
                             Name = "Category 1",
                             TenantId = 1
                         },
                         new
                         {
                             Id = 2,
+                            IsDeleted = false,
                             Name = "Category 2",
                             TenantId = 1
                         });
@@ -264,28 +269,28 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "1a06350b-6416-4523-862c-e7920e52855b",
+                            ConcurrencyStamp = "752117c9-9e0a-4c07-b6dc-410f9f5d8be1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "6151162a-8730-4c03-9d3f-f0251f40b025",
+                            ConcurrencyStamp = "8ed7c828-ea29-4ebb-a771-9d5680104fe1",
                             Name = "University QA Manager",
                             NormalizedName = "UNIVERSITY QA MANAGER"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "8c73b72e-ac79-496d-89aa-9b6c48a2de78",
+                            ConcurrencyStamp = "99e1ec94-f44d-4a78-a41b-aee3533f1aa5",
                             Name = "Department QA Coordinator",
                             NormalizedName = "DEPARTMENT QA COORDINATOR"
                         },
                         new
                         {
                             Id = 4,
-                            ConcurrencyStamp = "4b8a27c2-b6fa-4414-87b0-2599108baed6",
+                            ConcurrencyStamp = "6d88a0cc-44f2-42dc-a372-81390cddc949",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         });
@@ -486,16 +491,16 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "711bf031-0ea5-40e3-b6f2-690b71a6f5e3",
+                            ConcurrencyStamp = "ac26c8c9-5bcf-4569-b57d-0d9b618f34d4",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             Gender = (byte)1,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEhL6CUfvk4yQVFgpimYlISdfyO2iOIzqEN+VGIggRrFQHd0I23crI21SLEzf13dag==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBGriFA61Dw85eL/JDWlH1Opwxbc54cvrcn5JjGixOvzCo1NBkooFXhXJW7j3EOt3g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "26329384-390d-40c2-a509-90881fee2260",
+                            SecurityStamp = "c08cb058-af98-49a4-bd6a-256889c86a8c",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         },
@@ -503,16 +508,16 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d1c81eb1-cfaa-4010-9878-01e9782e1cec",
+                            ConcurrencyStamp = "917ec3d4-4644-48fe-bf31-6cf14607b89f",
                             Email = "qamanager@gmail.com",
                             EmailConfirmed = false,
                             Gender = (byte)1,
                             LockoutEnabled = false,
                             NormalizedEmail = "QAMANAGER@GMAIL.COM",
                             NormalizedUserName = "QAMANAGER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKwhJNzOaYA6syNXPX0rPYs825qqX5T7cqnKGRHP9y99EVOJCHN0PgxBKNvR34dpww==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECQCjJ+ELQXEyfuuqRIfFSA78P4qdCsdQISPUhyvF/Rd1Q/nN3OFk8lBTEH1x5JKIQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "64d90277-918b-4d5d-9c65-4f34225fddf4",
+                            SecurityStamp = "2fb56db7-921f-4134-b85a-2c85a916a0ab",
                             TwoFactorEnabled = false,
                             UserName = "qamanager@gmail.com"
                         },
@@ -520,16 +525,16 @@ namespace Infrastructure.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "35279eac-166c-4966-a2d1-79f16ec7ffc4",
+                            ConcurrencyStamp = "bc0f258b-f2df-4384-8afc-04028e71b486",
                             Email = "computingdepartmentqa@gmail.com",
                             EmailConfirmed = false,
                             Gender = (byte)1,
                             LockoutEnabled = false,
                             NormalizedEmail = "COMPUTINGDEPARTMENTQA@GMAIL.COM",
                             NormalizedUserName = "COMPUTINGDEPARTMENTQA@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOQGjTQ6652Ta7O73bWFgTWTMSbyD+/X9d4m22PrHLkBKeVbzYIkWnKDEeXmoLlOSw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECmKkERtjVJ7B1RM+Kp0bXGq/v0obJ5dxmXWb7E4S48dV0XJALO81fnupq4CMR/7hA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "49c1ad79-6b85-443a-9f88-26ea696acb0a",
+                            SecurityStamp = "bbb8e5ae-e584-413d-8b0f-c51e448d23d0",
                             TwoFactorEnabled = false,
                             UserName = "computingdepartmentqa@gmail.com"
                         },
@@ -537,16 +542,16 @@ namespace Infrastructure.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0ad798a9-00c4-442e-bdd1-4132e1194a9d",
+                            ConcurrencyStamp = "018a932d-998b-4bc4-ade1-f6ad97985470",
                             Email = "businessDepartmentQA@gmail.com",
                             EmailConfirmed = false,
                             Gender = (byte)1,
                             LockoutEnabled = false,
                             NormalizedEmail = "BUSINESSDEPARTMENTQA@GMAIL.COM",
                             NormalizedUserName = "BUSINESSDEPARTMENTQA@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK+zL6PshTHPRyZ7HANS3f+cPvSCAsyIPDX463jWmgqp+ZxwEmmA/oOmwHrCkdos/Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMPcmrY1M5/2e8+XXT1abSyeE+ka0eDhpDJJL27G9bSXrJ0/5t5kGhbPG2R+XvxWkg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "75e858bb-56ea-4398-a9f4-ed5e7d4bdb9e",
+                            SecurityStamp = "dc34e831-c2fb-4b72-8a92-e87b0ddebdd8",
                             TwoFactorEnabled = false,
                             UserName = "businessDepartmentQA@gmail.com"
                         },
@@ -554,16 +559,16 @@ namespace Infrastructure.Migrations
                         {
                             Id = 5,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d31d1660-f7db-4366-afbc-667b7af4a725",
+                            ConcurrencyStamp = "6a5924b7-706c-4411-a250-3c074829477f",
                             Email = "designDepartmentQA@gmail.com",
                             EmailConfirmed = false,
                             Gender = (byte)1,
                             LockoutEnabled = false,
                             NormalizedEmail = "DESIGNDEPARTMENTQA@GMAIL.COM",
                             NormalizedUserName = "DESIGNDEPARTMENTQA@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBpjp6tLjI+3fMIVHqVB8v2WzF6qn+fXu9o3X/9+kJnuNZshCgCwOEFt/wyAvZjewg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAJLBaDEi0dvz7c4JU3TyRNYVZQvdfgNb9oliAO0916bEXiKthytSUo3TYk7FvjmMQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1546a5e6-7d70-46cb-af34-53918b0a5df9",
+                            SecurityStamp = "42ad87b2-76c1-4253-a669-026c00d3d2ee",
                             TwoFactorEnabled = false,
                             UserName = "designDepartmentQA@gmail.com"
                         },
@@ -571,16 +576,16 @@ namespace Infrastructure.Migrations
                         {
                             Id = 6,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a6951f72-5476-4d03-a6c1-d4aa147220a4",
+                            ConcurrencyStamp = "ce2bb93c-f67c-4f17-a857-0d69a3b8c491",
                             Email = "staff@gmail.com",
                             EmailConfirmed = false,
                             Gender = (byte)1,
                             LockoutEnabled = false,
                             NormalizedEmail = "STAFF@GMAIL.COM",
                             NormalizedUserName = "STAFF@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPqylgl4aUDOIoiQFKgkmfZkH13xhB6Xh60950wX3jUpz0t3Ld37ju7N/Ej+4jwP6Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB1GXKWiJ6E4Edlkfaeoxx296YoKf+l3fmFzAXqhV88V9chF7g4yB4YmyZhS6DYaFA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2ce42af2-10d3-4e79-9542-4aa78e47822d",
+                            SecurityStamp = "834d6a14-1548-4ee6-8289-0ac1c3579440",
                             TwoFactorEnabled = false,
                             UserName = "staff@gmail.com"
                         });
@@ -756,8 +761,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.AcademicYear", "AcademicYear")
                         .WithMany("Ideas")
                         .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Domain.Category", "Category")
                         .WithMany("Ideas")

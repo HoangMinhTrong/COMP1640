@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-    public partial class academic_year : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,6 +34,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -379,11 +380,11 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "Name", "TenantId" },
+                columns: new[] { "Id", "IsDeleted", "Name", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, "Category 1", 1 },
-                    { 2, "Category 2", 1 }
+                    { 1, false, "Category 1", 1 },
+                    { 2, false, "Category 2", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -391,10 +392,10 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "1a06350b-6416-4523-862c-e7920e52855b", "Admin", "ADMIN" },
-                    { 2, "6151162a-8730-4c03-9d3f-f0251f40b025", "University QA Manager", "UNIVERSITY QA MANAGER" },
-                    { 3, "8c73b72e-ac79-496d-89aa-9b6c48a2de78", "Department QA Coordinator", "DEPARTMENT QA COORDINATOR" },
-                    { 4, "4b8a27c2-b6fa-4414-87b0-2599108baed6", "Staff", "STAFF" }
+                    { 1, "752117c9-9e0a-4c07-b6dc-410f9f5d8be1", "Admin", "ADMIN" },
+                    { 2, "8ed7c828-ea29-4ebb-a771-9d5680104fe1", "University QA Manager", "UNIVERSITY QA MANAGER" },
+                    { 3, "99e1ec94-f44d-4a78-a41b-aee3533f1aa5", "Department QA Coordinator", "DEPARTMENT QA COORDINATOR" },
+                    { 4, "6d88a0cc-44f2-42dc-a372-81390cddc949", "Staff", "STAFF" }
                 });
 
             migrationBuilder.InsertData(
@@ -407,12 +408,12 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Birthday", "ConcurrencyStamp", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, null, "711bf031-0ea5-40e3-b6f2-690b71a6f5e3", "admin@gmail.com", false, (byte)1, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEEhL6CUfvk4yQVFgpimYlISdfyO2iOIzqEN+VGIggRrFQHd0I23crI21SLEzf13dag==", null, false, "26329384-390d-40c2-a509-90881fee2260", false, "admin@gmail.com" },
-                    { 2, 0, null, "d1c81eb1-cfaa-4010-9878-01e9782e1cec", "qamanager@gmail.com", false, (byte)1, false, null, "QAMANAGER@GMAIL.COM", "QAMANAGER@GMAIL.COM", "AQAAAAEAACcQAAAAEKwhJNzOaYA6syNXPX0rPYs825qqX5T7cqnKGRHP9y99EVOJCHN0PgxBKNvR34dpww==", null, false, "64d90277-918b-4d5d-9c65-4f34225fddf4", false, "qamanager@gmail.com" },
-                    { 3, 0, null, "35279eac-166c-4966-a2d1-79f16ec7ffc4", "computingdepartmentqa@gmail.com", false, (byte)1, false, null, "COMPUTINGDEPARTMENTQA@GMAIL.COM", "COMPUTINGDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEOQGjTQ6652Ta7O73bWFgTWTMSbyD+/X9d4m22PrHLkBKeVbzYIkWnKDEeXmoLlOSw==", null, false, "49c1ad79-6b85-443a-9f88-26ea696acb0a", false, "computingdepartmentqa@gmail.com" },
-                    { 4, 0, null, "0ad798a9-00c4-442e-bdd1-4132e1194a9d", "businessDepartmentQA@gmail.com", false, (byte)1, false, null, "BUSINESSDEPARTMENTQA@GMAIL.COM", "BUSINESSDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEK+zL6PshTHPRyZ7HANS3f+cPvSCAsyIPDX463jWmgqp+ZxwEmmA/oOmwHrCkdos/Q==", null, false, "75e858bb-56ea-4398-a9f4-ed5e7d4bdb9e", false, "businessDepartmentQA@gmail.com" },
-                    { 5, 0, null, "d31d1660-f7db-4366-afbc-667b7af4a725", "designDepartmentQA@gmail.com", false, (byte)1, false, null, "DESIGNDEPARTMENTQA@GMAIL.COM", "DESIGNDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEBpjp6tLjI+3fMIVHqVB8v2WzF6qn+fXu9o3X/9+kJnuNZshCgCwOEFt/wyAvZjewg==", null, false, "1546a5e6-7d70-46cb-af34-53918b0a5df9", false, "designDepartmentQA@gmail.com" },
-                    { 6, 0, null, "a6951f72-5476-4d03-a6c1-d4aa147220a4", "staff@gmail.com", false, (byte)1, false, null, "STAFF@GMAIL.COM", "STAFF@GMAIL.COM", "AQAAAAEAACcQAAAAEPqylgl4aUDOIoiQFKgkmfZkH13xhB6Xh60950wX3jUpz0t3Ld37ju7N/Ej+4jwP6Q==", null, false, "2ce42af2-10d3-4e79-9542-4aa78e47822d", false, "staff@gmail.com" }
+                    { 1, 0, null, "ac26c8c9-5bcf-4569-b57d-0d9b618f34d4", "admin@gmail.com", false, (byte)1, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEBGriFA61Dw85eL/JDWlH1Opwxbc54cvrcn5JjGixOvzCo1NBkooFXhXJW7j3EOt3g==", null, false, "c08cb058-af98-49a4-bd6a-256889c86a8c", false, "admin@gmail.com" },
+                    { 2, 0, null, "917ec3d4-4644-48fe-bf31-6cf14607b89f", "qamanager@gmail.com", false, (byte)1, false, null, "QAMANAGER@GMAIL.COM", "QAMANAGER@GMAIL.COM", "AQAAAAEAACcQAAAAECQCjJ+ELQXEyfuuqRIfFSA78P4qdCsdQISPUhyvF/Rd1Q/nN3OFk8lBTEH1x5JKIQ==", null, false, "2fb56db7-921f-4134-b85a-2c85a916a0ab", false, "qamanager@gmail.com" },
+                    { 3, 0, null, "bc0f258b-f2df-4384-8afc-04028e71b486", "computingdepartmentqa@gmail.com", false, (byte)1, false, null, "COMPUTINGDEPARTMENTQA@GMAIL.COM", "COMPUTINGDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAECmKkERtjVJ7B1RM+Kp0bXGq/v0obJ5dxmXWb7E4S48dV0XJALO81fnupq4CMR/7hA==", null, false, "bbb8e5ae-e584-413d-8b0f-c51e448d23d0", false, "computingdepartmentqa@gmail.com" },
+                    { 4, 0, null, "018a932d-998b-4bc4-ade1-f6ad97985470", "businessDepartmentQA@gmail.com", false, (byte)1, false, null, "BUSINESSDEPARTMENTQA@GMAIL.COM", "BUSINESSDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEMPcmrY1M5/2e8+XXT1abSyeE+ka0eDhpDJJL27G9bSXrJ0/5t5kGhbPG2R+XvxWkg==", null, false, "dc34e831-c2fb-4b72-8a92-e87b0ddebdd8", false, "businessDepartmentQA@gmail.com" },
+                    { 5, 0, null, "6a5924b7-706c-4411-a250-3c074829477f", "designDepartmentQA@gmail.com", false, (byte)1, false, null, "DESIGNDEPARTMENTQA@GMAIL.COM", "DESIGNDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEAJLBaDEi0dvz7c4JU3TyRNYVZQvdfgNb9oliAO0916bEXiKthytSUo3TYk7FvjmMQ==", null, false, "42ad87b2-76c1-4253-a669-026c00d3d2ee", false, "designDepartmentQA@gmail.com" },
+                    { 6, 0, null, "ce2bb93c-f67c-4f17-a857-0d69a3b8c491", "staff@gmail.com", false, (byte)1, false, null, "STAFF@GMAIL.COM", "STAFF@GMAIL.COM", "AQAAAAEAACcQAAAAEB1GXKWiJ6E4Edlkfaeoxx296YoKf+l3fmFzAXqhV88V9chF7g4yB4YmyZhS6DYaFA==", null, false, "834d6a14-1548-4ee6-8289-0ac1c3579440", false, "staff@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
