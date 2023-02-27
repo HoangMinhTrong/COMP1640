@@ -3,7 +3,9 @@ using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.Idea.Responses;
 using Domain;
+using Domain.DomainEvents;
 using Domain.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Utilities.Identity.Interfaces;
 
@@ -15,17 +17,20 @@ namespace COMP1640.Services
         private readonly ICategoryRepository _categoryRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserInfo _current;
+        private readonly IServiceProvider _serviceProvider;
+
         public IdeaService(
-            IIdeaRepository ideaRepo, 
-            IUnitOfWork unitOfWork, 
+            IIdeaRepository ideaRepo,
+            IUnitOfWork unitOfWork,
             ICategoryRepository categoryRepo,
-            ICurrentUserInfo current)
+            ICurrentUserInfo current
+            , IServiceProvider serviceProvider)
         {
             _ideaRepo = ideaRepo;
             _unitOfWork = unitOfWork;
             _categoryRepo = categoryRepo;
             _current = current;
-
+            _serviceProvider = serviceProvider;
         }
 
         public async Task<bool> CreateIdeaAsync(CreateIdeaRequest request)
@@ -48,6 +53,7 @@ namespace COMP1640.Services
 
             await _ideaRepo.InsertAsync(idea);
             await _unitOfWork.SaveChangesAsync();
+            await HandleSendMailOnCreateIdeaAsync(idea);
 
             return true;
         }
@@ -148,5 +154,14 @@ namespace COMP1640.Services
             };
             return queryable;
         }
+
+        #region Send Mail
+        private async Task HandleSendMailOnCreateIdeaAsync(Idea idea)
+        {
+            var mediator = _serviceProvider.GetService<IMediator>();
+            if (mediator != null)
+                await mediator.Publish(new CreateIdeaDomainEvent(idea));
+        }
+        #endregion
     }
 }

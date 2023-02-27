@@ -26,7 +26,6 @@ namespace COMP1640.Controllers
             var response = new IdeaIndexResponse()
             {
                 IdeaIndexItems = ideas,
-                Categories = await _categoryService.GetCategoryPicklistAsync(),
                 SortOptionPicklist = IdeaIndexOption.SortOptionPicklist,
 
                 CurrentSearchString = request.SearchString,

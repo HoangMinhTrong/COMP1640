@@ -1,4 +1,5 @@
 ﻿using Domain.DomainEvents;
+using Domain.Interfaces;
 using MediatR;
 using Utilities.EmailService.Interface;
 using Utilities.EmailService.Interfaces;
@@ -11,19 +12,22 @@ namespace COMP1640.DomainHandlers
         private readonly IRazorViewRenderer _razorViewRenderer;
         private readonly ICurrentUserInfo _currentUser;
         private readonly IEmailSender _emailSender;
-
+        private readonly IDepartmentRepository _departmentRepo;
         public OnCreateIdeaDomainHandler(ICurrentUserInfo currentUserInfo
             , IEmailSender emailSender
-            , IRazorViewRenderer razorViewRenderer)
+            , IRazorViewRenderer razorViewRenderer
+            , IDepartmentRepository departmentRepo)
         {
             _currentUser = currentUserInfo;
             _emailSender = emailSender;
             _razorViewRenderer = razorViewRenderer;
+            _departmentRepo = departmentRepo;
         }
 
         public async Task Handle(CreateIdeaDomainEvent @event, CancellationToken cancellationToken)
         {
-            var QACoordinator = @event.Idea?.Department?.QaCoordinator;
+            var department = await _departmentRepo.GetAsync(@event.Idea.DepartmentId);
+            var QACoordinator = department?.QaCoordinator;
             if (QACoordinator == null)
                 return;
 
@@ -33,9 +37,9 @@ namespace COMP1640.DomainHandlers
 
             await _emailSender.SendEmailAsync
                 (
-                    $"{_currentUser.Name} created a idea: {@event.Idea.Title}"
+                    $"[COMP1640]: Idea \"{@event.Idea.Title}\" Was Created"
                     , body
-                    , new List<string> { QACoordinator.Email }
+                    , new List<string> { "trongltgcd18787@fpt.edu.vn" }
                 );
         }
     }
