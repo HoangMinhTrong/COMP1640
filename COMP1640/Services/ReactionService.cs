@@ -22,8 +22,7 @@ namespace COMP1640.Services
 
         public async Task<bool> CreateThumbUpAsync(int ideaId)
         {
-            //var userId = _current.Id;
-            var userId = 6;
+            var userId = _current.Id;
             var reaction = new Reaction
                 (
                     ideaId,
@@ -39,8 +38,7 @@ namespace COMP1640.Services
 
         public async Task<bool> CreateThumbDownAsync(int ideaId)
         {
-            //var userId = _current.Id;
-            var userId = 5;
+            var userId = _current.Id;
             var reaction = new Reaction
                 (
                     ideaId,
