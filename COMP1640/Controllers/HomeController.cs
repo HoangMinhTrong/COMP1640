@@ -1,7 +1,7 @@
 ﻿using COMP1640.Services;
-using COMP1640.Utils;
 using COMP1640.ViewModels.Common;
 using Microsoft.AspNetCore.Mvc;
+using Utilities.Helpers;
 
 namespace COMP1640.Controllers
 {
@@ -26,10 +26,10 @@ namespace COMP1640.Controllers
             var response = new IdeaIndexResponse()
             {
                 IdeaIndexItems = ideas,
-                SortOptionPicklist = IdeaIndexOption.SortOptionPicklist,
-
+                SortOptionPicklist = EnumMemberAttributeHelper.GetSelectListItems<IdeaIndexSortingEnum>(),
+                Categories = await _categoryService.GetCategoryPicklistAsync(),
                 CurrentSearchString = request.SearchString,
-                CurrentCategoryFilter = request.FilterOption,
+                CurrentCategoryFilter = request.CategoryFilterOption,
                 CurrentSort = request.SortOption,
                 PaginationInfo = new PaginationInfo
                 {
