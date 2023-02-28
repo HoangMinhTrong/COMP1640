@@ -11,7 +11,6 @@ public class GetIdeaIndexRequest : PagingRequest
     public IdeaIndexSortingEnum? SortOption { get; set; } = IdeaIndexSortingEnum.LatestIdea;
     public string SearchString { get; set; } = string.Empty;
     public int? CategoryFilterOption { get; set; }
-    public int? PageNumber { get; set; }
 
     public Expression<Func<Domain.Idea, bool>> Filter()
     {

@@ -33,7 +33,7 @@ namespace COMP1640.Controllers
                 CurrentSort = request.SortOption,
                 PaginationInfo = new PaginationInfo
                 {
-                    ActualPage = request.PageNumber ?? 1,
+                    ActualPage = request.PageNo,
                     TotalItems = ideas.TotalItems,
                     ItemsPerPage = ideas.Count,
                     TotalPages = ideas.TotalPages,

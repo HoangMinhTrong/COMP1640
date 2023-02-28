@@ -96,7 +96,7 @@ namespace COMP1640.Services
             
             var totalCount = queryable.Count();
             
-            queryable = PaginatedList<Idea>.CreatePangingQueryAsync(queryable, request.PageNumber ?? 1,
+            queryable = PaginatedList<Idea>.CreatePangingQueryAsync(queryable, request.PageNo,
                 request.PageSize);
 
             var ideaIndexItems = await queryable
@@ -105,7 +105,7 @@ namespace COMP1640.Services
                 .AsSplitQuery()
                 .ToListAsync();
             
-            return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNumber ?? 1,
+            return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNo,
                 request.PageSize);
         }
 
