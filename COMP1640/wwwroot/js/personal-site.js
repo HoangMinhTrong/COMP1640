@@ -1,6 +1,4 @@
-﻿
-var viewPersonalModal = document.getElementById("personal-profile");
-
+﻿var viewPersonalModal = document.getElementById("personal-profile");
 
 function ViewPersonalDetail() {
     $.ajax({
@@ -19,6 +17,6 @@ function ViewPersonalDetail() {
     });
 }
 
-window.onclick = function (event) {
-   viewPersonalModal.style.display = "none";
+function ClosePopupProfile() {
+    viewPersonalModal.style.display = "none";
 }

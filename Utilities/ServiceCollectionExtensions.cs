@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Utilities.EmailService;
 using Utilities.EmailService.Interface;
+using Utilities.EmailService.Interfaces;
 using Utilities.Identity;
 
 namespace Utilities
@@ -11,7 +12,8 @@ namespace Utilities
     {
         public static IServiceCollection AddEmailSender(this IServiceCollection services)
         {
-            return services.AddSingleton<IEmailSender, EmailSender>();
+            return services.AddScoped<IRazorViewRenderer, RazorViewRenderer>()
+                           .AddSingleton<IEmailSender, EmailSender>();
         }
 
         public static IServiceCollection AddCurrentUserInfo(this IServiceCollection services)

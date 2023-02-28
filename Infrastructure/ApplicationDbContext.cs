@@ -12,7 +12,7 @@ namespace Infrastructure
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-
+        public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Idea> Ideas { get; set; }
@@ -36,7 +36,6 @@ namespace Infrastructure
             AcademicYearSeeder.Seeds(builder, tenant);
             DepartmentSeeder.Seeds(builder, tenant);
             CategorySeeder.Seeds(builder, tenant);
-
         }
 
         private void OnModelCreatingParial(ModelBuilder builder)

@@ -8,5 +8,10 @@ namespace Infrastructure.Repositories
         public IdeaRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
+
+        public async Task<Idea> GetAsync(int id)
+        {
+            return await GetAsync(_ => _.Id == id);
+        }
     }
 }
