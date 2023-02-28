@@ -6,6 +6,12 @@
         {
 
         }
+        public Reaction(int ideaId, int userId, ReactionStatusEnum status)
+        {
+            IdeaId = ideaId;
+            UserId = userId;
+            Status = status;
+        }
 
         public int Id { get; set; }
         public int IdeaId { get; set; }
