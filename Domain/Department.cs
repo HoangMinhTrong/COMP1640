@@ -7,6 +7,10 @@ namespace Domain
         public Department()
         {
         }
+        public Department(string name)
+        {
+            Name = name;
+        }
 
         public string Name { get; set; }
         public int? QaCoordinatorId { get; set; }
