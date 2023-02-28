@@ -25,30 +25,29 @@
                                        
                                                                Search: <input type="text" name="SearchString" value="@Model.CurrentSearchString"/>|
                                                                Filter:
-                                                               @if (Model.CurrentCategoryFilter == null)
+                                                               @if (Model.CurrentCategoryFilter != null)
                                                                {
-                                                                   <select asp-for="@Model.CurrentCategoryFilter" name="FilterOption" asp-items="@Model.Categories" class="esh-catalog-filter">
-                                                                       <option value="" selected="selected">
-                                                                           All
+                                                                   <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter">
+                                                                       <option value="">
+                                                                           
                                                                        </option>
                                                                    </select>
                                                                }
                                                                else
                                                                {
-                                                                   <select asp-for="@Model.CurrentCategoryFilter" name="FilterOption" asp-items="@Model.Categories" class="esh-catalog-filter">
-                                                                       <option value="2">
-                                                                           2
+                                                                   <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter">
+                                                                       <option value="" selected="selected">
+                                                                           
                                                                        </option>
                                                                    </select>
                                                                }
                    
                                                                Sort:
-                                                               @if (!string.IsNullOrWhiteSpace(Model.CurrentSort))
+                                                               @if (Model.CurrentSort != null)
                                                                {
                                                                    @* <select asp-for="@Model.CurrentSort" name="sortOption" asp-items="@Model.Categories" class="esh-catalog-filter"> *@
                                                                    <select asp-for="@Model.CurrentSort" asp-items="@Model.SortOptionPicklist" name="sortOption" class="esh-catalog-filter">
                                                                        <option value="">
-                                                                           No sort
                                                                        </option>
                                                                    </select>
                                                                }
@@ -56,7 +55,6 @@
                                                                {
                                                                    <select asp-for="@Model.CurrentSort" name="sortOption" asp-items="@Model.SortOptionPicklist" class="esh-catalog-filter">
                                                                        <option value="" selected="selected" >
-                                                                           No Sort
                                                                        </option>
                                                                    </select>
                                                                }
@@ -139,7 +137,7 @@
                                asp-route-pageNumber="@(Model.PaginationInfo.ActualPage - 1)"
                                asp-route-sortOption="@Model.CurrentSort"
                                asp-route-CurrentSearch="@Model.CurrentSearchString"
-                               asp-route-FilterOption="@Model.CurrentCategoryFilter">
+                               asp-route-CategoryFilterOption="@Model.CurrentCategoryFilter">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
@@ -150,7 +148,7 @@
                                asp-route-pageNumber="@(Model.PaginationInfo.ActualPage + 1)"
                                asp-route-sortOption="@Model.CurrentSort"
                                asp-route-CurrentSearch="@Model.CurrentSearchString"
-                               asp-route-FilterOption="@Model.CurrentCategoryFilter">
+                               asp-route-CategoryFilterOption="@Model.CurrentCategoryFilter">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -160,11 +158,11 @@
                     <div class="col-12 d-flex justify-content-center text-center">
                         <div class="">
         
-                            Go to page: <input type="text" name="pageNumber" value=""/>|
+                            Go to page: <input type="text" name="pageNo" value=""/>|
                             @Model.PaginationInfo.TotalPages
                             <input type="hidden" asp-for="@Model.CurrentSearchString" name="searchString"/>
                             <input type="hidden" asp-for="@Model.CurrentSort" name="SortOrder"/>
-                            <input type="hidden" asp-for="@Model.CurrentCategoryFilter" name="filterOption"/>
+                            <input type="hidden" asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption"/>
                             <button style="margin-bottom:0" type="submit" value="Search" class="btn btn-default">Submit</button>
                         </div>
                     </div>
