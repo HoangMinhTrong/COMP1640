@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
 using Utilities;
+using Utilities.Constants;
 using Utilities.EmailService.DTOs;
 
 namespace COMP1640.Extentions
@@ -76,18 +77,18 @@ namespace COMP1640.Extentions
 
         public static IServiceCollection AddMailgun(this IServiceCollection services, IConfiguration configuration)
         {
-            var existed = configuration.GetSection("MailgunSettings").Exists();
+            var existed = configuration.GetSection(AppSetting.MailgunSettings).Exists();
             if (existed)
-                services.Configure<MailgunSetting>(configuration.GetSection("MailgunSettings"));
+                services.Configure<MailgunSetting>(configuration.GetSection(AppSetting.MailgunSettings));
 
             return services;
         }
 
         public static IServiceCollection AddMailkit(this IServiceCollection services, IConfiguration configuration)
         {
-            var existed = configuration.GetSection("MailkitSettings").Exists();
+            var existed = configuration.GetSection(AppSetting.MailkitSettings).Exists();
             if (existed)
-                services.Configure<MailkitSetting>(configuration.GetSection("MailkitSettings"));
+                services.Configure<MailkitSetting>(configuration.GetSection(AppSetting.MailkitSettings));
 
             return services;
         }
