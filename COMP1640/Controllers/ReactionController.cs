@@ -27,5 +27,12 @@ namespace COMP1640.Controllers
             if (isSucceed) return Json(new { success = true });
             return Json(new { success = false });
         }
+
+        [HttpGet("checkstatus/{id:int}")]
+        public async Task<ActionResult> CheckStatusAsync([FromRoute] int id)
+        {
+            var status = await _reactionService.CheckStatusBeforeAction(id);
+            return Json(new { status = status });
+        }
     }
 }

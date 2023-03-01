@@ -1,5 +1,7 @@
-﻿using Domain;
+﻿using COMP1640.ViewModels.Reaction.Responses;
+using Domain;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Utilities.Identity.Interfaces;
 
 namespace COMP1640.Services
@@ -50,6 +52,17 @@ namespace COMP1640.Services
             await _unitOfWork.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<int> CheckStatusBeforeAction(int ideaId)
+        {
+            var userId = _current.Id;
+            //var userId = 2;
+            var currentReaction = await _reactionRepo
+                .GetByUserAndIdeaAsync(ideaId, userId);
+            if (currentReaction == null) return 0;
+            return (int)currentReaction.Status;
+                
         }
     }
 }
