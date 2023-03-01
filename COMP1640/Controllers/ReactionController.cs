@@ -34,5 +34,21 @@ namespace COMP1640.Controllers
             var status = await _reactionService.CheckStatusBeforeAction(id);
             return Json(new { status = status });
         }
+
+        [HttpDelete("cancelthumbup/{id:int}")]
+        public async Task<ActionResult> DeleteThumbUpAsync([FromRoute] int id)
+        {
+            var isSucceed = await _reactionService.DeleteThumbUpAsync(id);
+            if (isSucceed) return Ok();
+            return Json(new { success = false });
+        }
+
+        [HttpDelete("cancelthumbdown/{id:int}")]
+        public async Task<ActionResult> DeleteThumbDownAsync([FromRoute] int id)
+        {
+            var isSucceed = await _reactionService.DeleteThumbDownAsync(id);
+            if (isSucceed) return Ok();
+            return Json(new { success = false });
+        }
     }
 }

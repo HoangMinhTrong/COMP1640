@@ -1,5 +1,4 @@
-﻿using COMP1640.ViewModels.Reaction.Responses;
-using Domain;
+﻿using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Utilities.Identity.Interfaces;
@@ -57,12 +56,43 @@ namespace COMP1640.Services
         public async Task<int> CheckStatusBeforeAction(int ideaId)
         {
             var userId = _current.Id;
-            //var userId = 2;
             var currentReaction = await _reactionRepo
                 .GetByUserAndIdeaAsync(ideaId, userId);
             if (currentReaction == null) return 0;
             return (int)currentReaction.Status;
                 
+        }
+
+        public async Task<bool> DeleteThumbUpAsync(int ideaId)
+        {
+            var userId = _current.Id;
+            var reaction = await _reactionRepo
+                .GetByUserAndIdeaAsync(ideaId, userId);
+
+            if (reaction == null)
+                return false;
+
+            await _reactionRepo.DeleteAsync(reaction);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+
+        }
+
+        public async Task<bool> DeleteThumbDownAsync(int ideaId)
+        {
+            var userId = _current.Id;
+            var reaction = await _reactionRepo
+                .GetByUserAndIdeaAsync(ideaId, userId);
+
+            if (reaction == null)
+                return false;
+
+            await _reactionRepo.DeleteAsync(reaction);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+
         }
     }
 }
