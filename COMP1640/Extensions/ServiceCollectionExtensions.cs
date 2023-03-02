@@ -43,6 +43,7 @@ namespace COMP1640.Extentions
             services.AddScoped<IdeaService>();
             services.AddScoped<CategoryService>();
             services.AddScoped<PersonalService>();
+            services.AddScoped<CommentService>();
 
             return services;
         }
