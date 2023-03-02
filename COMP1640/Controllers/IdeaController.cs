@@ -1,7 +1,9 @@
-﻿using COMP1640.Services;
+﻿using Amazon.S3;
+using COMP1640.Services;
 using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Utilities.StorageService.Interfaces;
 
 namespace COMP1640.Controllers
 {
@@ -10,10 +12,33 @@ namespace COMP1640.Controllers
     {
         private readonly IdeaService _ideaService;
         private readonly CategoryService _categoryService;
-        public IdeaController(IdeaService ideaService, CategoryService categoryService)
+        private readonly IS3Service _attachmentService;
+
+        public IdeaController(IdeaService ideaService
+            , CategoryService categoryService
+            , IS3Service attachmentService)
         {
             _ideaService = ideaService;
             _categoryService = categoryService;
+            _attachmentService = attachmentService;
+        }
+
+        [HttpGet("attachments")]
+        public async Task<IActionResult> GetAttachmentAsync(string keyName)
+        {
+            var stream = await _attachmentService.GetAsync(keyName);
+            var presignedUrl = await _attachmentService.GetPresignedUrl(keyName);
+
+            var reader = new StreamReader(stream);
+            var fileContent = await reader.ReadToEndAsync();
+
+            return Ok(presignedUrl);
+        }
+
+        [HttpPost("attachments")]
+        public async Task PostAttachment(IFormFile formFile)
+        {
+            var result = await _attachmentService.UploadAsync(formFile);
         }
 
         [HttpGet]

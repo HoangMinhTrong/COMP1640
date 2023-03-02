@@ -1,4 +1,5 @@
 ﻿using Domain.Base;
+using Microsoft.AspNetCore.Http;
 
 namespace Domain
 {
@@ -33,5 +34,14 @@ namespace Domain
         public virtual ICollection<Reaction> Reactions { get; set; } = new HashSet<Reaction>();
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
         public virtual ICollection<IdeaAttachment> IdeaAttachments { get; set; } = new HashSet<IdeaAttachment>();
+
+        public void AddAttachment(Attachment attachment)
+        {
+            var existed = IdeaAttachments.Any(_ => _.Attachment.Id == attachment.Id);
+            if (existed)
+                return;
+
+            IdeaAttachments.Add(new IdeaAttachment(this, attachment));
+        }
     }
 }
