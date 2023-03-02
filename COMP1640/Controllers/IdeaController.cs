@@ -1,5 +1,7 @@
 ﻿using COMP1640.Services;
+using COMP1640.Utils;
 using COMP1640.ViewModels.Category.Requests;
+using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,6 +66,16 @@ namespace COMP1640.Controllers
 
             ModelState.AddModelError("delete_failure", "Failure to delete an category.");
             return RedirectToAction("ViewCategory");
+        }
+
+        
+
+        [HttpGet("viewdetail/{id:int}")]
+        public async Task<IActionResult> ViewDetail([FromRoute] int id)
+        {
+            var ideas = await _ideaService.GetIdeaDetailsAsync(id);
+                      
+            return View(ideas);
         }
     }
 }
