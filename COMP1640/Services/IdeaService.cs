@@ -1,5 +1,4 @@
-﻿using COMP1640.Utils;
-using COMP1640.ViewModels.Common;
+﻿using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.Idea.Responses;
 using Domain;
@@ -100,17 +99,12 @@ namespace COMP1640.Services
         
         public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request)
         {
-            var queryable = _ideaRepo.GetAllQuery();
-        
-            // Filter
-            queryable = FilterQuery(request, queryable);
+            var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter()));
             
-            // Sort
-            queryable = SortingQuery(request, queryable);
             var totalCount = queryable.Count();
             
-            queryable = PaginatedList<Idea>.CreatePangingQueryAsync(queryable, request.PageNumber ?? 1,
-                request.PageSize ?? IdeaPagingOption.DefaultPageSize);
+            queryable = PaginatedList<Idea>.CreatePangingQueryAsync(queryable, request.PageNo,
+                request.PageSize);
 
             var ideaIndexItems = await queryable
                 .Select(new IdeaIndexItem().GetSelection())
@@ -118,48 +112,8 @@ namespace COMP1640.Services
                 .AsSplitQuery()
                 .ToListAsync();
             
-            return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNumber ?? 1,
-                request.PageSize ?? IdeaPagingOption.DefaultPageSize);
-        }
-        private static IQueryable<Idea> FilterQuery(GetIdeaIndexRequest request, IQueryable<Idea> queryable)
-        {
-            if (request.FilterOption.HasValue)
-                queryable = queryable.Where(idea => idea.CategoryId == request.FilterOption.Value);
-
-            // Check search string
-            if (!string.IsNullOrEmpty(request.SearchString))
-                request.PageNumber = 1;
-            else
-                request.SearchString = request.CurrentSearch;
-
-            // Filter by search string
-            if (!string.IsNullOrWhiteSpace(request.SearchString))
-                queryable = queryable.Where(idea =>
-                    idea.Title.ToLower().Contains(request.SearchString.ToLower()));
-
-            return queryable;
-        }
-        
-        private static IQueryable<Idea> SortingQuery(GetIdeaIndexRequest request, IQueryable<Idea> queryable)
-        {
-            queryable = request.SortOption switch
-            {
-                // TODO: Implement Views count
-                // case IdeaIndexOption.PopularIdeaSort:
-                // queryable = queryable.OrderByDescending(x => x.View); 
-                // break;
-                IdeaIndexOption.ReactionSort => queryable.OrderByDescending(x =>
-                    x.Reactions.Count(r => r.Status == ReactionStatusEnum.Like) -
-                    x.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike)),
-                
-                // TODO: Implement comment model
-                // case IdeaIndexOption.LatestCommentSort:
-                //     queryable = queryable.OrderBy(x => x.Price);
-                //     break;
-                IdeaIndexOption.LatestIdeaSort => queryable.OrderByDescending(x => x.CreatedOn),
-                _ => queryable.OrderByDescending(x => x.CreatedOn)
-            };
-            return queryable;
+            return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNo,
+                request.PageSize);
         }
 
         #region Send Mail
@@ -170,5 +124,6 @@ namespace COMP1640.Services
                 await mediator.Publish(new CreateIdeaDomainEvent(idea));
         }
         #endregion
+
     }
 }
