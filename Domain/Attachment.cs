@@ -15,7 +15,7 @@ namespace Domain
             Name = formfile.Name;
             KeyName = fileKey;
             Size = formfile.Length;
-            Extension = Path.GetExtension(formfile.Name);
+            Extension = Path.GetExtension(formfile.FileName);
         }
 
         public string Name { get; set; }
