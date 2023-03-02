@@ -2,67 +2,59 @@
 @model COMP1640.ViewModels.Common.IdeaIndexResponse
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 
-
-<div class="container">
-</div>
 <section>
     <div class="container">
-        <div class="row d-flex justify-content-center align-items-center" title="Header-button">
+        <div class="row d-flex justify-content-center align-items-center">
             <div class="pt-4 col col-xl-10">
                 <div class="d-flex justify-content-between align-self-center">
                     <div id="addIdeaBtn" class="d-flex mb-4">
-                        <div class="align-items-center">
-                            <a class="btn btn-info text-white text-center" asp-controller="Idea" asp-action="Create">
-                                <i class="material-icons text-white">
-                                    Add Idea
-                                </i>
+                        <div class="d-flex align-items-center">
+                            <a class="btn btn-info text-white text-center" onclick="ShowPopupCreateIdea()">
+                                <i class="bi bi-plus-circle"></i>
                             </a>
+                            <form asp-controller="Home" asp-action="Index" method="get">
+                                <div class="d-flex justify-content-center text-center">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="search">
+                                            <input type="text" name="SearchString" class="search-input" value="@Model.CurrentSearchString" />
+                                            <button type="submit" value="Search" class="btn btn-success search-icon"><i class="bi bi-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                   <form asp-controller="Home" asp-action="Index" method="get">
-                                                       <div class="col-12 d-flex justify-content-center text-center">
-                                                           <div class="">
-                                       
-                                                               Search: <input type="text" name="SearchString" value="@Model.CurrentSearchString"/>|
-                                                               Filter:
-                                                               @if (Model.CurrentCategoryFilter != null)
-                                                               {
-                                                                   <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter">
-                                                                       <option value="">
-                                                                           
-                                                                       </option>
-                                                                   </select>
-                                                               }
-                                                               else
-                                                               {
-                                                                   <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter">
-                                                                       <option value="" selected="selected">
-                                                                           
-                                                                       </option>
-                                                                   </select>
-                                                               }
-                   
-                                                               Sort:
-                                                               @if (Model.CurrentSort != null)
-                                                               {
-                                                                   @* <select asp-for="@Model.CurrentSort" name="sortOption" asp-items="@Model.Categories" class="esh-catalog-filter"> *@
-                                                                   <select asp-for="@Model.CurrentSort" asp-items="@Model.SortOptionPicklist" name="sortOption" class="esh-catalog-filter">
-                                                                       <option value="">
-                                                                       </option>
-                                                                   </select>
-                                                               }
-                                                               else
-                                                               {
-                                                                   <select asp-for="@Model.CurrentSort" name="sortOption" asp-items="@Model.SortOptionPicklist" class="esh-catalog-filter">
-                                                                       <option value="" selected="selected" >
-                                                                       </option>
-                                                                   </select>
-                                                               }
-                                                               <button style="margin-bottom:0" type="submit" value="Search" class="btn btn-default">Search</button>
-                                                               <a asp-action="Index" asp-controller="Home">Back to Full List</a>
-                                                           </div>
-                                                       </div>
-                                                   </form>
+                    <form asp-controller="Home" asp-action="Index" method="get">
+                        <div class="col-12 d-flex text-center">
+                            <div class="d-flex">
+                                @if (Model.CurrentCategoryFilter != null)
+                                {
+                                    <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter form-select">
+                                         <option value=""></option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter form-select">
+                                         <option value=""></option>
+                                    </select>
+                                }                
+                                @if (Model.CurrentSort != null)
+                                {
+                                    <select asp-for="@Model.CurrentSort" asp-items="@Model.SortOptionPicklist" name="sortOption" class="esh-catalog-filter form-select">
+                                        <option value=""></option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select asp-for="@Model.CurrentSort" name="sortOption" asp-items="@Model.SortOptionPicklist" class="esh-catalog-filter form-select">
+                                        <option value="" selected="selected" ></option>
+                                    </select>
+                                }
+                                <button style="margin-bottom:0" type="submit" value="Search" class="btn btn-success"><i class="bi bi-funnel"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -73,25 +65,32 @@
                     <div class="card mb-5" style="border-radius: 15px;">
                         <div class="card-body p-4">
 
-                            <div class="d-flex align-items-center mb-4">
-                                <div class="flex-shrink-0">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <div class="d-flex  align-items-center">
                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp"
                                      alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
                                      style="width: 70px;">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <div class="d-flex flex-row align-items-center mb-2">
-                                        <div class="flex-shrink-0">
-                                            <span class="mx-10"></span>
-                                            <strong>@item.Author.UserName</strong> @item.CreatedOn
+                                    <div class="flex-grow-1 ms-3">
+                                        <div class="mb-2">
+                                            <div class="flex-column d-flex">
+                                                <span class="mx-10"></span>
+                                                <strong>@item.Author.UserName</strong>
+                                                <strong>Title: @item.Title</strong>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <div>
+                                    <strong>@item.CreatedOn</strong>
+                                </div>
                             </div>
                             <hr>
-                            <div class="btn btn-outline-light btn-rounded btn-sm"
-                             data-mdb-ripple-color="dark">
-                                @item.Category
+                            <div>
+                                <div class="btn btn-outline-light btn-rounded btn-sm"
+                                 data-mdb-ripple-color="dark">
+                                    @item.Category
+                                </div>
                             </div>
                             <div class="d-flex justify-content-start align-items-center">
                                 @item.Content
@@ -131,7 +130,7 @@
                 <nav >
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
-                            <a class="page-link btn @prevDisabled"
+                            <a class="page-link @prevDisabled"
                                
                                asp-action="Index"
                                asp-route-pageNumber="@(Model.PaginationInfo.ActualPage - 1)"
@@ -143,7 +142,6 @@
                         </li>
                         <li class="page-item">
                             <a class="page-link  @nextDisabled"
-                             
                                asp-action="Index"
                                asp-route-pageNumber="@(Model.PaginationInfo.ActualPage + 1)"
                                asp-route-sortOption="@Model.CurrentSort"
@@ -155,15 +153,14 @@
                     </ul>
                 </nav>
                 <form asp-action="Index" method="get">
-                    <div class="col-12 d-flex justify-content-center text-center">
-                        <div class="">
-        
-                            Go to page: <input type="text" name="pageNo" value=""/>|
+                    <div class="d-flex justify-content-center text-center">
+                        <div class="d-flex">
+                            Page <input type="text" name="pageNo" value="" class=""/>|
                             @Model.PaginationInfo.TotalPages
                             <input type="hidden" asp-for="@Model.CurrentSearchString" name="searchString"/>
                             <input type="hidden" asp-for="@Model.CurrentSort" name="SortOrder"/>
                             <input type="hidden" asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption"/>
-                            <button style="margin-bottom:0" type="submit" value="Search" class="btn btn-default">Submit</button>
+                            <button type="submit" value="Search" class="btn btn-success">Submit</button>
                         </div>
                     </div>
                 </form>
