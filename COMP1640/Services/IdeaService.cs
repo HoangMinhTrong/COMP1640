@@ -24,7 +24,7 @@ namespace COMP1640.Services
             IUnitOfWork unitOfWork,
             ICategoryRepository categoryRepo,
             ICurrentUserInfo current,
-            IServiceProvider serviceProvider, 
+            IServiceProvider serviceProvider,
             AttachmentService attachmentService)
         {
             _ideaRepo = ideaRepo;
@@ -51,10 +51,13 @@ namespace COMP1640.Services
                     _current.DepartmentId
                 );
 
-            if(request.Formfile != null)
+            if (request?.Formfiles.Count > 0)
             {
-                var attachment = await attachmentService.UploadAsync(request.Formfile);
-                idea.AddAttachment(attachment);
+                var attachments = await attachmentService.UploadListAsync(request.Formfiles);
+                foreach (var attachment in attachments)
+                {
+                    idea.AddAttachment(attachment);
+                }
             }
 
             await _ideaRepo.InsertAsync(idea);
@@ -96,13 +99,13 @@ namespace COMP1640.Services
                 .ToListAsync();
         }
 
-        
+
         public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request)
         {
             var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter()));
-            
+
             var totalCount = queryable.Count();
-            
+
             queryable = PaginatedList<Idea>.CreatePangingQueryAsync(queryable, request.PageNo,
                 request.PageSize);
 
@@ -111,7 +114,7 @@ namespace COMP1640.Services
                 .AsNoTracking()
                 .AsSplitQuery()
                 .ToListAsync();
-            
+
             return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNo,
                 request.PageSize);
         }

@@ -25,5 +25,18 @@ namespace COMP1640.Services
             await _attachmentRepo.InsertAsync(attachment);
             return attachment;
         }
+
+        public async Task<List<Attachment>> UploadListAsync(List<IFormFile> formFiles)
+        {
+            var attachments = new List<Attachment>();
+            foreach (var formFile in formFiles)
+            {
+                var fileKey = await _s3Service.UploadAsync(formFile);
+                attachments.Add(new Attachment(formFile, fileKey));
+            }
+
+            await _attachmentRepo.InsertRangeAsync(attachments);
+            return attachments;
+        }
     }
 }

@@ -13,6 +13,6 @@ namespace COMP1640.ViewModels.Idea.Requests
         public bool IsAnonymous { get; set; }
         [Required]
         public int CategoryId { get; set; }
-        public IFormFile? Formfile { get; set; }
+        public List<IFormFile> Formfiles { get; set; }
     }
 }
