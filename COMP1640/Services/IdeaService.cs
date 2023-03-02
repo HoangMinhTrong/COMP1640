@@ -17,19 +17,22 @@ namespace COMP1640.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserInfo _current;
         private readonly IServiceProvider _serviceProvider;
+        private readonly AttachmentService attachmentService;
 
         public IdeaService(
             IIdeaRepository ideaRepo,
             IUnitOfWork unitOfWork,
             ICategoryRepository categoryRepo,
-            ICurrentUserInfo current
-            , IServiceProvider serviceProvider)
+            ICurrentUserInfo current,
+            IServiceProvider serviceProvider, 
+            AttachmentService attachmentService)
         {
             _ideaRepo = ideaRepo;
             _unitOfWork = unitOfWork;
             _categoryRepo = categoryRepo;
             _current = current;
             _serviceProvider = serviceProvider;
+            this.attachmentService = attachmentService;
         }
 
         public async Task<bool> CreateIdeaAsync(CreateIdeaRequest request)
@@ -38,8 +41,6 @@ namespace COMP1640.Services
             if (category == null)
                 return false;
 
-            var departmentId = _current.DepartmentId;
-
             var idea = new Idea
                 (
                     request.Title,
@@ -47,8 +48,14 @@ namespace COMP1640.Services
                     request.IsAnonymous,
                     request.CategoryId,
                     1,
-                    departmentId
+                    _current.DepartmentId
                 );
+
+            if(request.Formfile != null)
+            {
+                var attachment = await attachmentService.UploadAsync(request.Formfile);
+                idea.AddAttachment(attachment);
+            }
 
             await _ideaRepo.InsertAsync(idea);
             await _unitOfWork.SaveChangesAsync();

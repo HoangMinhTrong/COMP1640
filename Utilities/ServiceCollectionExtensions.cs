@@ -1,4 +1,7 @@
-﻿using Amazon.S3;
+﻿using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +25,17 @@ namespace Utilities
             if (existed)
                 services.Configure<S3Setting>(configuration.GetSection(AppSetting.S3Settings));
 
-            return services.AddAWSService<IAmazonS3>()
-                           .AddSingleton<IAttachmentService, AttachmentService>();
+            var options = configuration.GetSection(AppSetting.S3Settings).Get<S3Setting>();
+            var customOptions = new AWSOptions
+            {
+                Credentials = new BasicAWSCredentials(options.AccessKey, options.SecretKey),
+                Region = RegionEndpoint.GetBySystemName(options.Region)
+            };
+
+            return services
+                           .AddDefaultAWSOptions(customOptions)
+                           .AddAWSService<IAmazonS3>()
+                           .AddSingleton<IS3Service, S3Service>();
         }
 
         public static IServiceCollection AddEmailSender(this IServiceCollection services)
