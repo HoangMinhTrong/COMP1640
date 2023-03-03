@@ -21,27 +21,7 @@ namespace COMP1640.Controllers
 
         public async Task<IActionResult> Index(GetIdeaIndexRequest request)
         {
-            var ideas = await _ideaService.GetIdeaIndexAsync(request);
-            
-            var response = new IdeaIndexResponse()
-            {
-                IdeaIndexItems = ideas,
-                SortOptionPicklist = EnumMemberAttributeHelper.GetSelectListItems<IdeaIndexSortingEnum>(),
-                Categories = await _categoryService.GetCategoryPicklistAsync(),
-                CurrentSearchString = request.SearchString,
-                CurrentCategoryFilter = request.CategoryFilterOption,
-                CurrentSort = request.SortOption,
-                PaginationInfo = new PaginationInfo
-                {
-                    ActualPage = request.PageNo,
-                    TotalItems = ideas.TotalItems,
-                    ItemsPerPage = ideas.Count,
-                    TotalPages = ideas.TotalPages,
-                    Next = ideas.HasNextPage,
-                    Previous = ideas.HasPreviousPage
-                }
-            };
-            return View(response);
+            return View("Index");
         }
 
         public IActionResult Privacy()

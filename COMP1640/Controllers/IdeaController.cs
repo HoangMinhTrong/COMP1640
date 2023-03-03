@@ -1,8 +1,10 @@
 ﻿using Amazon.S3;
 using COMP1640.Services;
 using COMP1640.ViewModels.Category.Requests;
+using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Utilities.Helpers;
 using Utilities.StorageService.Interfaces;
 
 namespace COMP1640.Controllers
@@ -42,10 +44,29 @@ namespace COMP1640.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] GetListIdeaRequest request)
+        public async Task<IActionResult> Index([FromQuery] GetIdeaIndexRequest request)
         {
-            var vm = await _ideaService.GetListIdeas(request);
-            return View(vm);
+            var ideas = await _ideaService.GetIdeaIndexAsync(request);
+            
+            var response = new IdeaIndexResponse()
+            {
+                IdeaIndexItems = ideas,
+                SortOptionPicklist = EnumMemberAttributeHelper.GetSelectListItems<IdeaIndexSortingEnum>(),
+                Categories = await _categoryService.GetCategoryPicklistAsync(),
+                CurrentSearchString = request.SearchString,
+                CurrentCategoryFilter = request.CategoryFilterOption,
+                CurrentSort = request.SortOption,
+                PaginationInfo = new PaginationInfo
+                {
+                    ActualPage = request.PageNo,
+                    TotalItems = ideas.TotalItems,
+                    ItemsPerPage = ideas.Count,
+                    TotalPages = ideas.TotalPages,
+                    Next = ideas.HasNextPage,
+                    Previous = ideas.HasPreviousPage
+                }
+            };
+            return View("Index", response);
         }
 
         [HttpGet("categories-selection")]
