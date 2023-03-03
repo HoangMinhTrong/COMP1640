@@ -52,7 +52,8 @@ services.AddMediatR(Assembly.GetExecutingAssembly());
 
 services
     .AddCurrentUserInfo()
-    .AddEmailSender();
+    .AddEmailSender()
+    .AddStorageService(configuration);
 
 services.AddRazorPages();
 
