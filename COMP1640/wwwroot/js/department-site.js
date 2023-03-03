@@ -5,6 +5,7 @@ var addDepartmentSpan = document.getElementsByClassName("close")[0];
 console.log(addDepartmentModal)
 addDepartmentBtn.onclick = function () {
     addDepartmentModal.style.display = "block";
+    fillDropDownListForCreateDepartment();
 }
 addDepartmentSpan.onclick = function () {
     addDepartmentModal.style.display = "none";
@@ -18,16 +19,17 @@ window.onclick = function (event) {
 function fillDropDownListForCreateDepartment() {
     $('#qacoordinators_list option:not(:first)').remove();
     $.ajax({
-        url: window.location.origin + '/department/',
+        url: window.location.origin + '/department/coodinator-selection',
         type: "GET",
         dataType: "JSON",
         data: "",
         success: function (data) {
-            var qacoordinators = data.qacoordinators;
+            var qacoordinators = data;
             $.each(qacoordinators, function (i, qacoordinator) {
                 $("#qacoordinators_list").append(
                     $('<option></option>').val(qacoordinator.id).html(qacoordinator.name));
             });
+
         }
     })
 }

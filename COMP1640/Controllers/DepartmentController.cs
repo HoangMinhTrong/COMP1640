@@ -4,10 +4,11 @@ using COMP1640.ViewModels.Department.Requests;
 using COMP1640.Services;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
+using COMP1640.ViewModels.Department.Responses;
 
 namespace COMP1640.Controllers
 {
-    //[Route("department")]
+    [Route("department")]
     public class DepartmentController : Controller
     {
         private readonly DepartmentService _departmentService;
@@ -32,6 +33,13 @@ namespace COMP1640.Controllers
         {
             var deparment = await _departmentService.GetListDepartment(request);
             return View(deparment);
+        }
+
+        [HttpGet("coodinator-selection")]
+        public async Task<IActionResult> GetCoordinatorForCreateDepartment()
+        {
+            var coordinators = await _departmentService.GetCoordinatorForCreateDepartmentAsync();
+            return Ok(coordinators);
         }
     }
 }

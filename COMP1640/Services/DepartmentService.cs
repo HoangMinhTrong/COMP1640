@@ -11,16 +11,20 @@ public class DepartmentService
 
     private readonly IDepartmentRepository _departmentRepository;
     private readonly IUnitOfWork _unitOfWork;
-    public DepartmentService(IDepartmentRepository department, IUnitOfWork unitOfWork)
+    private readonly IUserRepository _userRepo;
+    public DepartmentService(IDepartmentRepository department, 
+        IUnitOfWork unitOfWork, 
+        IUserRepository userRepo)
     {
         _departmentRepository = department;
         _unitOfWork = unitOfWork;
+        _userRepo = userRepo;
     }
 
 
     public async Task<bool> CreateDepartment(CreateDepartmentRequest departmentRequest)
     {
-        var department = new Department(departmentRequest.Name);
+        var department = new Department(departmentRequest.Name, departmentRequest.qacoordinatorId);
 
 
         await _departmentRepository.InsertAsync(department);
@@ -40,6 +44,18 @@ public class DepartmentService
                 Name = _.Name,
                 TenantId = _.TenantId,
             })
+            .ToListAsync();
+    }
+
+    public async Task<List<SelectCoordinatorForCreateDepartmentResponse>> GetCoordinatorForCreateDepartmentAsync()
+    {
+        return await _userRepo.GetAllQuery()
+            .Select(c => new SelectCoordinatorForCreateDepartmentResponse()
+            {
+                Id = c.Id,
+                Name = c.UserName
+            })
+            .AsNoTracking()
             .ToListAsync();
     }
 }
