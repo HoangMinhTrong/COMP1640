@@ -18,6 +18,18 @@ namespace Utilities.StorageService
             _s3Settings = s3Settings.Value;
         }
 
+        public async Task<GetObjectResponse> GetAsync(string keyName)
+        {
+            var result = await _client.GetObjectAsync(_s3Settings.BucketName, keyName);
+            return result;
+        }
+
+        public async Task<DeleteObjectResponse> DeleteAsync(string keyName)
+        {
+            var result = await _client.DeleteObjectAsync(_s3Settings.BucketName, keyName);
+            return result;
+        }
+
         public async Task<string> UploadAsync(IFormFile formFile)
         {
             var request = new PutObjectRequest
@@ -25,16 +37,12 @@ namespace Utilities.StorageService
                 BucketName = _s3Settings.BucketName,
                 Key = Guid.NewGuid().ToString(),
                 InputStream = formFile.OpenReadStream(),
+                ContentType = formFile.ContentType,
             };
+            request.Metadata.Add("FileName", formFile.FileName);
 
             await _client.PutObjectAsync(request);
             return request.Key;
-        }
-
-        public async Task<Stream> GetAsync(string keyName)
-        {
-            var s3Object = await _client.GetObjectAsync(_s3Settings.BucketName, keyName);
-            return s3Object.ResponseStream;
         }
 
         public async Task<string> GetPresignedUrl(string keyName)
@@ -48,6 +56,5 @@ namespace Utilities.StorageService
 
            return _client.GetPreSignedURL(request);
         }
-
     }
 }

@@ -1,9 +1,7 @@
-﻿using Amazon.S3;
-using COMP1640.Services;
+﻿using COMP1640.Services;
 using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;
-using Utilities.StorageService.Interfaces;
 
 namespace COMP1640.Controllers
 {
@@ -12,35 +10,26 @@ namespace COMP1640.Controllers
     {
         private readonly IdeaService _ideaService;
         private readonly CategoryService _categoryService;
-        private readonly IS3Service _attachmentService;
+        private readonly AttachmentService _attachmentService;
 
         public IdeaController(IdeaService ideaService
             , CategoryService categoryService
-            , IS3Service attachmentService)
+            , AttachmentService attachmentService)
         {
             _ideaService = ideaService;
             _categoryService = categoryService;
             _attachmentService = attachmentService;
         }
 
-        [HttpGet("attachments")]
-        public async Task<IActionResult> GetAttachmentAsync(string keyName)
+        [HttpGet("attachments/{keyName}/download")]
+        public async Task<IActionResult> DownloadAttachment([FromRoute] string keyName)
         {
-            var stream = await _attachmentService.GetAsync(keyName);
-            var presignedUrl = await _attachmentService.GetPresignedUrl(keyName);
-
-            var reader = new StreamReader(stream);
-            var fileContent = await reader.ReadToEndAsync();
-
-            return Ok(presignedUrl);
+            var s3Object = await _attachmentService.GetAsync(keyName);
+            return File(s3Object.ResponseStream
+                , s3Object.Headers.ContentType
+                , s3Object.Metadata["FileName"]);
         }
-
-        [HttpPost("attachments")]
-        public async Task PostAttachment(IFormFile formFile)
-        {
-            var result = await _attachmentService.UploadAsync(formFile);
-        }
-
+         
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] GetListIdeaRequest request)
         {
