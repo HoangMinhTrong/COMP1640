@@ -28,13 +28,6 @@ namespace COMP1640.Controllers
             return Json(new { success = false });
         }
 
-        [HttpGet("checkstatus/{id:int}")]
-        public async Task<ActionResult> CheckStatusAsync([FromRoute] int id)
-        {
-            var status = await _reactionService.CheckStatusBeforeAction(id);
-            return Json(new { status = status });
-        }
-
         [HttpDelete("cancelthumbup/{id:int}")]
         public async Task<ActionResult> DeleteThumbUpAsync([FromRoute] int id)
         {
@@ -49,6 +42,13 @@ namespace COMP1640.Controllers
             var isSucceed = await _reactionService.DeleteThumbDownAsync(id);
             if (isSucceed) return Ok();
             return Json(new { success = false });
+        }
+
+        [HttpGet("checkstatus/{id:int}")]
+        public async Task<ActionResult> CheckStatusAsync([FromRoute] int id)
+        {
+            var statusModel = await _reactionService.CheckStatusBeforeAction(id);
+            return Json(new { status = statusModel.status });
         }
     }
 }

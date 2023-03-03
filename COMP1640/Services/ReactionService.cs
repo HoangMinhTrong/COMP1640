@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using COMP1640.ViewModels.Reaction.Responses;
+using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Utilities.Identity.Interfaces;
@@ -53,14 +54,15 @@ namespace COMP1640.Services
             return true;
         }
 
-        public async Task<int> CheckStatusBeforeAction(int ideaId)
+        public async Task<CurrentStatusReactionReponse> CheckStatusBeforeAction(int ideaId)
         {
             var userId = _current.Id;
             var currentReaction = await _reactionRepo
                 .GetByUserAndIdeaAsync(ideaId, userId);
-            if (currentReaction == null) return 0;
-            return (int)currentReaction.Status;
-                
+            
+            if (currentReaction == null) return new CurrentStatusReactionReponse { status = 0 };
+            //return (int)currentReaction.Status;
+            return new CurrentStatusReactionReponse { status = (int)currentReaction.Status };
         }
 
         public async Task<bool> DeleteThumbUpAsync(int ideaId)

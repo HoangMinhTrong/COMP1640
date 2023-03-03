@@ -1,5 +1,6 @@
 ﻿@using COMP1640.ViewModels.Idea.Responses
 @model List<IdeaContentResponse>
+@*@model COMP1640.ViewModels.Reaction.Responses.CurrentStatusReactionReponse*@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 
 
@@ -87,12 +88,15 @@
                             <hr />
                             <div class="small d-flex justify-content-start">
                                 <a onclick=GiveThumbUp(@item.Id) class="d-flex align-items-center me-3">
-                                    <i class="far fa-thumbs-up me-2"></i>
+                                    <i class="far fa-thumbs-up me-2" id="thumbupBtn-@item.Id"></i>
+                                    @*<i class="fa-solid fa-thumbs-up" id="thumbupBtn-@item.Id-active" style="display: none"></i>*@
+                                    @*<i class="fas fa-thumbs-up"></i>*@
                                     <p class="mb-0">@item.LikeCount</p>
                                 </a>
 
                                 <a onclick=GiveThumbDown(@item.Id) class="d-flex align-items-center me-3">
                                     <i class="far fa-thumbs-down me-2"></i>
+                                    @*<i class="fas fa-thumbs-down"></i>*@
                                     <p class="mb-0">@item.DislikeCount</p>
                                 </a>
                                 <a href="#!" class="d-flex align-items-center me-3">
