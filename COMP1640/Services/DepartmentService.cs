@@ -43,7 +43,8 @@ public class DepartmentService
                 Id = _.Id,
                 Name = _.Name,
                 TenantId = _.TenantId,
-            })
+                IsDelete = _.IsDeleted,
+            }).Where(x => !x.IsDelete)
             .ToListAsync();
     }
 
@@ -57,6 +58,18 @@ public class DepartmentService
             })
             .AsNoTracking()
             .ToListAsync();
+    }
+
+
+    public async Task<bool> DeleteDepartment(int id)
+    {
+        var department = await _departmentRepository.GetId(id).FirstOrDefaultAsync();
+        if (department == null)
+            return false;
+
+        department.SoftDeleteDepartment();
+        await _unitOfWork.SaveChangesAsync();
+        return true;
     }
 }
 

@@ -13,6 +13,14 @@ namespace Domain
             QaCoordinatorId = qaCoordinatorId;
         }
 
+        public bool IsDeleted { get; set; }
+
+
+        public void SoftDeleteDepartment()
+        {
+            IsDeleted = true;
+        }
+
         public string Name { get; set; }
         public int? QaCoordinatorId { get; set; }
         public virtual User QaCoordinator { get; set; }

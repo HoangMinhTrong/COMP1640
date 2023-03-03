@@ -41,6 +41,15 @@ namespace COMP1640.Controllers
             var coordinators = await _departmentService.GetCoordinatorForCreateDepartmentAsync();
             return Ok(coordinators);
         }
+
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> DeleteDepartment([FromRoute] int id)
+        {
+            var isSucceed = await _departmentService.DeleteDepartment(id);
+            if (isSucceed) return Ok();
+            return RedirectToAction("ViewDepartment");
+        }
     }
 }
 

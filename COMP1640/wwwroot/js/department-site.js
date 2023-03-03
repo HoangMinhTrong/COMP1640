@@ -33,3 +33,19 @@ function fillDropDownListForCreateDepartment() {
         }
     })
 }
+
+
+//Delete Department
+function DeleteDepartment(id) {
+    var confirmResult = confirm("Are you sure you want to delete this Department?");
+    if (!confirmResult)
+        return;
+
+    $.ajax({
+        url: window.location.origin + '/department/' + id,
+        type: 'PUT',
+        success: function () {
+            window.location.reload();
+        },
+    });
+}
