@@ -7,7 +7,7 @@ addDepartmentBtn.onclick = function () {
     addDepartmentModal.style.display = "block";
 }
 addDepartmentSpan.onclick = function () {
-    addDepartmentModal
+    addDepartmentModal.style.display = "none";
 }
 window.onclick = function (event) {
     if (event.target == addDepartmentModal) {
@@ -15,3 +15,19 @@ window.onclick = function (event) {
     }
 }
 
+function fillDropDownListForCreateDepartment() {
+    $('#qacoordinators_list option:not(:first)').remove();
+    $.ajax({
+        url: window.location.origin + '/department/',
+        type: "GET",
+        dataType: "JSON",
+        data: "",
+        success: function (data) {
+            var qacoordinators = data.qacoordinators;
+            $.each(qacoordinators, function (i, qacoordinator) {
+                $("#qacoordinators_list").append(
+                    $('<option></option>').val(qacoordinator.id).html(qacoordinator.name));
+            });
+        }
+    })
+}

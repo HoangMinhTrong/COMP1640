@@ -1,6 +1,5 @@
 ﻿using COMP1640.ViewModels.Department.Requests;
 using COMP1640.ViewModels.Department.Responses;
-using COMP1640.ViewModels.Department.Responses;
 using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -34,12 +33,12 @@ public class DepartmentService
     {
         return await _departmentRepository
         .GetQuery(request.Filter())
+
             .Select(_ => new InforDepartmentResponse
             {
                 Id = _.Id,
                 Name = _.Name,
                 TenantId = _.TenantId,
-                //QaCoordinatorId = (int)_.QaCoordinatorId,
             })
             .ToListAsync();
     }

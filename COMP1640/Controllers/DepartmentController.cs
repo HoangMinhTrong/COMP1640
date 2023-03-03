@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using COMP1640.ViewModels.Department.Requests;
 using COMP1640.Services;
+using COMP1640.ViewModels.HRM.Requests;
+using COMP1640.ViewModels.HRM.Responses;
 
 namespace COMP1640.Controllers
 {

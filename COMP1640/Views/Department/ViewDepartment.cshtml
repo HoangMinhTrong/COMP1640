@@ -6,7 +6,7 @@
         <div class="align-items-center">
             <a class="btn btn-info text-white text-center" id="addDepartmentBtn">
                 <i class="material-icons text-white">
-                    Add
+                    Create Department
                 </i>
             </a>
         </div>
@@ -19,18 +19,32 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 col-xl-4">
                     <div class="col-md-8 col-xl-6 text-center mx-auto">
-                        <p class="fw-bold text-success mb-2">Add new category</p>
-                        <h6 class="fw-bold">Please fill out the blank</h6>
+                        <p class="fw-bold text-success mb-2">Add new Department</p>
                     </div>
                     <form method="post" asp-action="CreateDepartment" enctype="multipart/form-data">
                         <div class="mb-3">
                             <input class="form-control"
-                                   type="text" name="name" placeholder="Name Category"
+                                   type="text" name="name" placeholder="Name"
                                    required="required" />
+                        </div>
+
+                                <div class="mb-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="qacoordinators_list" name="qacoordinatorId"
+                                            class="form-select" required="required"
+                                            oninvalid="this.setCustomValidity('Please select an item in the list')"
+                                            oninput="setCustomValidity('')">
+                                        <option value="" disabled="disabled" selected="">Select Qacoorditor</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <button class="btn btn-primary shadow d-block w-100" type="submit">Add</button>
                         </div>
+
+
                     </form>
                 </div>
             </div>
@@ -41,12 +55,12 @@
 
 
 
-    <table class="table table-hover table-bordered table-sencondary">
+    <table class="table table-hover table-bordered  table-sencondary">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Department</th>
-                <th scope="col"></th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -58,9 +72,13 @@
                     <td>@item.Name</td>
                     
                     <td>
-                        <a class="btn btn-danger text-white text-center" style="cursor:pointer" onclick="">
+                         <div class="d-flex justify-content-around">
+                        <a class="btn btn-danger align-items-center text-white text-center" style="cursor:pointer" onclick="">
                                                            <i class="bi bi-trash"></i>
                                                        </a>
+
+                          
+                                </div>
                     </td>
                      
                 </tr>
