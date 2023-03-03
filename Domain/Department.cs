@@ -16,10 +16,6 @@ namespace Domain
         public bool IsDeleted { get; set; }
 
 
-        public void SoftDeleteDepartment()
-        {
-            IsDeleted = true;
-        }
 
         public string Name { get; set; }
         public int? QaCoordinatorId { get; set; }
@@ -31,6 +27,18 @@ namespace Domain
         public void UpdateQaCoordinator(int userId)
         {
             QaCoordinatorId = userId;
+        }
+        public void SoftDeleteDepartment()
+        {
+            IsDeleted = true;
+        }
+
+        public void EditInfo(string name
+            , int coordinatorId)
+        {
+            Name = name;
+            QaCoordinatorId = coordinatorId;
+
         }
     }
 }

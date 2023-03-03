@@ -43,6 +43,25 @@ namespace COMP1640.Controllers
         }
 
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetDepartmentInfo([FromRoute] int id)
+        {
+            var vm = await _departmentService.GetDepartmentInfoDetailsAsync(id);
+            return Json(vm);
+        }
+
+        [HttpPut("edit/{id:int}")]
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditDepartmentRequest request)
+        {
+            if (!ModelState.IsValid) return RedirectToAction("ViewDepartment");
+            var isSucceed = await _departmentService.EditDepartmentInfoAsync(id, request);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to edit an department.");
+            return RedirectToAction("ViewDepartment");
+        }
+
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> DeleteDepartment([FromRoute] int id)
         {

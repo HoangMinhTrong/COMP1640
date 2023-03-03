@@ -2,7 +2,7 @@
 var addDepartmentModal = document.getElementById("addDepartmentModal");
 var addDepartmentBtn = document.getElementById("addDepartmentBtn");
 var addDepartmentSpan = document.getElementsByClassName("close")[0];
-console.log(addDepartmentModal)
+
 addDepartmentBtn.onclick = function () {
     addDepartmentModal.style.display = "block";
     fillDropDownListForCreateDepartment();
@@ -48,4 +48,62 @@ function DeleteDepartment(id) {
             window.location.reload();
         },
     });
+}
+
+
+//Popup Edit Department
+var editDepartmentModal = document.getElementById("editDepartmentModal");
+var editDepartmentSpan = document.getElementsByClassName("close")[1];
+
+editDepartmentSpan.onclick = function () {
+    editDepartmentModal.style.display = "none";
+}
+function EditDepartmentInfo() {
+    var departmentId = $(".info-departmentId").val();
+    var myObject = {
+        Name: $(".info-name").val(),
+        qacoordinatorId: $(".info-coordinator").val(),
+    };
+    $.ajax({
+        url: window.location.origin + '/department/edit/' + departmentId,
+        type: 'PUT',
+        data: JSON.stringify(myObject),
+        contentType: 'application/json',
+        success: function () {
+            alert('Edit successfully.');
+            window.location.reload()
+        }
+    });
+}
+
+function ViewDepartmentDetail(id) {
+    $.ajax({
+        url: window.location.origin + '/department/' + id,
+        type: 'GET',
+        success: function (department) {
+            editDepartmentModal.style.display = "block";
+            fillDropDownListForCreateDepartment();
+            $(".info-departmentId").val(department.id);
+            $(".info-name").val(department.name);
+            fillDropDownListForEditDepartment(department.qacoordinatorId);
+        }
+    });
+}
+
+function fillDropDownListForEditDepartment(coordinatorId) {
+    $('#qacoordinators_list_edit option:not(:first)').remove();
+    $.ajax({
+        url: window.location.origin + '/department/coodinator-selection',
+        type: "GET",
+        dataType: "JSON",
+        data: "",
+        success: function (data) {
+            var coodinators = data;
+            $.each(coodinators, function (i, coodinator) {
+                $("#qacoordinators_list_edit").append(
+                    $('<option></option>').val(coodinator.id).html(coodinator.name).prop("selected", coodinator.id == coordinatorId)
+                );
+            });
+        }
+    })
 }

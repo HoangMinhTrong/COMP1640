@@ -60,6 +60,32 @@ public class DepartmentService
             .ToListAsync();
     }
 
+    public async Task<bool> EditDepartmentInfoAsync(int id, EditDepartmentRequest request)
+    {
+        var department = await _departmentRepository.GetId(id).FirstOrDefaultAsync();
+        if (department == null)
+            return false;
+
+        department.EditInfo(request.Name
+            , request.qacoordinatorId);
+
+        await _unitOfWork.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<DepartmentDetailsInfoResponse> GetDepartmentInfoDetailsAsync(int departmentId)
+    {
+        return await _departmentRepository
+            .GetId(departmentId)
+            .Select( _ => new DepartmentDetailsInfoResponse
+            {
+                Id = _.Id,
+                Name = _.Name,
+                qacoordinatorId = (int)_.QaCoordinatorId
+            })
+            .FirstOrDefaultAsync();
+    }
+
 
     public async Task<bool> DeleteDepartment(int id)
     {
