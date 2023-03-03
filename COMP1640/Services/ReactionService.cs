@@ -96,5 +96,37 @@ namespace COMP1640.Services
             return true;
 
         }
+        
+        public async Task<bool> HandleReaction(int ideaId, ReactionStatusEnum statusEnum)
+        {
+            var existedReaction = await  _reactionRepo.GetAsync(r => r.UserId == _current.Id && r.IdeaId == ideaId);
+            if (existedReaction == null)
+            {
+                // TODO: Create record
+                return true;
+            }
+
+            // Check 
+            if (statusEnum == existedReaction.Status)
+            {
+                // TODO: Delete record
+                return true;
+            }
+
+            existedReaction.Status = statusEnum;
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+
+        }
+
+        public async Task<Tuple<int, int>> GetIdeaReaction(int ideaId)
+        {
+            var reactions = await _reactionRepo.GetQuery(r => r.IdeaId == ideaId).ToListAsync();
+
+            return new Tuple<int, int>
+            (reactions.Count(r => r.Status == ReactionStatusEnum.Like),
+                reactions.Count(r => r.Status == ReactionStatusEnum.DisLike));
+        }
+        
     }
 }

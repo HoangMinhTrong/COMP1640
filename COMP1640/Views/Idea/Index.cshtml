@@ -97,14 +97,15 @@
                             </div>
                             <hr />
                             <div class="small d-flex justify-content-start">
-                                <a onclick="GiveThumbUp(@item.Id)" class="d-flex align-items-center me-3">
+                                Current user reaction status
+                                <a onclick="React(@item.Id, @ReactionStatusEnum.Like)" class="d-flex align-items-center me-3">
                                     <i class="far fa-thumbs-up me-2" id="thumbupBtn-@item.Id"></i>
-                                     @*<i class="fa-solid fa-thumbs-up" id="thumbupBtn-@item.Id-active" style="display: none"></i>*@
-                                                                        @*<i class="fas fa-thumbs-up"></i>*@
+                                    @*<i class="fa-solid fa-thumbs-up" id="thumbupBtn-@item.Id-active" style="display: none"></i>*@
+                                    @*<i class="fas fa-thumbs-up"></i>*@
                                     <p class="mb-0">@item.ThumbsUp</p>
                                 </a>
 
-                                <a onclick="GiveThumbDown(@item.Id)" class="d-flex align-items-center me-3">
+                                <a onclick="GiveThumbDown(@item.Id, @ReactionStatusEnum.DisLike)" class="d-flex align-items-center me-3">
                                     <i class="far fa-thumbs-down me-2"></i>
                                     @*<i class="fas fa-thumbs-down"></i>*@
                                     <p class="mb-0">@item.ThumbsDown</p>

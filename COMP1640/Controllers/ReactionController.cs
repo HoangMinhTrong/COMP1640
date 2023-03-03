@@ -1,4 +1,5 @@
 ﻿using COMP1640.Services;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace COMP1640.Controllers
@@ -36,6 +37,19 @@ namespace COMP1640.Controllers
             return Json(new { success = false });
         }
 
+        [HttpPost]
+        public async Task<ActionResult> HandleReact(int ideaId, ReactionStatusEnum reactionStatusEnum)
+        {
+            var result = await _reactionService.HandleReaction(ideaId, reactionStatusEnum);
+
+            if (!result) return Json(new { success = false });
+            
+            // TODO: Get latest like, dislike count
+            var ideaReaction = await _reactionService.GetIdeaReaction(ideaId);
+            if (!result) return Json(new { success = true, like = ideaReaction.Item1, disLike = ideaReaction.Item2 });
+            throw new NotImplementedException();
+        }
+
         [HttpDelete("cancelthumbdown/{id:int}")]
         public async Task<ActionResult> DeleteThumbDownAsync([FromRoute] int id)
         {
@@ -50,5 +64,7 @@ namespace COMP1640.Controllers
             var statusModel = await _reactionService.CheckStatusBeforeAction(id);
             return Json(new { status = statusModel.status });
         }
+        
+        
     }
 }

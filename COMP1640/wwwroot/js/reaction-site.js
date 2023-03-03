@@ -68,6 +68,27 @@ async function GiveThumbDown(ideaId) {
     }
 }
 
+
+function React(event ,ideaId, status)
+{
+    const requestBody = {
+        ideaId: ideaId,
+        reactionStatusEnum: status
+    };
+    event.preventDefault();
+    $.ajax({
+        // Ajax =>  HandleReact(ideaId, status)
+        url: window.location.origin, // TODO: Correct url
+        type: 'POST',
+        data: JSON.stringify(requestBody),
+        contentType: 'application/json',
+        success: function (data) {
+            window.location.reload();
+        }
+    });
+   
+    
+}
 // Check status function
 function CheckCurrentStatusBeforeAction(ideaId) {
     return new Promise((resolve, reject) => {
