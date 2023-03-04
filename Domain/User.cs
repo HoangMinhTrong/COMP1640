@@ -30,6 +30,8 @@ namespace Domain
         public UserGenderEnum? Gender { get; set; }
 
         public virtual ICollection<Idea> Ideas { get; set; } = new HashSet<Idea>();
+
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
         public virtual ICollection<Reaction> Reactions { get; set; } = new HashSet<Reaction>();
         public virtual ICollection<RoleUser> RoleUsers { get; set; } = new HashSet<RoleUser>();
         public virtual ICollection<TenantUser> TenantUsers { get; set; } = new HashSet<TenantUser>();

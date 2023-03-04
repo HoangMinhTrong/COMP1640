@@ -1,5 +1,6 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.Category.Requests;
+using COMP1640.ViewModels.Comment.Requests;
 using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +14,17 @@ namespace COMP1640.Controllers
         private readonly IdeaService _ideaService;
         private readonly CategoryService _categoryService;
         private readonly AttachmentService _attachmentService;
+        private readonly CommentService _commentService;
 
         public IdeaController(IdeaService ideaService
             , CategoryService categoryService
-            , AttachmentService attachmentService)
+            , AttachmentService attachmentService
+            ,CommentService commentService)
         {
             _ideaService = ideaService;
             _categoryService = categoryService;
             _attachmentService = attachmentService;
+            _commentService = commentService;
         }
 
         [HttpGet("attachments/{keyName}/download")]
@@ -100,6 +104,21 @@ namespace COMP1640.Controllers
 
             ModelState.AddModelError("delete_failure", "Failure to delete an category.");
             return RedirectToAction("ViewCategory");
+        }
+        [HttpPost("comment")]
+        public async Task<IActionResult> CommentIdea(CommentIdeaRequest request)
+        {
+            await _commentService.CommentIdea(request);
+            return RedirectToAction("Index");
+        }
+        
+        [HttpGet("viewdetail/{id:int}")]
+        public async Task<IActionResult> ViewDetail([FromRoute] int id)
+        {
+            var ideas = await _ideaService.GetIdeaDetailsAsync(id);
+            var comment = await _commentService.CommentList(id);
+            ViewBag.Comments = comment;
+            return View(ideas);
         }
     }
 }
