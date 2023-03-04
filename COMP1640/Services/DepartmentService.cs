@@ -73,7 +73,7 @@ public class DepartmentService
             return false;
 
         department.EditInfo(request.Name
-            , request.qacoordinatorId);
+            , request.QacoordinatorId);
 
         await _unitOfWork.SaveChangesAsync();
         return true;
@@ -87,7 +87,7 @@ public class DepartmentService
             {
                 Id = _.Id,
                 Name = _.Name,
-                qacoordinatorId = (int)_.QaCoordinatorId
+                QacoordinatorId = (int)_.QaCoordinatorId
             })
             .FirstOrDefaultAsync();
     }
