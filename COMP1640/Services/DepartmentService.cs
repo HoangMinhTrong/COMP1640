@@ -3,6 +3,8 @@ using COMP1640.ViewModels.Department.Responses;
 using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace COMP1640.Services;
 
@@ -24,6 +26,10 @@ public class DepartmentService
 
     public async Task<bool> CreateDepartment(CreateDepartmentRequest departmentRequest)
     {
+
+        var existedName = await _departmentRepository.AnyAsync(_ => _.Name == departmentRequest.Name);
+        if (existedName)
+            return false;
         var department = new Department(departmentRequest.Name, departmentRequest.qacoordinatorId);
 
 
