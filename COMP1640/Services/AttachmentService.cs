@@ -1,4 +1,5 @@
-﻿using COMP1640.ViewModels.Attachment.Responses;
+﻿using Amazon.S3.Model;
+using COMP1640.ViewModels.Attachment.Responses;
 using Domain;
 using Domain.Interfaces;
 using Utilities.StorageService.Interfaces;
@@ -20,6 +21,10 @@ namespace COMP1640.Services
             _ideaRepo = ideaRepo;
         }
 
+        public async Task<GetObjectResponse> GetAsync(string fileKey)
+        {
+            return await _s3Service.GetAsync(fileKey);
+        }
 
         public async Task<Attachment> UploadAsync(IFormFile formFile)
         {
@@ -53,7 +58,10 @@ namespace COMP1640.Services
             foreach (var ideaAttachment in idea.IdeaAttachments)
             {
                 var presignedUrl = await _s3Service.GetPresignedUrl(ideaAttachment.Attachment.KeyName);
-                attachmentsResponse.Add(new AttachmentResponse(ideaAttachment.Attachment.Name, presignedUrl));
+                attachmentsResponse.Add(new AttachmentResponse(ideaAttachment.AttachmentId
+                    , ideaAttachment.Attachment.KeyName
+                    , ideaAttachment.Attachment.Name
+                    , presignedUrl));
             }
 
             return attachmentsResponse;

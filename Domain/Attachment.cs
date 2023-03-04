@@ -12,7 +12,7 @@ namespace Domain
 
         public Attachment(IFormFile formfile, string fileKey)
         {
-            Name = formfile.Name;
+            Name = formfile.FileName;
             KeyName = fileKey;
             Size = formfile.Length;
             Extension = Path.GetExtension(formfile.FileName);

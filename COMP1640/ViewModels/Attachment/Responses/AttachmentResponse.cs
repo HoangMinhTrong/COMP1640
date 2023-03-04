@@ -2,14 +2,17 @@
 {
     public class AttachmentResponse
     {
-
-        public AttachmentResponse(string fileName, string presignedUrl)
+        public AttachmentResponse(int fileId, string fileName, string keyName, string presignedUrl)
         {
-            FileName = fileName;
+            Id = fileId;
+            Name = fileName;
+            KeyName = keyName;
             PresignedUrl = presignedUrl;
         }
 
-        public string FileName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string KeyName { get; set; }
         public string PresignedUrl { get; set; }
     }
 }
