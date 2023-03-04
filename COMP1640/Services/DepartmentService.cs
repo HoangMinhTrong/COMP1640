@@ -30,7 +30,7 @@ public class DepartmentService
         var existedName = await _departmentRepository.AnyAsync(_ => _.Name == departmentRequest.Name);
         if (existedName)
             return false;
-        var department = new Department(departmentRequest.Name, departmentRequest.qacoordinatorId);
+        var department = new Department(departmentRequest.Name, departmentRequest.QacoordinatorId);
 
 
         await _departmentRepository.InsertAsync(department);

@@ -7,6 +7,6 @@ namespace COMP1640.ViewModels.Department.Responses
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public int qacoordinatorId { get; set; }
+        public int QacoordinatorId { get; set; }
     }
 }
