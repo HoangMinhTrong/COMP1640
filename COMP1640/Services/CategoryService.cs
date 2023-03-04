@@ -2,8 +2,6 @@ using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Category.Responses;
 using Domain;
 using Domain.Interfaces;
-using Infrastructure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 

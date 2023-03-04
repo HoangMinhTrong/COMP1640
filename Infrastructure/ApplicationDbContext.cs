@@ -1,9 +1,8 @@
 ﻿using Domain;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Infrastructure.SeedData;
-using System.Reflection.Emit;
 using Infrastructure.Configurations;
+using Infrastructure.SeedData;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
@@ -21,6 +20,9 @@ namespace Infrastructure
         public virtual DbSet<TenantUser> TenantUsers { get; set; }
         public virtual DbSet<UserDepartment> UserDepartments { get; set; }
         public virtual DbSet<RoleUser> RoleUsers { get; set; }
+        public virtual DbSet<Attachment> Attachments { get; set; }
+        public virtual DbSet<IdeaAttachment> IdeaAttachments { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -41,7 +43,7 @@ namespace Infrastructure
         private void OnModelCreatingParial(ModelBuilder builder)
         {
             builder.Entity<TenantUser>()
-                .HasKey(tu => new { tu.UserId, tu.TenantId});
+                .HasKey(tu => new { tu.UserId, tu.TenantId });
 
             builder.Entity<TenantUser>()
                 .HasOne<User>(tu => tu.User)
@@ -54,7 +56,7 @@ namespace Infrastructure
                 .HasForeignKey(tu => tu.TenantId);
 
             builder.Entity<UserDepartment>()
-                .HasKey(ud => new {ud.UserId, ud.DepartmentId});
+                .HasKey(ud => new { ud.UserId, ud.DepartmentId });
 
             builder.Entity<UserDepartment>()
                 .HasOne<User>(ud => ud.User)
@@ -85,6 +87,19 @@ namespace Infrastructure
                 .HasForeignKey<Department>(d => d.QaCoordinatorId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .IsRequired(false);
+
+            builder.Entity<IdeaAttachment>()
+               .HasKey(ia => new { ia.IdeaId, ia.AttachmentId });
+
+            builder.Entity<IdeaAttachment>()
+                .HasOne<Idea>(ia => ia.Idea)
+                .WithMany(i => i.IdeaAttachments)
+                .HasForeignKey(ia => ia.IdeaId);
+
+            builder.Entity<IdeaAttachment>()
+                .HasOne<Attachment>(ia => ia.Attachment)
+                .WithMany(a => a.IdeaAttachments)
+                .HasForeignKey(ia => ia.AttachmentId);
 
             builder.ApplyConfiguration(new IdeaConfiguration());
         }

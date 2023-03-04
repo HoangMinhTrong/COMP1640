@@ -2,6 +2,7 @@
 using Domain.DomainEvents;
 using Domain.Interfaces;
 using MediatR;
+using Utilities.Constants;
 using Utilities.EmailService.Interface;
 using Utilities.EmailService.Interfaces;
 using Utilities.Identity.Interfaces;
@@ -35,7 +36,7 @@ namespace COMP1640.DomainHandlers
             if (QACoordinator == null)
                 return;
 
-            var model = new IdeaAddedEmailModel(@event.Idea, _configuration.GetSection("APIRoute").Value);
+            var model = new IdeaAddedEmailModel(@event.Idea, _configuration.GetSection(AppSetting.APIRoute).Value);
             var body = await _razorViewRenderer.RenderToStringAsync("OnIdeaAddedEmailTemplate", model);
             if (string.IsNullOrEmpty(body))
                 return;

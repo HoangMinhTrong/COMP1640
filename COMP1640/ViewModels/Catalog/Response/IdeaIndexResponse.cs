@@ -10,13 +10,7 @@ public class IdeaIndexResponse
     public IEnumerable<SelectListItem> SortOptionPicklist { get; set; }
 
     public int? CurrentCategoryFilter { get; set; }
-    public string CurrentSort { get; set; }
+    public IdeaIndexSortingEnum? CurrentSort { get; set; }
     public string CurrentSearchString { get; set; }
     public PaginationInfo PaginationInfo { get; set; }
-    public string NameSortParm { get; set; }
-
-    public string ReactionSortParm { get; set; }
-    public string PopularSortParm { get; set; }
-    public string LatestCommentSortParm { get; set; }
-    public string LatestIdeaSortParm { get; set; }
 }
