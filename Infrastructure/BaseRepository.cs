@@ -29,6 +29,12 @@ namespace Infrastructure
             await Entities.AddAsync(entity);
         }
 
+        public async Task InsertRangeAsync(IEnumerable<T> entities)
+        {
+            if (entities.Any())
+                await Entities.AddRangeAsync(entities);
+        }
+
         public async Task DeleteAsync(T entity)
         {
             Entities.Remove(entity);

@@ -1,0 +1,44 @@
+﻿<div class="modalEdit" id="editDepartmentModal">
+    <!-- Modal content -->
+    <div class="modal-content bg-dark w-50">
+        <span class="close">&times;</span>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6 col-xl-4">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <p class="fw-bold text-success mb-2">Edit Department</p>
+                    <h6 class="fw-bold">Change department Information</h6>
+                </div>
+                <form enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <input class="form-control info-departmentId"
+                                hidden
+                                type="text"
+                                required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-control info-name"
+                                type="text" name="name" placeholder="Name"
+                                required="required"/>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="qacoordinators_list_edit" name="qacoordinatorId"
+                                        class="form-select info-coordinator" required="required"
+                                        oninvalid="this.setCustomValidity('Please select an item in the list')"
+                                        oninput="setCustomValidity('')">
+                                    <option disabled="disabled">Select Coordinator</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <button class="btn btn-primary shadow d-block w-100" onclick="EditDepartmentInfo()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

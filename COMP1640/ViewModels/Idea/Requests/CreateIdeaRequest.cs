@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Utilities.EmailService;
 
 namespace COMP1640.ViewModels.Idea.Requests
 {
@@ -13,5 +14,7 @@ namespace COMP1640.ViewModels.Idea.Requests
         [Required]
         public int CategoryId { get; set; }
 
+        [FileSizeAttribute(1024 * 1024)] // max file size is 1MB
+        public List<IFormFile> Formfiles { get; set; } = new List<IFormFile>();
     }
 }

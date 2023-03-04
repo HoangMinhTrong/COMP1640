@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-    public partial class academic_year : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,12 +28,32 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Attachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    KeyName = table.Column<string>(type: "text", nullable: false),
+                    Size = table.Column<float>(type: "real", nullable: false),
+                    Extension = table.Column<string>(type: "text", nullable: false),
+                    TenantId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attachments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -284,6 +304,7 @@ namespace Infrastructure.Migrations
                     DepartmentId = table.Column<int>(type: "integer", nullable: false),
                     AcademicYearId = table.Column<int>(type: "integer", nullable: false),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    Views = table.Column<int>(type: "integer", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<int>(type: "integer", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
@@ -342,6 +363,60 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    IdeaId = table.Column<int>(type: "integer", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    CreatedByNavigationId = table.Column<int>(type: "integer", nullable: false),
+                    TenantId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Ideas_IdeaId",
+                        column: x => x.IdeaId,
+                        principalTable: "Ideas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Users_CreatedByNavigationId",
+                        column: x => x.CreatedByNavigationId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IdeaAttachments",
+                columns: table => new
+                {
+                    IdeaId = table.Column<int>(type: "integer", nullable: false),
+                    AttachmentId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdeaAttachments", x => new { x.IdeaId, x.AttachmentId });
+                    table.ForeignKey(
+                        name: "FK_IdeaAttachments_Attachments_AttachmentId",
+                        column: x => x.AttachmentId,
+                        principalTable: "Attachments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IdeaAttachments_Ideas_IdeaId",
+                        column: x => x.IdeaId,
+                        principalTable: "Ideas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reactions",
                 columns: table => new
                 {
@@ -379,11 +454,11 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "Name", "TenantId" },
+                columns: new[] { "Id", "IsDeleted", "Name", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, "Category 1", 1 },
-                    { 2, "Category 2", 1 }
+                    { 1, false, "Category 1", 1 },
+                    { 2, false, "Category 2", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -391,10 +466,10 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "1a06350b-6416-4523-862c-e7920e52855b", "Admin", "ADMIN" },
-                    { 2, "6151162a-8730-4c03-9d3f-f0251f40b025", "University QA Manager", "UNIVERSITY QA MANAGER" },
-                    { 3, "8c73b72e-ac79-496d-89aa-9b6c48a2de78", "Department QA Coordinator", "DEPARTMENT QA COORDINATOR" },
-                    { 4, "4b8a27c2-b6fa-4414-87b0-2599108baed6", "Staff", "STAFF" }
+                    { 1, "ef9abd08-e299-4b89-8181-2e5c56bca0a1", "Admin", "ADMIN" },
+                    { 2, "28d5dedd-6833-4cf6-96b4-42bc5c9b7920", "University QA Manager", "UNIVERSITY QA MANAGER" },
+                    { 3, "97de366d-16e7-4ac2-8c2f-6359bbf52bbe", "Department QA Coordinator", "DEPARTMENT QA COORDINATOR" },
+                    { 4, "8c0a6312-972a-4868-9b38-f6e3c2414e8b", "Staff", "STAFF" }
                 });
 
             migrationBuilder.InsertData(
@@ -407,12 +482,12 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Birthday", "ConcurrencyStamp", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, null, "711bf031-0ea5-40e3-b6f2-690b71a6f5e3", "admin@gmail.com", false, (byte)1, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEEhL6CUfvk4yQVFgpimYlISdfyO2iOIzqEN+VGIggRrFQHd0I23crI21SLEzf13dag==", null, false, "26329384-390d-40c2-a509-90881fee2260", false, "admin@gmail.com" },
-                    { 2, 0, null, "d1c81eb1-cfaa-4010-9878-01e9782e1cec", "qamanager@gmail.com", false, (byte)1, false, null, "QAMANAGER@GMAIL.COM", "QAMANAGER@GMAIL.COM", "AQAAAAEAACcQAAAAEKwhJNzOaYA6syNXPX0rPYs825qqX5T7cqnKGRHP9y99EVOJCHN0PgxBKNvR34dpww==", null, false, "64d90277-918b-4d5d-9c65-4f34225fddf4", false, "qamanager@gmail.com" },
-                    { 3, 0, null, "35279eac-166c-4966-a2d1-79f16ec7ffc4", "computingdepartmentqa@gmail.com", false, (byte)1, false, null, "COMPUTINGDEPARTMENTQA@GMAIL.COM", "COMPUTINGDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEOQGjTQ6652Ta7O73bWFgTWTMSbyD+/X9d4m22PrHLkBKeVbzYIkWnKDEeXmoLlOSw==", null, false, "49c1ad79-6b85-443a-9f88-26ea696acb0a", false, "computingdepartmentqa@gmail.com" },
-                    { 4, 0, null, "0ad798a9-00c4-442e-bdd1-4132e1194a9d", "businessDepartmentQA@gmail.com", false, (byte)1, false, null, "BUSINESSDEPARTMENTQA@GMAIL.COM", "BUSINESSDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEK+zL6PshTHPRyZ7HANS3f+cPvSCAsyIPDX463jWmgqp+ZxwEmmA/oOmwHrCkdos/Q==", null, false, "75e858bb-56ea-4398-a9f4-ed5e7d4bdb9e", false, "businessDepartmentQA@gmail.com" },
-                    { 5, 0, null, "d31d1660-f7db-4366-afbc-667b7af4a725", "designDepartmentQA@gmail.com", false, (byte)1, false, null, "DESIGNDEPARTMENTQA@GMAIL.COM", "DESIGNDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEBpjp6tLjI+3fMIVHqVB8v2WzF6qn+fXu9o3X/9+kJnuNZshCgCwOEFt/wyAvZjewg==", null, false, "1546a5e6-7d70-46cb-af34-53918b0a5df9", false, "designDepartmentQA@gmail.com" },
-                    { 6, 0, null, "a6951f72-5476-4d03-a6c1-d4aa147220a4", "staff@gmail.com", false, (byte)1, false, null, "STAFF@GMAIL.COM", "STAFF@GMAIL.COM", "AQAAAAEAACcQAAAAEPqylgl4aUDOIoiQFKgkmfZkH13xhB6Xh60950wX3jUpz0t3Ld37ju7N/Ej+4jwP6Q==", null, false, "2ce42af2-10d3-4e79-9542-4aa78e47822d", false, "staff@gmail.com" }
+                    { 1, 0, null, "e56f387c-1c96-4546-91f0-12a1d4c0a301", "admin@gmail.com", false, (byte)1, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAELYS3yL/UiBmMFP4jRPNCHlOuYFCg8BKamZ9gSsSjFCqQ3J44d9bxlIXq4zFEzYxoA==", null, false, "de4e4120-bdb0-4d15-99be-f258b866c41e", false, "admin@gmail.com" },
+                    { 2, 0, null, "e8e55e78-fdfb-4a5c-98a8-120244767c77", "qamanager@gmail.com", false, (byte)1, false, null, "QAMANAGER@GMAIL.COM", "QAMANAGER@GMAIL.COM", "AQAAAAEAACcQAAAAEF3bXPN3jdnw/VaszHgZQaG0qVrnjbCB7dmBSDEZLI5k1XPM7K+bfkhxOUFzu2NUAw==", null, false, "d26208da-b9ab-44a0-867d-5e5f2e5871a3", false, "qamanager@gmail.com" },
+                    { 3, 0, null, "c0e59bea-1f67-4e77-880e-c1aec2138a2f", "computingdepartmentqa@gmail.com", false, (byte)1, false, null, "COMPUTINGDEPARTMENTQA@GMAIL.COM", "COMPUTINGDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEJJ6ubnzNESxKjbLpki2/ZL687hYTqDy5dBQ267Kdqef6xkLtaP7dm4/iU5tSEereQ==", null, false, "76111a90-f7d3-4877-adb0-0e7b7f769dc4", false, "computingdepartmentqa@gmail.com" },
+                    { 4, 0, null, "dacaf622-280f-4669-9533-da24b965ce59", "businessDepartmentQA@gmail.com", false, (byte)1, false, null, "BUSINESSDEPARTMENTQA@GMAIL.COM", "BUSINESSDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEHONVapIN7Jm5z4mNsLrLjXB+Jj+HNU28cOYUCaUcrRGMYKDRHpplFO6+d/JEeFSaw==", null, false, "285680ef-d46d-43e9-bbf3-0bc2eb00a89a", false, "businessDepartmentQA@gmail.com" },
+                    { 5, 0, null, "4d279300-1df1-4012-84aa-db0ce72f250a", "designDepartmentQA@gmail.com", false, (byte)1, false, null, "DESIGNDEPARTMENTQA@GMAIL.COM", "DESIGNDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEKH68GbaTyiEuwDB74Msav/Py0cWDXaA2fRjW0j97PX3vl5cPNsjv+oJ2XzFzxlm4w==", null, false, "e8bfe26f-ec98-4814-9ede-f05f9ef4d112", false, "designDepartmentQA@gmail.com" },
+                    { 6, 0, null, "5e223330-ad41-4b11-9ebc-fe85403db31b", "staff@gmail.com", false, (byte)1, false, null, "STAFF@GMAIL.COM", "STAFF@GMAIL.COM", "AQAAAAEAACcQAAAAEM/FDtxkbsQOdfiZJF7gKtz9kivQUAAutYrloEZpwN3j/rWZNUjDHIubc/+meR7w4w==", null, false, "585ac450-c49c-45fd-bb1d-43f57a30154b", false, "staff@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -466,10 +541,25 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_CreatedByNavigationId",
+                table: "Comments",
+                column: "CreatedByNavigationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_IdeaId",
+                table: "Comments",
+                column: "IdeaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Departments_QaCoordinatorId",
                 table: "Departments",
                 column: "QaCoordinatorId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IdeaAttachments_AttachmentId",
+                table: "IdeaAttachments",
+                column: "AttachmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ideas_AcademicYearId",
@@ -557,6 +647,12 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "IdeaAttachments");
+
+            migrationBuilder.DropTable(
                 name: "Reactions");
 
             migrationBuilder.DropTable(
@@ -582,6 +678,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Attachments");
 
             migrationBuilder.DropTable(
                 name: "Ideas");
