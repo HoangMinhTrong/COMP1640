@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Utilities.EmailService;
 
 namespace COMP1640.ViewModels.Idea.Requests
 {
@@ -13,6 +13,8 @@ namespace COMP1640.ViewModels.Idea.Requests
         public bool IsAnonymous { get; set; }
         [Required]
         public int CategoryId { get; set; }
-        public List<IFormFile> Formfiles { get; set; }
+
+        [FileSizeAttribute(1024 * 1024)] // max file size is 1MB
+        public List<IFormFile> Formfiles { get; set; } = new List<IFormFile>();
     }
 }
