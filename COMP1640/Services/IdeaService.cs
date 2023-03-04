@@ -108,6 +108,14 @@ namespace COMP1640.Services
             return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNo,
                 request.PageSize);
         }
+        
+        public async Task<GetIdeaDetailResponse> GetIdeaDetailsAsync(int ideaId)
+        {            
+            return await _ideaRepo
+                .GetById(ideaId)
+                .Select(new GetIdeaDetailResponse().GetSelection())
+                .FirstOrDefaultAsync();
+        }
 
         #region Send Mail
         private async Task HandleSendMailOnCreateIdeaAsync(Idea idea)

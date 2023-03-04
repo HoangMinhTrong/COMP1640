@@ -73,7 +73,17 @@ namespace COMP1640.Controllers
         public async Task<IActionResult> CommentIdea(CommentIdeaRequest request)
         {
             await _commentService.CommentIdea(request);
-            return Json(new { success = true });
+            return RedirectToAction("Index");
         }
+        
+        [HttpGet("viewdetail/{id:int}")]
+        public async Task<IActionResult> ViewDetail([FromRoute] int id)
+        {
+            var ideas = await _ideaService.GetIdeaDetailsAsync(id);
+            var comment = await _commentService.CommentList(id);
+            ViewBag.Comments = comment;
+            return View(ideas);
+        }
+        
     }
 }

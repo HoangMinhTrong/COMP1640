@@ -13,5 +13,9 @@ namespace Infrastructure.Repositories
         {
             return await GetAsync(_ => _.Id == id);
         }
+        public IQueryable<Idea> GetById(int id)
+        {
+            return GetQuery(_ => _.Id == id);
+        }
     }
 }

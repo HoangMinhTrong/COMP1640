@@ -96,8 +96,8 @@
                                     <p class="mb-0">@item.DislikeCount</p>
                                 </a>
                                 <a href="#!" class="d-flex align-items-center me-3">
-                                    <i class="far fa-comment-dots me-2"></i>
-                                    <p class="mb-0">12</p>
+                                    <a asp-action="ViewDetail" asp-route-id="@item.Id"> <i class="far fa-comment-dots me-2"></i></a>
+                                    <p class="mb-0">@item.CommentCount</p>
                                 </a>
                             </div>
                         </div>
