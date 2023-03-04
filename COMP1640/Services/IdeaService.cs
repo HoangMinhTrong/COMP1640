@@ -110,7 +110,7 @@ namespace COMP1640.Services
                 request.PageSize);
 
             var ideaIndexItems = await queryable
-                .Select(new IdeaIndexItem().GetSelection())
+                .Select(new IdeaIndexItem().GetSelection(_current.Id))
                 .AsNoTracking()
                 .AsSplitQuery()
                 .ToListAsync();
