@@ -3,6 +3,7 @@ using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Utilities.Helpers;
 
 namespace COMP1640.Controllers
 {
