@@ -1,5 +1,4 @@
-﻿using COMP1640.Utils;
-using COMP1640.ViewModels.Common;
+﻿using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.Idea.Responses;
 using Domain;
@@ -18,19 +17,22 @@ namespace COMP1640.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserInfo _current;
         private readonly IServiceProvider _serviceProvider;
+        private readonly AttachmentService attachmentService;
 
         public IdeaService(
             IIdeaRepository ideaRepo,
             IUnitOfWork unitOfWork,
             ICategoryRepository categoryRepo,
-            ICurrentUserInfo current
-            , IServiceProvider serviceProvider)
+            ICurrentUserInfo current,
+            IServiceProvider serviceProvider,
+            AttachmentService attachmentService)
         {
             _ideaRepo = ideaRepo;
             _unitOfWork = unitOfWork;
             _categoryRepo = categoryRepo;
             _current = current;
             _serviceProvider = serviceProvider;
+            this.attachmentService = attachmentService;
         }
 
         public async Task<bool> CreateIdeaAsync(CreateIdeaRequest request)
@@ -39,8 +41,6 @@ namespace COMP1640.Services
             if (category == null)
                 return false;
 
-            var departmentId = _current.DepartmentId;
-
             var idea = new Idea
                 (
                     request.Title,
@@ -48,8 +48,17 @@ namespace COMP1640.Services
                     request.IsAnonymous,
                     request.CategoryId,
                     1,
-                    departmentId
+                    _current.DepartmentId
                 );
+
+            if (request?.Formfiles.Count > 0)
+            {
+                var attachments = await attachmentService.UploadListAsync(request.Formfiles);
+                foreach (var attachment in attachments)
+                {
+                    idea.AddAttachment(attachment);
+                }
+            }
 
             await _ideaRepo.InsertAsync(idea);
             await _unitOfWork.SaveChangesAsync();
@@ -90,69 +99,24 @@ namespace COMP1640.Services
                 .ToListAsync();
         }
 
-        
+
         public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request)
         {
-            var queryable = _ideaRepo.GetAllQuery();
-        
-            // Filter
-            queryable = FilterQuery(request, queryable);
-            
-            // Sort
-            queryable = SortingQuery(request, queryable);
+            var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter()));
+
             var totalCount = queryable.Count();
-            
-            queryable = PaginatedList<Idea>.CreatePangingQueryAsync(queryable, request.PageNumber ?? 1,
-                request.PageSize ?? IdeaPagingOption.DefaultPageSize);
+
+            queryable = PaginatedList<Idea>.CreatePangingQueryAsync(queryable, request.PageNo,
+                request.PageSize);
 
             var ideaIndexItems = await queryable
                 .Select(new IdeaIndexItem().GetSelection())
                 .AsNoTracking()
                 .AsSplitQuery()
                 .ToListAsync();
-            
-            return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNumber ?? 1,
-                request.PageSize ?? IdeaPagingOption.DefaultPageSize);
-        }
-        private static IQueryable<Idea> FilterQuery(GetIdeaIndexRequest request, IQueryable<Idea> queryable)
-        {
-            if (request.FilterOption.HasValue)
-                queryable = queryable.Where(idea => idea.CategoryId == request.FilterOption.Value);
 
-            // Check search string
-            if (!string.IsNullOrEmpty(request.SearchString))
-                request.PageNumber = 1;
-            else
-                request.SearchString = request.CurrentSearch;
-
-            // Filter by search string
-            if (!string.IsNullOrWhiteSpace(request.SearchString))
-                queryable = queryable.Where(idea =>
-                    idea.Title.ToLower().Contains(request.SearchString.ToLower()));
-
-            return queryable;
-        }
-        
-        private static IQueryable<Idea> SortingQuery(GetIdeaIndexRequest request, IQueryable<Idea> queryable)
-        {
-            queryable = request.SortOption switch
-            {
-                // TODO: Implement Views count
-                // case IdeaIndexOption.PopularIdeaSort:
-                // queryable = queryable.OrderByDescending(x => x.View); 
-                // break;
-                IdeaIndexOption.ReactionSort => queryable.OrderByDescending(x =>
-                    x.Reactions.Count(r => r.Status == ReactionStatusEnum.Like) -
-                    x.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike)),
-                
-                // TODO: Implement comment model
-                // case IdeaIndexOption.LatestCommentSort:
-                //     queryable = queryable.OrderBy(x => x.Price);
-                //     break;
-                IdeaIndexOption.LatestIdeaSort => queryable.OrderByDescending(x => x.CreatedOn),
-                _ => queryable.OrderByDescending(x => x.CreatedOn)
-            };
-            return queryable;
+            return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNo,
+                request.PageSize);
         }
 
         #region Send Mail
@@ -163,5 +127,6 @@ namespace COMP1640.Services
                 await mediator.Publish(new CreateIdeaDomainEvent(idea));
         }
         #endregion
+
     }
 }

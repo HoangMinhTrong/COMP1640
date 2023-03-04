@@ -17,11 +17,14 @@ public class IdeaIndexItem
     public int Views { get; set; }
     public int TotalComment { get; set; }
     public IdeaAuthor Author { get; set; }
+    public bool IsAnonymous { get; set; }
+
 
 
     public Expression<Func<Domain.Idea, IdeaIndexItem>> GetSelection()
     {
         var authorSelection = new IdeaAuthor().GetSelection().Compile();
+
         return _ => new IdeaIndexItem
         {
             Id = _.Id,
@@ -34,8 +37,10 @@ public class IdeaIndexItem
             ThumbsDown = _.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike),
             ThumbsUp = _.Reactions.Count(r => r.Status == ReactionStatusEnum.Like),
             Author = authorSelection(_.CreatedByNavigation),
-            // Comments = _.Comment TODO: Add total comments and views count
-            
+            TotalComment = _.Comments.Count,
+            Views = _.Views,
+            IsAnonymous = _.IsAnonymous
+
         };
     }
 }
@@ -47,10 +52,10 @@ public class IdeaAuthor
     
     public Expression<Func<User, IdeaAuthor>> GetSelection()
     {
-        return _ => new IdeaAuthor
+        return user => new IdeaAuthor
         {
-           Id = _.Id,
-           UserName = _.UserName,
+            Id = user.Id,
+            UserName = user.UserName,
         };
     }
 }

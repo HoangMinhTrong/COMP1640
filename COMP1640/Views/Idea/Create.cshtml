@@ -2,99 +2,88 @@
 	ViewData["Title"] = "Create";
 }
 <div class="card-body p-4" id="createIdeaPopup">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col col-lg-8 mb-4 mb-lg-0">
-                <div class="card mb-3" style="border-radius: .5rem;">
-					
-			<span class="close" onclick=CloseAddIdeaPopup()>&times;</span>
-			<h1>Create Idea</h1>
-			<div>
-				<header class="bg-dark"></header>
-				<div class="container-fluid">
-					<div class="card  mb-3">
-						<div class="card-header py-3">
-							<p class="text-primary m-0 fw-bold">New Post</p>
-						</div>
-					</div>
-				</div>
-				<section></section>
-				<div class="container-fluid">
-					<form method="post" asp-action="Create" enctype="multipart/form-data">
-						<div class="card mb-3">
-							<div class="card-body">
-								<div class="row">
-									<div class="col-sm-12 col-md-7 col-lg-8">
-										<div class="mb-3">
-											<label class="form-label" for="title"><strong> Title*</strong></label>
-											<input id="title" class="form-control" type="text" placeholder="Idea's title" name="title" required />
+	<div class="container py-5 h-100">
+		<div class="row d-flex justify-content-center align-items-center h-100">
+			<div class="col col-lg-8 mb-4 mb-lg-0">
+				<div class="card mb-3" style="border-radius: .5rem;">
+
+					<span class="close pt-3 p-lg-3" onclick=CloseAddIdeaPopup()>&times;</span>
+					<h4 class="fw-bold text-success d-flex justify-content-center">Create Idea</h4>
+					<div class="container-fluid">
+						<form method="post" asp-action="Create" enctype="multipart/form-data">
+							<div class="card mb-3">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-sm-12 col-md-7 col-lg-8">
+											<div class="mb-3">
+												<label class="form-label" for="title"><strong> Title*</strong></label>
+												<input id="title" class="form-control" type="text" placeholder="Idea's title" name="title" required />
+											</div>
 										</div>
 									</div>
 									<div class="col-sm-12 col-md-4 col-lg-4">
 										<div class="mb-3">
-											<label class="form-label" for="attach_file"><strong>Attach file</strong><br /></label>
-											<input class="form-control" type="file" id="attach_file" name="attach_file" />
+											<label class="form-label" for="formfiles"><strong>Attach file</strong><br /></label>
+											<input class="form-control" type="file" id="formfiles" name="formfiles" />
 										</div>
 									</div>
-								</div>
 
-								<div class="mb-3">
-									<label class="form-label" for="content"><strong>Content*</strong><br /></label>
-									<textarea id="content" class="form-control" rows="4" name="content" placeholder="Idea's content" required></textarea>
-								</div>
+									<div class="mb-3">
+										<label class="form-label" for="content"><strong>Content*</strong><br /></label>
+										<textarea id="content" class="form-control" rows="4" name="content" placeholder="Idea's content" required></textarea>
+									</div>
 
-								<div class="row mb-2">
-									<div class="col">
-										<div class="mb-3">
-											<label class="form-label" for="category_list"><strong>Category*</strong></label>
-											@*<div class="dropdown">
-											<button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" style="padding-right: 102px;padding-left: 102px;">Dropdown </button>
-											<div class="dropdown-menu">
-											<a class="dropdown-item" href="#">First Item</a>
-											<a class="dropdown-item" href="#">Second Item</a>
-											<a class="dropdown-item" href="#">Third Item</a>
+									<div class="row mb-2">
+										<div class="col">
+											<div class="mb-3">
+												<label class="form-label" for="category_list"><strong>Category*</strong></label>
+												@*<div class="dropdown">
+												<button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button" style="padding-right: 102px;padding-left: 102px;">Dropdown </button>
+												<div class="dropdown-menu">
+												<a class="dropdown-item" href="#">First Item</a>
+												<a class="dropdown-item" href="#">Second Item</a>
+												<a class="dropdown-item" href="#">Third Item</a>
 
+												</div>
+												</div>*@
+												<select id="category_list" name="CategoryId"
+														class="form-select" required="required">
+													<option value="" disabled>Select Category</option>
+												</select>
+
+												@*<div>
+												@Html.DropDownListFor(model => model.TYPE_TEXT, new SelectList(ViewBag.TYPE, "TYPE_CODE", "TYPE_TEXT", @ViewBag.SelectedTYPE))
+												</div>*@
+
+												@*@Html.DropDownList("category", (List
+												<SelectListItem>)ViewBag.Categories) *@
 											</div>
-											</div>*@
-											<select id="category_list" name="CategoryId"
-													class="form-select" required="required">
-												<option value="" disabled>Select Category</option>
-											</select>
-
-											@*<div>
-											@Html.DropDownListFor(model => model.TYPE_TEXT, new SelectList(ViewBag.TYPE, "TYPE_CODE", "TYPE_TEXT", @ViewBag.SelectedTYPE))
-											</div>*@
-
-											@*@Html.DropDownList("category", (List
-											<SelectListItem>)ViewBag.Categories) *@
 										</div>
 									</div>
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="true" id="isAnonymous" name="isAnonymous">
-									<input class="form-check-input" type="hidden" value="false" id="isAnonymous" name="isAnonymous">
-									<label class="form-check-label" for="isAnonymous">
-										Is Anonymous
-									</label>
-								</div>
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" value="true" id="isAnonymous" name="isAnonymous">
+										<input class="form-check-input" type="hidden" value="false" id="isAnonymous" name="isAnonymous">
+										<label class="form-check-label" for="isAnonymous">
+											Is Anonymous
+										</label>
+									</div>
 
 
 
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="" id="defaultCheck2" required>
-									<label class="form-check-label" for="defaultCheck2">
-										I agree with our Terms and Conditions
-									</label>
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" value="" id="defaultCheck2" required>
+										<label class="form-check-label" for="defaultCheck2">
+											I agree with our Terms and Conditions
+										</label>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="text-end mb-3">
-							<button class="btn btn-primary btn-lg" type="submit">Submit</button>
-							<a class="btn btn-danger btn-lg" role="button" asp-controller="Home" asp-action="Index">Cancel</a>
-						</div>
-					</form>
-				</div>
-			</div>
+							<div class="text-end mb-3">
+								<button class="btn btn-primary btn-lg" type="submit">Submit</button>
+								<a class="btn btn-danger btn-lg" role="button" asp-controller="Home" asp-action="Index">Cancel</a>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 

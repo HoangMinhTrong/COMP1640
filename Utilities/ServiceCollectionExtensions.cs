@@ -1,15 +1,43 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Utilities.Constants;
 using Utilities.EmailService;
 using Utilities.EmailService.Interface;
 using Utilities.EmailService.Interfaces;
 using Utilities.Identity;
+using Utilities.StorageService;
+using Utilities.StorageService.DTOs;
+using Utilities.StorageService.Interfaces;
 
 namespace Utilities
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddStorageService(this IServiceCollection services, IConfiguration configuration)
+        {
+            var existed = configuration.GetSection(AppSetting.S3Settings).Exists();
+            if (existed)
+                services.Configure<S3Setting>(configuration.GetSection(AppSetting.S3Settings));
+
+            var options = configuration.GetSection(AppSetting.S3Settings).Get<S3Setting>();
+            var customOptions = new AWSOptions
+            {
+                Credentials = new BasicAWSCredentials(options.AccessKey, options.SecretKey),
+                Region = RegionEndpoint.GetBySystemName(options.Region)
+            };
+
+            return services
+                           .AddDefaultAWSOptions(customOptions)
+                           .AddAWSService<IAmazonS3>()
+                           .AddSingleton<IS3Service, S3Service>();
+        }
+
         public static IServiceCollection AddEmailSender(this IServiceCollection services)
         {
             return services.AddScoped<IRazorViewRenderer, RazorViewRenderer>()

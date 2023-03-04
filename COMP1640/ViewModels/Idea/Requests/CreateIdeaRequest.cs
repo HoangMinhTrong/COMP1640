@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace COMP1640.ViewModels.Idea.Requests
 {
@@ -12,6 +13,6 @@ namespace COMP1640.ViewModels.Idea.Requests
         public bool IsAnonymous { get; set; }
         [Required]
         public int CategoryId { get; set; }
-
+        public List<IFormFile> Formfiles { get; set; }
     }
 }
