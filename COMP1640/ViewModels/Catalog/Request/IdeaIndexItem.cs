@@ -39,7 +39,11 @@ public class IdeaIndexItem
             UpdatedOn = _.CreatedOn, // TODO: Add field updated on
             ThumbsDown = _.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike),
             ThumbsUp = _.Reactions.Count(r => r.Status == ReactionStatusEnum.Like),
-            Author = authorSelection(_.CreatedByNavigation),
+            Author = _.IsAnonymous ? null : new IdeaAuthor
+            {
+                Id = _.CreatedByNavigation.Id,
+                UserName = _.CreatedByNavigation.UserName,
+            },
             TotalComment = _.Comments.Count,
             Views = _.Views,
             IsAnonymous = _.IsAnonymous,

@@ -9,7 +9,7 @@ using Utilities.StorageService.Interfaces;
 
 namespace COMP1640.Controllers
 {
-    [Route("idea")]
+   [Route("idea")]
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;
@@ -103,8 +103,9 @@ namespace COMP1640.Controllers
         }
 
         [HttpPut("category/{id:int}")]
-        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
-        {
+        public async Task<IActionResult> DeleteCategory([FromRoute] int id) 
+        {        
+       
             var isSucceed = await _categoryService.DeleteCategory(id);
             if (isSucceed) return Ok();
 
