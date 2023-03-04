@@ -96,7 +96,19 @@
                                     <div class="d-flex flex-row align-items-center mb-2">
                                         <div class="flex-shrink-0">
                                             <span class="mx-10"></span>
-                                            <strong>@item.Author.UserName</strong>
+                                            @if (item.IsAnonymous)
+                                            {
+                                                <strong id="strong-author-name-@item.Id">Anonymous</strong>
+                                                if (CurrentUser.RoleId == (int)RoleTypeEnum.QAManager)
+                                                {
+                                                    // TODO: Implement button (or similar) to display actual 
+                                                    // author name
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <strong id="strong-author-name-@item.Id">@item.Author.UserName</strong>
+                                            }
                                         </div>
                                     </div>
                                     @* <div> *@
