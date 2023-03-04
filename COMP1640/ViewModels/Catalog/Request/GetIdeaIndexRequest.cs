@@ -24,21 +24,16 @@ public class GetIdeaIndexRequest : PagingRequest
     
     public Func<IQueryable<Domain.Idea>, IQueryable<Domain.Idea>> Sort()
     {
-        switch (SortOption)
+        return SortOption switch
         {
-            case IdeaIndexSortingEnum.LatestIdea:
-                return q => q.OrderByDescending(x => x.CreatedOn);
-            case IdeaIndexSortingEnum.MostReactPoint:
-                return q => q.OrderByDescending(i =>
-                    i.Reactions.Count(r => r.Status == ReactionStatusEnum.Like) -
-                    i.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike));
-
-            // TODO: Sorting by latest comment, post popular
-            case IdeaIndexSortingEnum.LatestComment:
-            case IdeaIndexSortingEnum.MostPopularIdea:
-            default:
-                return q => q.OrderByDescending(x => x.CreatedOn);
-        }
+            IdeaIndexSortingEnum.LatestIdea => q => q.OrderByDescending(x => x.CreatedOn),
+            IdeaIndexSortingEnum.MostReactPoint => q => q.OrderByDescending(i =>
+                i.Reactions.Count(r => r.Status == ReactionStatusEnum.Like) -
+                i.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike)),
+            IdeaIndexSortingEnum.LatestComment => q => q.OrderByDescending(x => x.Comments.MaxBy(c => c.CreatedOn)),
+            IdeaIndexSortingEnum.MostPopularIdea => q => q.OrderByDescending(x => x.Views),
+            _ => q => q.OrderByDescending(x => x.CreatedOn)
+        };
     }
 }
 
