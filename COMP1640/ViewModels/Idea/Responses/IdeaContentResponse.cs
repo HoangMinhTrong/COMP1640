@@ -13,5 +13,6 @@
         public int DislikeCount { get; set; }
         public int CommentCount { get; set; }
         public string Category { get; set; }
+        public bool IsAnomymous { get; set; }
     }
 }
