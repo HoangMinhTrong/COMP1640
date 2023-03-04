@@ -22,6 +22,7 @@ public class IdeaIndexItem
     public Expression<Func<Domain.Idea, IdeaIndexItem>> GetSelection()
     {
         var authorSelection = new IdeaAuthor().GetSelection().Compile();
+
         return _ => new IdeaIndexItem
         {
             Id = _.Id,
@@ -33,8 +34,9 @@ public class IdeaIndexItem
             UpdatedOn = _.CreatedOn, // TODO: Add field updated on
             ThumbsDown = _.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike),
             ThumbsUp = _.Reactions.Count(r => r.Status == ReactionStatusEnum.Like),
-            Author = authorSelection(_.CreatedByNavigation),
-            // Comments = _.Comment TODO: Add total comments and views count
+            Author = authorSelection(_.CreatedByNavigation, _.IsAnonymous),
+            TotalComment = _.Comments.Count,
+            Views = _.Views
             
         };
     }
@@ -45,12 +47,21 @@ public class IdeaAuthor
     public int Id { get; set; }
     public string UserName { get; set; }
     
-    public Expression<Func<User, IdeaAuthor>> GetSelection()
+    public Expression<Func<User, bool?, IdeaAuthor>> GetSelection()
     {
-        return _ => new IdeaAuthor
+        return (user, isAnonymous ) =>  isAnonymous != null && isAnonymous == true ? AnonymousAuthor() : new IdeaAuthor
         {
-           Id = _.Id,
-           UserName = _.UserName,
+            Id = user.Id,
+            UserName = user.UserName,
+        };
+    }
+
+    private static IdeaAuthor AnonymousAuthor()
+    {
+        return new IdeaAuthor()
+        {
+            Id = 0,
+            UserName = "Anonymous"
         };
     }
 }
