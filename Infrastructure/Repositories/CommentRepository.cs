@@ -8,10 +8,6 @@ namespace Infrastructure.Repositories
         public CommentRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
-        public async Task<bool> CommentIdea(Comment comment)
-        {
-            await DbContext.Comments.AddAsync(comment);
-            return true;
-        }
+       
     }
 }
