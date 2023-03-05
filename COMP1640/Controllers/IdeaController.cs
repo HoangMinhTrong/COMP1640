@@ -8,7 +8,7 @@ using Utilities.Helpers;
 
 namespace COMP1640.Controllers
 {
-   [Route("idea")]
+    [Route("idea")]
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;
@@ -35,12 +35,12 @@ namespace COMP1640.Controllers
                 , s3Object.Headers.ContentType
                 , s3Object.Metadata["FileName"]);
         }
-         
+
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] GetIdeaIndexRequest request)
         {
             var ideas = await _ideaService.GetIdeaIndexAsync(request);
-            
+
             var response = new IdeaIndexResponse()
             {
                 IdeaIndexItems = ideas,
@@ -72,10 +72,10 @@ namespace COMP1640.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateIdeaRequest request)
         {
-            if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
+            if (!ModelState.IsValid) return RedirectToAction("Index", "Idea");
 
             var isSucceed = await _ideaService.CreateIdeaAsync(request);
-            if (isSucceed) return RedirectToAction("Index", "Home");
+            if (isSucceed) return RedirectToAction("Index", "Idea");
 
             ModelState.AddModelError("create_exception", "Failure to create a new idea.");
             return View();
@@ -96,9 +96,9 @@ namespace COMP1640.Controllers
         }
 
         [HttpPut("category/{id:int}")]
-        public async Task<IActionResult> DeleteCategory([FromRoute] int id) 
-        {        
-       
+        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
+        {
+
             var isSucceed = await _categoryService.DeleteCategory(id);
             if (isSucceed) return Ok();
 

@@ -19,10 +19,15 @@ public class IdeaIndexItem
     public IdeaAuthor Author { get; set; }
     public bool IsAnonymous { get; set; }
 
+    public UserReaction? UserReacted { get; set; }
 
 
-    public Expression<Func<Domain.Idea, IdeaIndexItem>> GetSelection()
+
+    public Expression<Func<Domain.Idea, IdeaIndexItem>> GetSelection(int userId)
     {
+        var authorSelection = new IdeaAuthor().GetSelection().Compile();
+        var userReactionSelection = new UserReaction().GetSelection().Compile();
+
         return _ => new IdeaIndexItem
         {
             Id = _.Id,
@@ -41,7 +46,8 @@ public class IdeaIndexItem
             },
             TotalComment = _.Comments.Count,
             Views = _.Views,
-            IsAnonymous = _.IsAnonymous
+            IsAnonymous = _.IsAnonymous,
+            UserReacted = userReactionSelection(_.Reactions.FirstOrDefault(r => r.UserId == userId && r.IdeaId == _.Id)),
 
         };
     }
@@ -51,4 +57,28 @@ public class IdeaAuthor
 {
     public int Id { get; set; }
     public string UserName { get; set; }
+    
+    public Expression<Func<User, IdeaAuthor>> GetSelection()
+    {
+        return user => new IdeaAuthor
+        {
+            Id = user.Id,
+            UserName = user.UserName,
+        };
+    }
+}
+
+public class UserReaction
+{
+    public int Id { get; set; }
+    public ReactionStatusEnum Status { get; set; }
+
+    public Expression<Func<Domain.Reaction?, UserReaction?>> GetSelection()
+    {
+        return _ => _ == null ? null: new UserReaction
+        {
+            Id = _.Id,
+            Status = _.Status,
+        };
+    }
 }

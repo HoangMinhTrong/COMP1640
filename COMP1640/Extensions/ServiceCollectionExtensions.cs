@@ -46,7 +46,9 @@ namespace COMP1640.Extentions
                 .AddScoped<PersonalService>()
                 .AddScoped<AttachmentService>()
                 .AddScoped<DepartmentService>()
-                .AddScoped<CommentService>();
+                .AddScoped<CommentService>()
+                .AddScoped<ReactionService>();
+
 
 
             return services;
