@@ -4,6 +4,7 @@ using COMP1640.ViewModels.Comment.Responses;
 using Domain;
 using Domain.Interfaces;
 using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace COMP1640.Services;
 
@@ -29,7 +30,7 @@ public class CommentService
 
     public async Task<List<CommentInfoResponse>> CommentList(int ideaId)
     {
-        var comments =  _commentRepository.GetAllQuery().Where(x => x.IdeaId == ideaId);
+        var comments =  await _commentRepository.GetQuery(x => x.IdeaId == ideaId).ToListAsync();
         var commentInfos = new List<CommentInfoResponse>();
         foreach (var comment in comments)
         {

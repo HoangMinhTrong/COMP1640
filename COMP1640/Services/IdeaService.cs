@@ -109,10 +109,15 @@ namespace COMP1640.Services
         
         public async Task<GetIdeaDetailResponse> GetIdeaDetailsAsync(int ideaId)
         {            
-            return await _ideaRepo
+            var idea = await _ideaRepo
                 .GetById(ideaId)
                 .Select(new GetIdeaDetailResponse().GetSelection())
                 .FirstOrDefaultAsync();
+
+            if(idea != null)
+                idea.Attachments = await attachmentService.GetAttachmentsAsync(idea.Id);
+
+            return idea;
         }
 
     }

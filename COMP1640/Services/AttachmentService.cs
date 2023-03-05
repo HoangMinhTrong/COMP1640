@@ -59,8 +59,8 @@ namespace COMP1640.Services
             {
                 var presignedUrl = await _s3Service.GetPresignedUrl(ideaAttachment.Attachment.KeyName);
                 attachmentsResponse.Add(new AttachmentResponse(ideaAttachment.AttachmentId
-                    , ideaAttachment.Attachment.KeyName
                     , ideaAttachment.Attachment.Name
+                    , ideaAttachment.Attachment.KeyName
                     , presignedUrl));
             }
 
