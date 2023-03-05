@@ -102,6 +102,7 @@ namespace Infrastructure
                 .HasForeignKey(ia => ia.AttachmentId);
 
             builder.ApplyConfiguration(new IdeaConfiguration());
+            builder.ApplyConfiguration(new CommentConfiguration());
         }
 
         public void RemoveDefaultAspTableName(ModelBuilder builder)

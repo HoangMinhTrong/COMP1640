@@ -106,6 +106,14 @@ namespace COMP1640.Services
                 await mediator.Publish(new CreateIdeaDomainEvent(idea));
         }
         #endregion
+        
+        public async Task<GetIdeaDetailResponse> GetIdeaDetailsAsync(int ideaId)
+        {            
+            return await _ideaRepo
+                .GetById(ideaId)
+                .Select(new GetIdeaDetailResponse().GetSelection())
+                .FirstOrDefaultAsync();
+        }
 
     }
 }
