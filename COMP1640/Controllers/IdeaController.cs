@@ -112,7 +112,7 @@ namespace COMP1640.Controllers
             return RedirectToAction("Index");
         }
         
-        [HttpGet("viewdetail/{id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> ViewDetail([FromRoute] int id)
         {
             var ideas = await _ideaService.GetIdeaDetailsAsync(id);

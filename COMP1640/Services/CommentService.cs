@@ -34,14 +34,9 @@ public class CommentService
     {
         var comments = await _context.Comments.Where(x => x.IdeaId == ideaId).ToListAsync();
         var commentInfos = new List<CommentInfoResponse>();
-
         foreach (var comment in comments)
         {
-            var commentInfo = new CommentInfoResponse();
-            commentInfo.Id = comment.Id;
-            commentInfo.Content = comment.Content;
-            commentInfo.IdeaId = comment.IdeaId;
-            commentInfo.UserName = comment.CreatedByNavigation.UserName;
+            var commentInfo = new CommentInfoResponse(comment.Id, comment.Content, comment.CreatedByNavigation.UserName, comment.CreatedByNavigation.Id);
             commentInfos.Add(commentInfo);
         }
 
