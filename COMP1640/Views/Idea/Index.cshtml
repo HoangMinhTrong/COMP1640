@@ -132,6 +132,17 @@
                                     <p id="total-thumbs-up-@item.Id" class="mb-0">@item.ThumbsUp</p>
 
                                 </a>
+                                  <a onclick="React(event, @item.Id, @((int)ReactionStatusEnum.DisLike))" class="d-flex align-items-center me-3">
+                                    @if (item.UserReacted?.Status == ReactionStatusEnum.DisLike)
+                                    {
+                                        <i class="fas fa-thumbs-down" id="thumbupBtn-@item.Id"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-thumbs-down me-2" id="thumbdownBtn-@item.Id"></i>
+                                    }
+                                    <p id="total-thumbs-down-@item.Id" class="mb-0">@item.ThumbsDown</p>
+                                </a>
                                 <a href="#!" class="d-flex align-items-center me-3">
                                      <a asp-action="ViewDetail" asp-route-id="@item.Id"> <i class="far fa-comment-dots me-2"></i></a>
                                     <p class="mb-0">@item.TotalComment</p>
