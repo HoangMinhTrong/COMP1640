@@ -106,15 +106,15 @@ namespace COMP1640.Services
                 await mediator.Publish(new CreateIdeaDomainEvent(idea));
         }
         #endregion
-        
+
         public async Task<GetIdeaDetailResponse> GetIdeaDetailsAsync(int ideaId)
-        {            
+        {
             var idea = await _ideaRepo
                 .GetById(ideaId)
                 .Select(new GetIdeaDetailResponse().GetSelection())
                 .FirstOrDefaultAsync();
 
-            if(idea != null)
+            if (idea != null)
                 idea.Attachments = await attachmentService.GetAttachmentsAsync(idea.Id);
 
             return idea;

@@ -50,21 +50,21 @@ namespace COMP1640.Services
 
         public async Task<List<AttachmentResponse>> GetAttachmentsAsync(int ideaId)
         {
+            var result = new List<AttachmentResponse>();
             var idea = await _ideaRepo.GetAsync(ideaId);
             if(idea == null || !idea.IdeaAttachments.Any())
-                return null;
+                return result;
 
-            var attachmentsResponse = new List<AttachmentResponse>();
             foreach (var ideaAttachment in idea.IdeaAttachments)
             {
                 var presignedUrl = await _s3Service.GetPresignedUrl(ideaAttachment.Attachment.KeyName);
-                attachmentsResponse.Add(new AttachmentResponse(ideaAttachment.AttachmentId
+                result.Add(new AttachmentResponse(ideaAttachment.AttachmentId
                     , ideaAttachment.Attachment.Name
                     , ideaAttachment.Attachment.KeyName
                     , presignedUrl));
             }
 
-            return attachmentsResponse;
+            return result;
         }
     }
 }

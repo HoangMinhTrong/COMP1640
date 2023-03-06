@@ -1,28 +1,24 @@
-﻿using COMP1640.ViewModels.Idea.Requests;
+﻿using COMP1640.ViewModels.EmailModel;
 using Domain.DomainEvents;
 using Domain.Interfaces;
 using MediatR;
 using Utilities.Constants;
 using Utilities.EmailService.Interface;
 using Utilities.EmailService.Interfaces;
-using Utilities.Identity.Interfaces;
 
 namespace COMP1640.DomainHandlers
 {
     public class OnCreateIdeaDomainHandler : INotificationHandler<CreateIdeaDomainEvent>
     {
         private readonly IRazorViewRenderer _razorViewRenderer;
-        private readonly ICurrentUserInfo _currentUser;
         private readonly IEmailSender _emailSender;
         private readonly IDepartmentRepository _departmentRepo;
         private readonly IConfiguration _configuration;
-        public OnCreateIdeaDomainHandler(ICurrentUserInfo currentUserInfo
-            , IEmailSender emailSender
+        public OnCreateIdeaDomainHandler(IEmailSender emailSender
             , IRazorViewRenderer razorViewRenderer
             , IDepartmentRepository departmentRepo
             , IConfiguration configuration)
         {
-            _currentUser = currentUserInfo;
             _emailSender = emailSender;
             _razorViewRenderer = razorViewRenderer;
             _departmentRepo = departmentRepo;

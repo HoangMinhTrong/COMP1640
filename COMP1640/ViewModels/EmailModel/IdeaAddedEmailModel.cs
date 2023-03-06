@@ -1,4 +1,4 @@
-﻿namespace COMP1640.ViewModels.Idea.Requests
+﻿namespace COMP1640.ViewModels.EmailModel
 {
     public class IdeaAddedEmailModel
     {
