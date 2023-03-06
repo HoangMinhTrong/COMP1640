@@ -118,10 +118,12 @@ namespace COMP1640.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> ViewDetail([FromRoute] int id)
         {
-            var ideas = await _ideaService.GetIdeaDetailsAsync(id);
+            var idea = await _ideaService.GetIdeaDetailsAsync(id);
+            if(idea == null) return NotFound();
+
             var comment = await _commentService.CommentList(id);
             ViewBag.Comments = comment;
-            return View(ideas);
+            return View(idea);
         }
     }
 }
