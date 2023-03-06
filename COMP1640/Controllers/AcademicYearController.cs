@@ -1,12 +1,14 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.AcademicYear;
 using COMP1640.ViewModels.AcademicYear.Request;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers;
 
 [Route("academic-year")]
+[COMP1640Authorize(RoleTypeEnum.QAManager)]
 public class AcademicYearController : Controller
 {
     private readonly AcademicYearService _academicYearService;
@@ -24,17 +26,17 @@ public class AcademicYearController : Controller
             ModelState.AddModelError("error_message", TempData["ErrorMessage"].ToString());
             TempData.Clear();
         }
-        
+
         var academicYearResponses = await _academicYearService.GetAcademicYearsAsync();
         return View(academicYearResponses.ToList());
     }
-    
+
     [HttpGet]
     [Route("{id:int}")]
     public async Task<AcademicYearResponse?> GetById([FromRoute] int id)
     {
         return await _academicYearService.GetAcademicYearById(id);
-        
+
     }
 
     [HttpPost]
@@ -48,18 +50,18 @@ public class AcademicYearController : Controller
         {
             TempData.Add("ErrorMessage", "Failure to create academic year");
         }
-        return  RedirectToAction("Index");
+        return RedirectToAction("Index");
     }
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         var result = await _academicYearService.DeleteAcademicYearAsync(id);
-        
-        
+
+
         return result.IsLeft ? Ok() : BadRequest(result.Right.ErrorMessage);
     }
-    
+
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] UpsertAcademicYearRequest request)
     {
@@ -67,6 +69,6 @@ public class AcademicYearController : Controller
 
         var isSuccess = await _academicYearService.UpdateAcademicYearAsync(id, request);
 
-        return isSuccess ? Ok() : BadRequest("Failure to update"); 
+        return isSuccess ? Ok() : BadRequest("Failure to update");
     }
 }

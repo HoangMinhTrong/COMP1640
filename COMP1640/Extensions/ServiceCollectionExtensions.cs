@@ -60,25 +60,6 @@ namespace COMP1640.Extentions
                     .AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedEmail = false)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthentication(options =>
-                    {
-                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                    })
-                   .AddCookie()
-                   .AddOpenIdConnect(options =>
-                   {
-                       options.SignInScheme = "Cookies";
-                       options.Authority = "-your-identity-provider-";
-                       options.RequireHttpsMetadata = false;
-                       options.ClientId = "-your-clientid-";
-                       options.ClientSecret = "-your-client-secret-from-user-secrets-or-keyvault";
-                       options.ResponseType = "code";
-                       options.UsePkce = true;
-                       options.Scope.Add("profile");
-                       options.SaveTokens = true;
-                   });
-
             return services;
         }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace Utilities.EmailService
+namespace Utilities.ValidataionAttributes
 {
     public class FileSizeAttribute : ValidationAttribute
     {

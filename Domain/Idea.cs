@@ -1,5 +1,4 @@
 ﻿using Domain.Base;
-using Microsoft.AspNetCore.Http;
 
 namespace Domain
 {
@@ -17,7 +16,7 @@ namespace Domain
             IsAnonymous = isAnonymous;
             CategoryId = categoryId;
             AcademicYearId = academicYearId;
-            DepartmentId = departmentId;    
+            DepartmentId = departmentId;
         }
 
         public string Title { get; set; }

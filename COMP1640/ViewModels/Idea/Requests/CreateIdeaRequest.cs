@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Utilities.EmailService;
+using Utilities.ValidataionAttributes;
 
 namespace COMP1640.ViewModels.Idea.Requests
 {

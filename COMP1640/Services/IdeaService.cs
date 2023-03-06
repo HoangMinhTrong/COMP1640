@@ -81,6 +81,7 @@ namespace COMP1640.Services
 
         public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request)
         {
+
             var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter()));
 
             var totalCount = queryable.Count();

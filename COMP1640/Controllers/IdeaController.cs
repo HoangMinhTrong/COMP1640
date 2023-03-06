@@ -3,12 +3,15 @@ using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Comment.Requests;
 using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Utilities.Helpers;
+using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers
 {
     [Route("idea")]
+    [COMP1640Authorize(RoleTypeEnum.QAManager, RoleTypeEnum.DepartmentQA, RoleTypeEnum.Staff)]
     public class IdeaController : Controller
     {
         private readonly IdeaService _ideaService;
@@ -19,7 +22,7 @@ namespace COMP1640.Controllers
         public IdeaController(IdeaService ideaService
             , CategoryService categoryService
             , AttachmentService attachmentService
-            ,CommentService commentService)
+            , CommentService commentService)
         {
             _ideaService = ideaService;
             _categoryService = categoryService;
@@ -44,7 +47,7 @@ namespace COMP1640.Controllers
             var response = new IdeaIndexResponse()
             {
                 IdeaIndexItems = ideas,
-                SortOptionPicklist = EnumMemberAttributeHelper.GetSelectListItems<IdeaIndexSortingEnum>(),
+                SortOptionPicklist = EnumHelper.GetSelectListItems<IdeaIndexSortingEnum>(),
                 Categories = await _categoryService.GetCategoryPicklistAsync(),
                 CurrentSearchString = request.SearchString,
                 CurrentCategoryFilter = request.CategoryFilterOption,
@@ -111,7 +114,7 @@ namespace COMP1640.Controllers
             await _commentService.CommentIdea(request);
             return RedirectToAction("Index");
         }
-        
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> ViewDetail([FromRoute] int id)
         {

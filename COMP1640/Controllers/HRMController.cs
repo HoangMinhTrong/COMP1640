@@ -1,14 +1,14 @@
 ﻿using COMP1640.Services;
-using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
-using Microsoft.AspNetCore.Authorization;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers
 {
     [Route("hrm")]
-    [Authorize]
+    [COMP1640Authorize(RoleTypeEnum.Admin)]
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
@@ -30,8 +30,8 @@ namespace COMP1640.Controllers
             var vm = await _hRMService.GetUserInfoDetailsAsync(id);
             return Json(vm);
         }
-        
-        
+
+
 
 
         [HttpPut("user/{id:int}")]
@@ -66,7 +66,7 @@ namespace COMP1640.Controllers
             ModelState.AddModelError("delete_failure", "Failure to delete an account.");
             return RedirectToAction("Index");
         }
-        
+
         [HttpPut("user/{id:int}/activate")]
         public async Task<IActionResult> ToggleActivate([FromRoute] int id)
         {
@@ -85,6 +85,6 @@ namespace COMP1640.Controllers
             var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
             return Ok(allowedRoleForCreateAccount);
         }
-        
+
     }
 }

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Utilities.Helpers;
 
-public static class EnumMemberAttributeHelper
+public static class EnumHelper
 {
-    public static string GetEnumMemberValue(Enum value)
+    public static string GetValue(Enum value)
     {
         var type = value.GetType();
         var name = Enum.GetName(type, value);
@@ -24,7 +24,7 @@ public static class EnumMemberAttributeHelper
             .Select(e => new SelectListItem
             {
                 Value = e.ToString(),
-                Text = GetEnumMemberValue(e)
+                Text = GetValue(e)
             })
             .ToList();
     }

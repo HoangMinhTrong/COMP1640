@@ -1,14 +1,13 @@
-﻿using Domain;
-using Microsoft.AspNetCore.Mvc;
+﻿using COMP1640.Services;
 using COMP1640.ViewModels.Department.Requests;
-using COMP1640.Services;
-using COMP1640.ViewModels.HRM.Requests;
-using COMP1640.ViewModels.HRM.Responses;
-using COMP1640.ViewModels.Department.Responses;
+using Domain;
+using Microsoft.AspNetCore.Mvc;
+using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers
 {
     [Route("department")]
+    [COMP1640Authorize(RoleTypeEnum.QAManager)]
     public class DepartmentController : Controller
     {
         private readonly DepartmentService _departmentService;

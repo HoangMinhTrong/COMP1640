@@ -35,26 +35,26 @@ namespace Infrastructure.SeedData
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.Admin,
-                    Name = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.Admin),
-                    NormalizedName = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.Admin).ToUpper()
+                    Name = EnumHelper.GetValue(RoleTypeEnum.Admin),
+                    NormalizedName = EnumHelper.GetValue(RoleTypeEnum.Admin).ToUpper()
                 },
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.QAManager,
-                    Name = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.QAManager),
-                    NormalizedName = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.QAManager).ToUpper()
+                    Name = EnumHelper.GetValue(RoleTypeEnum.QAManager),
+                    NormalizedName = EnumHelper.GetValue(RoleTypeEnum.QAManager).ToUpper()
                 },
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.DepartmentQA,
-                    Name = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.DepartmentQA),
-                    NormalizedName = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.DepartmentQA).ToUpper()
+                    Name = EnumHelper.GetValue(RoleTypeEnum.DepartmentQA),
+                    NormalizedName = EnumHelper.GetValue(RoleTypeEnum.DepartmentQA).ToUpper()
                 },
                 new Role()
                 {
                     Id = (int)RoleTypeEnum.Staff,
-                    Name = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.Staff),
-                    NormalizedName = EnumMemberAttributeHelper.GetEnumMemberValue(RoleTypeEnum.Staff).ToUpper()
+                    Name = EnumHelper.GetValue(RoleTypeEnum.Staff),
+                    NormalizedName = EnumHelper.GetValue(RoleTypeEnum.Staff).ToUpper()
                 }
             };
 
