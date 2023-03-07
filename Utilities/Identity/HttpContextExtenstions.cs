@@ -52,6 +52,12 @@ namespace Utilities.Identity
             return departmentId;
         }
 
+        public static bool IsActivated(this HttpContext context)
+        {
+            bool.TryParse(GetClaimValue(context, AppClaimType.IsActivated), out var isActivated);
+            return isActivated;
+        }
+
         public static ICurrentUserInfo CurrentUser(this HttpContext context)
         {
             return new CurrentUserInfo(context.UserId()
@@ -59,7 +65,8 @@ namespace Utilities.Identity
                 , context.UserEmail()
                 , context.RoleId()
                 , context.TenantId()
-                , context.DepartmentId());
+                , context.DepartmentId()
+                , context.IsActivated());
         }
     }
 }

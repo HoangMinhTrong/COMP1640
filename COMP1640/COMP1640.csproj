@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ViewModels\PersonalDetail\Requests\" />
     <Folder Include="ViewModels\Shared\Responses\" />
   </ItemGroup>
 

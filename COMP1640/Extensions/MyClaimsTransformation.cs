@@ -42,6 +42,7 @@ namespace COMP1640.Extentions
                     .Select(_ => _.DepartmentId)
                     .FirstOrDefault()
                     .ToString()),
+                 new Claim(AppClaimType.IsActivated, user.EmailConfirmed.ToString())
             };
 
             claimsIdentity.AddClaims(claims);

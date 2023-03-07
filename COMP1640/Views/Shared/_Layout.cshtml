@@ -32,6 +32,10 @@
         @if (SignInManager.IsSignedIn(User))
         {
             <partial name="~/Views/Personal/Viewprofile.cshtml" />
+            @if (!CurrentUser.IsActivated)
+            {
+                <partial name="_ActivateAccountPartial" />
+            }
         }
         @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
         {

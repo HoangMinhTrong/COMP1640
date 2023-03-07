@@ -1,0 +1,57 @@
+﻿<div class="card-body p-4" id="activate-account">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-8 mb-4 mb-lg-0">
+                <div class="card mb-3 p-5" style="border-radius: .5rem;">
+                    <h3 class="mb-5">Activate Your Account</h3>
+                    <div class="row g-0">
+		                <div class="col-sm-4">
+                            <form enctype="multipart/form-data">
+		                        <label>New Password</label>
+                                <div class="form-group pass_show"> 
+                                    <input type="password" class="form-control new-password" placeholder="New Password"> 
+                                </div> 
+		                        <label class="mt-2">Confirm Password</label>
+                                <div class="form-group pass_show"> 
+                                    <input type="password" class="form-control confirm-password" placeholder="Confirm Password"> 
+                                </div> 
+                                <button class="btn btn-primary btn-lg mt-3" onclick="ChangePassword()">Save</button>
+                            </form>
+		                </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+.pass_show{position: relative} 
+
+.pass_show .ptxt { 
+
+position: absolute; 
+
+top: 50%; 
+
+right: 10px; 
+
+z-index: 1; 
+
+color: #f36c01; 
+
+margin-top: -10px; 
+
+cursor: pointer; 
+
+transition: .3s ease all; 
+
+} 
+
+.pass_show .ptxt:hover{color: #333333;} 
+</style>
+
+
+
+
