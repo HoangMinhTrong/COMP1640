@@ -127,7 +127,7 @@ namespace COMP1640.Controllers
             return View(idea);
         }
 
-        [HttpGet]
+        [HttpGet("edit")]
         public async Task<IActionResult> Edit([FromQuery] int id)
         {
             var vm = await _ideaService.GetIdeaByIdAsync(id);
@@ -137,7 +137,7 @@ namespace COMP1640.Controllers
             return View(vm);
         }
 
-        [HttpPost]
+        [HttpPost("edit")]
         public async Task<IActionResult> Edit(EditIdeaRequest request)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index", "Home");

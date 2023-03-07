@@ -79,10 +79,10 @@ namespace COMP1640.Services
                 .ToListAsync();
         }
 
-        public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request)
+        public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request, int? userId = null)
         {
 
-            var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter()));
+            var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter(userId)));
 
             var totalCount = queryable.Count();
 
@@ -97,6 +97,11 @@ namespace COMP1640.Services
 
             return await PaginatedList<IdeaIndexItem>.GetPagingResult(ideaIndexItems, totalCount, request.PageNo,
                 request.PageSize);
+        }
+
+        public async Task<PaginatedList<IdeaIndexItem>> GetPersonalIdeaIndexAsync(GetIdeaIndexRequest request, int? userId = null)
+        {
+            return await GetIdeaIndexAsync(request, _current.Id);
         }
 
         #region Send Mail

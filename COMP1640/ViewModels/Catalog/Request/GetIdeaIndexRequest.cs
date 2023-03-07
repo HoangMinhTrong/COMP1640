@@ -12,16 +12,18 @@ public class GetIdeaIndexRequest : PagingRequest
     public string SearchString { get; set; } = string.Empty;
     public int? CategoryFilterOption { get; set; }
 
-    public Expression<Func<Domain.Idea, bool>> Filter()
+    public Expression<Func<Domain.Idea, bool>> Filter(int? createdById = null)
     {
         return _ =>
+            (createdById == null || _.CreatedBy == createdById)
+            &&
             (CategoryFilterOption == null || _.CategoryId == CategoryFilterOption)
             &&
             (string.IsNullOrWhiteSpace(SearchString)
              || (EF.Functions.ILike(_.Title, $"%{SearchString}%")
                  || (EF.Functions.ILike(_.Content, $"%{SearchString}%"))));
     }
-    
+
     public Func<IQueryable<Domain.Idea>, IQueryable<Domain.Idea>> Sort()
     {
         return SortOption switch
@@ -41,13 +43,13 @@ public enum IdeaIndexSortingEnum : int
 {
     [EnumMember(Value = "Most favo")]
     MostReactPoint = 1,
-    
+
     [EnumMember(Value = "Latest comment")]
     LatestComment = 2,
 
     [EnumMember(Value = "Latest idea")]
     LatestIdea = 3,
-    
+
     [EnumMember(Value = "Most popular")]
     MostPopularIdea = 4
 }
