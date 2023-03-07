@@ -11,7 +11,7 @@ function ViewPersonalDetail() {
             $(".profile-gender").text(user.gender);
             $(".profile-phonenumber").text(user.phonenumber);
             $(".profile-username").text(user.userName);
-            $(".profile-department").text(user.deprtment);
+            $(".profile-department").text(user.department);
 
         }
     });
@@ -28,19 +28,16 @@ function ClosePopupProfile() {
 var editIdeaModal = document.getElementById("editIdeaModal");
 var editIdeaSpan = document.getElementsByClassName("close")[1];
 
-function ClosePopupEditIdea() {
-    editIdeaModal.style.display = "none";
-}
+
 function EditIdeaInfo() {
     var ideaId = $(".info-ideaId").val();
-    console.log(ideaId)
+/*    console.log(ideaId)*/
     var myObject = {
         Title: $(".info-title").val(),
         Content: $(".info-content").val(),
         IsAnonymous: $("#isAnonymous").val(),
-        CategoryId: $("#category_list").val()
+        CategoryId: $("#category_list").val(),
     };
-    console.log(myObject)
     $.ajax({
         url: window.location.origin + '/personal/editIdea/' + ideaId,
         type: 'PUT',
@@ -83,4 +80,8 @@ function getCategoriesForEditIdea(categoryId) {
             });
         }
     })
+}
+
+function ClosePopupEditIdea() {
+    editIdeaModal.style.display = "none";
 }

@@ -148,7 +148,17 @@ namespace COMP1640.Services
 
             await _unitOfWork.SaveChangesAsync();
             return true;
+        }
 
+        public async Task<bool> SoftDeleteIdeaAsync(int ideaId)
+        {
+            var existIdea = await _ideaRepo.GetAsync(_ => _.Id == ideaId);
+            if (existIdea == null) return false;
+
+            existIdea.SoftDelete();
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
     }
 }
