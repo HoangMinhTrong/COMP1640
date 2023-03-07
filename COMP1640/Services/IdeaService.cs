@@ -134,12 +134,17 @@ namespace COMP1640.Services
             return idea;
         }
 
-        public async Task<bool> EditIdeaAsync(EditIdeaRequest request)
+        public async Task<bool> EditIdeaAsync(int ideaId, EditIdeaRequest request)
         {
-            var existIdea = await _ideaRepo.GetAsync(_ => _.Id == request.Id);
+            var existIdea = await _ideaRepo.GetById(ideaId).FirstOrDefaultAsync();
             if (existIdea == null) return false;
 
-            existIdea.EditInfo(request.Title, request.Content, request.IsAnonymous, request.CategoryId);
+            existIdea.EditInfo(
+                request.Title, 
+                request.Content, 
+                request.IsAnonymous, 
+                request.CategoryId
+            );
 
             await _unitOfWork.SaveChangesAsync();
             return true;

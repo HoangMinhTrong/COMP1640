@@ -1,5 +1,6 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.Common;
+using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.PersonalDetail;
 using Microsoft.AspNetCore.Mvc;
 using Utilities.Helpers;
@@ -54,6 +55,28 @@ namespace COMP1640.Controllers
                 }
             };
             return View(response);
+        }
+
+        [HttpGet("edit/{id:int}")]
+        public async Task<IActionResult> Edit([FromRoute] int id)
+        {
+            var vm = await _ideaService.GetIdeaByIdAsync(id);
+            //var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
+            //var selectList = new SelectList(category_list.Categories, "Id", "Name");
+            //ViewBag.Categories = selectList;
+            return Json(vm);
+        }
+
+        [HttpPut("editIdea/{id:int}")]
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditIdeaRequest request)
+        {
+            if (!ModelState.IsValid) return RedirectToAction("ViewYourIdea");
+
+            var isSucceed = await _ideaService.EditIdeaAsync(id, request);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("edit_failure", "Failure to edit an idea.");
+            return RedirectToAction("ViewYourIdea");
         }
 
 
