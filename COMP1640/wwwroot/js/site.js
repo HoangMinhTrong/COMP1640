@@ -7,3 +7,29 @@
         }
     });
 })
+
+
+var activateAccountPopup = document.getElementById("activate-account");
+function ChangePassword() {
+    var myObject = {
+        NewPassword: $(".new-password").val(),
+        ConfirmPassword: $(".confirm-password").val(),
+    };
+
+    if (myObject.NewPassword != myObject.ConfirmPassword) {
+        alert('Your confirm password is incorrect !!!');
+        return;
+    }
+
+    $.ajax({
+        url: window.location.origin + '/personal/change-password',
+        type: 'PUT',
+        data: JSON.stringify(myObject),
+        contentType: 'application/json',
+        success: function () {
+            alert('Change Password successfully.');
+            activateAccountPopup.style.display = "none";
+            window.location.reload();
+        }
+    });
+}

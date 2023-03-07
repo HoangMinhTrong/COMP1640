@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using COMP1640.ViewModels.PersonalDetail;
 using COMP1640.ViewModels.PersonalDetail.Responses;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,17 @@ namespace COMP1640.Services
                 .GetById(userId)
                 .Select(new PersonalProfileInfoResponse().GetSelection())
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            if (string.IsNullOrEmpty(request.NewPassword) || (request.NewPassword != request.ConfirmPassword))
+                return;
+
+            var user = await _userRepo.GetById(_currentUser.Id)
+                .FirstOrDefaultAsync();
+            user.ChangePassword(request.NewPassword);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
