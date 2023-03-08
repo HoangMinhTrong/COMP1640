@@ -35,8 +35,8 @@ function EditIdeaInfo() {
     var myObject = {
         Title: $(".info-title").val(),
         Content: $(".info-content").val(),
-        IsAnonymous: $("#isAnonymous").val(),
-        CategoryId: $("#category_list").val(),
+        IsAnonymous: $("#isAnonymous").is(":checked"),
+        CategoryId: parseInt($("#category_list").val()),
     };
     $.ajax({
         url: window.location.origin + '/personal/editIdea/' + ideaId,

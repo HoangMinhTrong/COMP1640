@@ -74,12 +74,23 @@
 									</div>
 								</div>
 							</li>
+
 						</ul>
 					</form>
+					<div class="d-flex justify-content-around">
+						<a class="btn btn-danger align-items-center text-white text-center" 
+							style="cursor:pointer; padding: 10px; height: fit-content"
+							asp-action="RecycleBin">
+							<i class="bi bi-trash"> Recycle Bin</i>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
+
+
 		<div class="row d-flex justify-content-center align-items-center">
+
 			@foreach (var item in Model.IdeaIndexItems)
 			{
 				<div class="col col-xl-10" aria-label="Card example">
@@ -106,15 +117,15 @@
 											{
 												<strong>@item.Author.UserName</strong> @item.CreatedOn
 											}
-											<a class="btn btn-info text-white text-center" 
-												style="cursor:pointer; padding: 5px 10px; margin-left: 5px" onclick=ViewIdeaDetail(@item.Id)>
+											<a class="btn btn-info text-white text-center"
+										   style="cursor:pointer; padding: 5px 10px; margin-left: 5px" onclick=ViewIdeaDetail(@item.Id)>
 												<i class="bi bi-pen"></i>
 											</a>
 										</div>
 										<div>
-											<a class="btn btn-danger align-items-center text-white text-center" 
-												style="cursor:pointer; padding: 5px 10px" 
-												onclick=ToggleSoftDeleteIdea(@item.Id)>
+											<a class="btn btn-danger align-items-center text-white text-center"
+										   style="cursor:pointer; padding: 5px 10px"
+										   onclick=ToggleSoftDeleteIdea(@item.Id)>
 												<i class="bi bi-trash"></i>
 											</a>
 										</div>

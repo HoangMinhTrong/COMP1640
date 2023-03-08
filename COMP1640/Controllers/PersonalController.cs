@@ -86,6 +86,11 @@ namespace COMP1640.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("recyclebin")]
+        public async Task<IActionResult> RecycleBin()
+        {
+            return View();
+        }
 
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
