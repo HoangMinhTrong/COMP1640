@@ -7,12 +7,13 @@ public class CommentInfoResponse
         
     }
 
-    public CommentInfoResponse(int id, string content, string userName, int userId)
+    public CommentInfoResponse(int id, string content, string userName, int userId, bool isAnonymous)
     {
         Id = id;
         Content = content;
         UserName = userName;
         UserId = userId;
+        IsAnonymous = isAnonymous;
     }
 
     public int Id { get; set; }
