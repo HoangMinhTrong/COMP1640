@@ -93,6 +93,15 @@ namespace COMP1640.Controllers
             return View(deletedIdeas);
         }
 
+        [HttpDelete("harddeleteidea/{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var isSucceed = await _ideaService.HardDeleteIdeaAsync(id);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an idea.");
+            return RedirectToAction("Index");
+        }
 
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)

@@ -172,6 +172,16 @@ namespace COMP1640.Services
             return deletedIdeas;
         }
 
-        
+        public async Task<bool> HardDeleteIdeaAsync(int id)
+        {
+            var idea = await _ideaRepo.GetById(id).FirstOrDefaultAsync();
+            if (idea == null)
+                return false;
+
+            await _ideaRepo.DeleteAsync(idea);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

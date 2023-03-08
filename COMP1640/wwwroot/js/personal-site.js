@@ -30,11 +30,10 @@ var editIdeaSpan = document.getElementsByClassName("close")[1];
 
 
 function EditIdeaInfo() {
-    var ideaId = $(".info-ideaId").val();
-/*    console.log(ideaId)*/
+    var ideaId = $("#info-edit-ideaId").val();
     var myObject = {
-        Title: $(".info-title").val(),
-        Content: $(".info-content").val(),
+        Title: $("#info-edit-title").val(),
+        Content: $("#info-edit-content").val(),
         IsAnonymous: $("#isAnonymous").is(":checked"),
         CategoryId: parseInt($("#category_list").val()),
     };
@@ -57,9 +56,9 @@ function ViewIdeaDetail(id) {
         success: function (idea) {
             editIdeaModal.style.display = "block";
             getCategoriesForEditIdea(idea.categoryId);
-            $(".info-ideaId").val(idea.id);
-            $(".info-title").val(idea.title);
-            $(".info-content").val(idea.content);
+            $("#info-edit-ideaId").val(idea.id);
+            $("#info-edit-title").val(idea.title);
+            $("#info-edit-content").val(idea.content);
             $("#isAnonymous").prop('checked', idea.isAnonymous);
         }
     });
@@ -96,6 +95,21 @@ function ToggleSoftDeleteIdea(id) {
     $.ajax({
         url: window.location.origin + '/personal/togglesoftdeleteidea/' + id,
         type: 'PUT',
+        success: function () {
+            window.location.reload();
+        },
+    });
+}
+
+//Hard Delete Idea
+function HardDeleteIdea(id) {
+    var confirmResult = confirm("Are you sure you want to permanently delete this idea?");
+    if (!confirmResult)
+        return;
+
+    $.ajax({
+        url: window.location.origin + '/personal/harddeleteidea/' + id,
+        type: 'DELETE',
         success: function () {
             window.location.reload();
         },
