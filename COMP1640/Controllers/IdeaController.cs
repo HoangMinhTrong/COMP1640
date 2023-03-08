@@ -40,29 +40,9 @@ namespace COMP1640.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] GetIdeaIndexRequest request)
-        {
-            var ideas = await _ideaService.GetIdeaIndexAsync(request);
-
-            var response = new IdeaIndexResponse()
-            {
-                IdeaIndexItems = ideas,
-                SortOptionPicklist = EnumHelper.GetSelectListItems<IdeaIndexSortingEnum>(),
-                Categories = await _categoryService.GetCategoryPicklistAsync(),
-                CurrentSearchString = request.SearchString,
-                CurrentCategoryFilter = request.CategoryFilterOption,
-                CurrentSort = request.SortOption,
-                PaginationInfo = new PaginationInfo
-                {
-                    ActualPage = request.PageNo,
-                    TotalItems = ideas.TotalItems,
-                    ItemsPerPage = ideas.Count,
-                    TotalPages = ideas.TotalPages,
-                    Next = ideas.HasNextPage,
-                    Previous = ideas.HasPreviousPage
-                }
-            };
-            return View("Index", response);
+        public async Task<IActionResult> Index()
+        {            
+            return View("Index");
         }
 
         [HttpGet("categories-selection")]
@@ -70,19 +50,7 @@ namespace COMP1640.Controllers
         {
             var categories = await _ideaService.GetCategoryForCreateIdeaAsync();
             return Ok(categories);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateIdeaRequest request)
-        {
-            if (!ModelState.IsValid) return RedirectToAction("Index", "Idea");
-
-            var isSucceed = await _ideaService.CreateIdeaAsync(request);
-            if (isSucceed) return RedirectToAction("Index", "Idea");
-
-            ModelState.AddModelError("create_exception", "Failure to create a new idea.");
-            return View();
-        }
+        }       
 
         [HttpGet("category")]
         public async Task<IActionResult> ViewCategory([FromQuery] GetListCategoryRequest request)
