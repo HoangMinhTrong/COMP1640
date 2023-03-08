@@ -223,3 +223,10 @@ p{
     border: none;
     border-radius: 15px;
 }
+
+@media (min-width: 768px) {
+    .chart-area {
+        height: 20rem;
+    }
+}
+

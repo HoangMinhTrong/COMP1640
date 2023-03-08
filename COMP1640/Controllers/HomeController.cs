@@ -1,7 +1,6 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.Common;
 using Microsoft.AspNetCore.Mvc;
-using Utilities.Helpers;
 
 namespace COMP1640.Controllers
 {
@@ -10,7 +9,7 @@ namespace COMP1640.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IdeaService _ideaService;
         private readonly CategoryService _categoryService;
-        
+
 
         public HomeController(ILogger<HomeController> logger, IdeaService ideaService, CategoryService categoryService)
         {
@@ -25,6 +24,10 @@ namespace COMP1640.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        public IActionResult AdminDashboard()
         {
             return View();
         }
