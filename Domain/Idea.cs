@@ -56,9 +56,9 @@ namespace Domain
             CategoryId = categoryId;
         }
 
-        public void SoftDelete()
+        public void ToggleSoftDelete()
         {
-            IsDeleted = true;
+            IsDeleted = !IsDeleted;
         }
     }
 }

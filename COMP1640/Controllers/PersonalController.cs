@@ -76,8 +76,8 @@ namespace COMP1640.Controllers
             return RedirectToAction("ViewYourIdea");
         }
 
-        [HttpPut("softdeleteidea/{id:int}")]
-        public async Task<IActionResult> SoftDelete([FromRoute] int id)
+        [HttpPut("togglesoftdeleteidea/{id:int}")]
+        public async Task<IActionResult> ToggleSoftDelete([FromRoute] int id)
         {
             var isSucceed = await _ideaService.SoftDeleteIdeaAsync(id);
             if (isSucceed) return Ok();
@@ -89,8 +89,10 @@ namespace COMP1640.Controllers
         [HttpGet("recyclebin")]
         public async Task<IActionResult> RecycleBin()
         {
-            return View();
+            var deletedIdeas = await _ideaService.GetDeletedIdeaAsync();
+            return View(deletedIdeas);
         }
+
 
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)

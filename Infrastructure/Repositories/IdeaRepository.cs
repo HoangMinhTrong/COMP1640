@@ -18,5 +18,10 @@ namespace Infrastructure.Repositories
         {
             return GetQuery(_ => _.Id == id);
         }
+
+        public IQueryable<Idea> GetDeleted()
+        {
+            return GetQuery(_ => _.IsDeleted);
+        }
     }
 }

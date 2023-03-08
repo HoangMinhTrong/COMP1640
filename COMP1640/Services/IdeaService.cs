@@ -155,10 +155,23 @@ namespace COMP1640.Services
             var existIdea = await _ideaRepo.GetById(ideaId).FirstOrDefaultAsync();
             if (existIdea == null) return false;
 
-            existIdea.SoftDelete();
+            existIdea.ToggleSoftDelete();
 
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
+
+
+        public async Task<List<IdeaDetailsResponse>> GetDeletedIdeaAsync()
+        {
+            var deletedIdeas = await _ideaRepo
+                .GetDeleted()
+                .Select(new IdeaDetailsResponse().GetSelection())
+                .ToListAsync();
+
+            return deletedIdeas;
+        }
+
+        
     }
 }

@@ -94,7 +94,7 @@ function ToggleSoftDeleteIdea(id) {
         return;
 
     $.ajax({
-        url: window.location.origin + '/personal/softdeleteidea/' + id,
+        url: window.location.origin + '/personal/togglesoftdeleteidea/' + id,
         type: 'PUT',
         success: function () {
             window.location.reload();

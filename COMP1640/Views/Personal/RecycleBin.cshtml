@@ -1,12 +1,38 @@
-﻿@{
+﻿@model List<COMP1640.ViewModels.Idea.Responses.IdeaDetailsResponse>
+@{
 	ViewData["Title"] = "RecycleBin";
 }
-<div style="margin: 20px">
-	<h1>RecycleBin</h1>
-	<div>
+
+
+<div class="container mx-auto" style="max-width:900px">
+	<div style="display:flex">
 		<a asp-action="ViewYourIdea">
 			<i class="fas fa-arrow-left"></i>
 		</a>
+		<h4 style="padding-left: 10px">Recycle Bin</h4>
+
 	</div>
+	@foreach (var item in Model)
+	{
+		<div class="col col-xl-10" aria-label="Card example">
+			<div class="card mb-5" style="border-radius: 15px; display:flex; flex-direction:row">
+				<div class="card-body p-4">
+					<div class="d-flex justify-content-start align-items-center">
+						Title: @item.Title
+					</div>
+					<div class="d-flex justify-content-start align-items-center">
+						Content: @item.Content
+					</div>
+				</div>
+				<div>
+					<a class="btn btn-info align-items-center text-white text-center"
+				   style="cursor:pointer; padding: 5px 10px; margin: 10px"
+				   onclick=ToggleSoftDeleteIdea(@item.Id)>
+						<i class="fas fa-trash-restore"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	}
 </div>
 
