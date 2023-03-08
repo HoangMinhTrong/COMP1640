@@ -26,6 +26,7 @@ namespace Domain
         public int AcademicYearId { get; set; }
         public int CategoryId { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsDeactive { get; set; }
         public int Views { get; set; }
 
         public virtual AcademicYear AcademicYear { get; set; }
@@ -56,9 +57,14 @@ namespace Domain
             CategoryId = categoryId;
         }
 
-        public void ToggleSoftDelete()
+        public void ToggleIsDeactive()
         {
-            IsDeleted = !IsDeleted;
+            IsDeactive = !IsDeactive;
+        }
+
+        public void SoftDelete()
+        {
+            IsDeleted = true;
         }
     }
 }

@@ -150,35 +150,35 @@ namespace COMP1640.Services
             return true;
         }
 
-        public async Task<bool> SoftDeleteIdeaAsync(int ideaId)
+        public async Task<bool> ToggleDeactiveIdeaAsync(int ideaId)
         {
             var existIdea = await _ideaRepo.GetById(ideaId).FirstOrDefaultAsync();
             if (existIdea == null) return false;
 
-            existIdea.ToggleSoftDelete();
+            existIdea.ToggleIsDeactive();
 
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
 
 
-        public async Task<List<IdeaDetailsResponse>> GetDeletedIdeaAsync()
+        public async Task<List<IdeaDetailsResponse>> GetDeactiveIdeaAsync()
         {
             var deletedIdeas = await _ideaRepo
-                .GetDeleted()
+                .GetDeactive()
                 .Select(new IdeaDetailsResponse().GetSelection())
                 .ToListAsync();
 
             return deletedIdeas;
         }
 
-        public async Task<bool> HardDeleteIdeaAsync(int id)
+        public async Task<bool> SoftDeleteIdeaAsync(int id)
         {
             var idea = await _ideaRepo.GetById(id).FirstOrDefaultAsync();
             if (idea == null)
                 return false;
 
-            await _ideaRepo.DeleteAsync(idea);
+            idea.SoftDelete();
             await _unitOfWork.SaveChangesAsync();
 
             return true;

@@ -87,13 +87,13 @@ function ClosePopupEditIdea() {
 
 
 //Soft Delete Idea
-function ToggleSoftDeleteIdea(id) {
-    var confirmResult = confirm("Are you sure?");
+function SoftDeleteIdea(id) {
+    var confirmResult = confirm("Are you sure you want to permanently delete this idea?");
     if (!confirmResult)
         return;
 
     $.ajax({
-        url: window.location.origin + '/personal/togglesoftdeleteidea/' + id,
+        url: window.location.origin + '/personal/softdeleteidea/' + id,
         type: 'PUT',
         success: function () {
             window.location.reload();
@@ -101,17 +101,18 @@ function ToggleSoftDeleteIdea(id) {
     });
 }
 
-//Hard Delete Idea
-function HardDeleteIdea(id) {
-    var confirmResult = confirm("Are you sure you want to permanently delete this idea?");
+//Toggle deactive Idea
+function ToggleDeactiveIdea(id) {
+    var confirmResult = confirm("Are you sure?");
     if (!confirmResult)
         return;
 
     $.ajax({
-        url: window.location.origin + '/personal/harddeleteidea/' + id,
-        type: 'DELETE',
+        url: window.location.origin + '/personal/togglesdeactiveidea/' + id,
+        type: 'PUT',
         success: function () {
             window.location.reload();
         },
     });
 }
+

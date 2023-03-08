@@ -4,6 +4,6 @@
     {
         Task<Idea> GetAsync(int id);
         IQueryable<Idea> GetById(int id);
-        IQueryable<Idea> GetDeleted();
+        IQueryable<Idea> GetDeactive();
     }
 }

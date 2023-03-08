@@ -76,10 +76,10 @@ namespace COMP1640.Controllers
             return RedirectToAction("ViewYourIdea");
         }
 
-        [HttpPut("togglesoftdeleteidea/{id:int}")]
-        public async Task<IActionResult> ToggleSoftDelete([FromRoute] int id)
+        [HttpPut("togglesdeactiveidea/{id:int}")]
+        public async Task<IActionResult> ToggleDeactive([FromRoute] int id)
         {
-            var isSucceed = await _ideaService.SoftDeleteIdeaAsync(id);
+            var isSucceed = await _ideaService.ToggleDeactiveIdeaAsync(id);
             if (isSucceed) return Ok();
 
             ModelState.AddModelError("delete_failure", "Failure to delete an idea.");
@@ -89,14 +89,14 @@ namespace COMP1640.Controllers
         [HttpGet("recyclebin")]
         public async Task<IActionResult> RecycleBin()
         {
-            var deletedIdeas = await _ideaService.GetDeletedIdeaAsync();
+            var deletedIdeas = await _ideaService.GetDeactiveIdeaAsync();
             return View(deletedIdeas);
         }
 
-        [HttpDelete("harddeleteidea/{id:int}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        [HttpPut("softdeleteidea/{id:int}")]
+        public async Task<IActionResult> SoftDeleteIdea([FromRoute] int id)
         {
-            var isSucceed = await _ideaService.HardDeleteIdeaAsync(id);
+            var isSucceed = await _ideaService.SoftDeleteIdeaAsync(id);
             if (isSucceed) return Ok();
 
             ModelState.AddModelError("delete_failure", "Failure to delete an idea.");
