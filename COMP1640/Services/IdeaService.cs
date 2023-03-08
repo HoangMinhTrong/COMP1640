@@ -152,7 +152,7 @@ namespace COMP1640.Services
 
         public async Task<bool> SoftDeleteIdeaAsync(int ideaId)
         {
-            var existIdea = await _ideaRepo.GetAsync(_ => _.Id == ideaId);
+            var existIdea = await _ideaRepo.GetById(ideaId).FirstOrDefaultAsync();
             if (existIdea == null) return false;
 
             existIdea.SoftDelete();

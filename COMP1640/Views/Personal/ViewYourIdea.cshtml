@@ -11,9 +11,9 @@
 				<div class="d-flex justify-content-between align-self-center">
 					<div id="addIdeaBtn" class="d-flex mb-4">
 						<div class="d-flex align-items-center">
-							@*<a class="btn btn-info text-white text-center" onclick="ShowPopupCreateIdea()">
+							<a class="btn btn-info text-white text-center" onclick="ShowPopupCreateIdea()">
 								<i class="bi bi-plus-circle"></i>
-							</a>*@
+							</a>
 							<form asp-controller="Idea" asp-action="Index" method="get">
 								<div class="d-flex justify-content-center text-center">
 									<div class="d-flex justify-content-center">
@@ -112,7 +112,9 @@
 											</a>
 										</div>
 										<div>
-											<a class="btn btn-danger align-items-center text-white text-center" style="cursor:pointer; padding: 5px 10px">
+											<a class="btn btn-danger align-items-center text-white text-center" 
+												style="cursor:pointer; padding: 5px 10px" 
+												onclick=ToggleSoftDeleteIdea(@item.Id)>
 												<i class="bi bi-trash"></i>
 											</a>
 										</div>

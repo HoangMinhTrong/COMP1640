@@ -44,7 +44,7 @@ function EditIdeaInfo() {
         data: JSON.stringify(myObject),
         contentType: 'application/json',
         success: function () {
-            alert('Saved successfully. from edit idea');
+            alert('Edit idea successfully');
             window.location.reload();
         }
     });
@@ -84,4 +84,20 @@ function getCategoriesForEditIdea(categoryId) {
 
 function ClosePopupEditIdea() {
     editIdeaModal.style.display = "none";
+}
+
+
+//Soft Delete Idea
+function ToggleSoftDeleteIdea(id) {
+    var confirmResult = confirm("Are you sure?");
+    if (!confirmResult)
+        return;
+
+    $.ajax({
+        url: window.location.origin + '/personal/softdeleteidea/' + id,
+        type: 'PUT',
+        success: function () {
+            window.location.reload();
+        },
+    });
 }

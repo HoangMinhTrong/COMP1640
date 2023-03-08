@@ -126,15 +126,5 @@ namespace COMP1640.Controllers
             ViewBag.Comments = comment;
             return View(idea);
         }
-
-        [HttpPut("idea/softdelete/{id:int}")]
-        public async Task<IActionResult> SoftDelete([FromRoute] int id)
-        {
-            var isSucceed = await _ideaService.SoftDeleteIdeaAsync(id);
-            if (isSucceed) return Ok();
-
-            ModelState.AddModelError("delete_failure", "Failure to delete an idea.");
-            return RedirectToAction("Index");
-        }
     }
 }

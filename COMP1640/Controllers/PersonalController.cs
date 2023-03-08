@@ -61,9 +61,6 @@ namespace COMP1640.Controllers
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
             var vm = await _ideaService.GetIdeaByIdAsync(id);
-            //var category_list = await _ideaService.GetCategoryForCreateIdeaAsync();
-            //var selectList = new SelectList(category_list.Categories, "Id", "Name");
-            //ViewBag.Categories = selectList;
             return Json(vm);
         }
 
@@ -77,6 +74,16 @@ namespace COMP1640.Controllers
 
             ModelState.AddModelError("edit_failure", "Failure to edit an idea.");
             return RedirectToAction("ViewYourIdea");
+        }
+
+        [HttpPut("softdeleteidea/{id:int}")]
+        public async Task<IActionResult> SoftDelete([FromRoute] int id)
+        {
+            var isSucceed = await _ideaService.SoftDeleteIdeaAsync(id);
+            if (isSucceed) return Ok();
+
+            ModelState.AddModelError("delete_failure", "Failure to delete an idea.");
+            return RedirectToAction("Index");
         }
 
 
