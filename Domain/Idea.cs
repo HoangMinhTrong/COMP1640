@@ -9,7 +9,7 @@ namespace Domain
 
         }
 
-        public Idea(string title, string content, bool isAnonymous, int categoryId, int academicYearId, int departmentId)
+        public Idea(string title, string content, bool isAnonymous, int categoryId, int academicYearId, bool inUse, int departmentId)
         {
             Title = title;
             Content = content;
@@ -17,11 +17,15 @@ namespace Domain
             CategoryId = categoryId;
             AcademicYearId = academicYearId;
             DepartmentId = departmentId;
+            InUse = inUse;
         }
+
+       
 
         public string Title { get; set; }
         public string Content { get; set; }
         public bool IsAnonymous { get; set; }
+        public bool InUse { get; set; }
         public int DepartmentId { get; set; }
         public int AcademicYearId { get; set; }
         public int CategoryId { get; set; }
