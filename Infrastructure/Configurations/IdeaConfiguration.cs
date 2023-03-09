@@ -18,5 +18,8 @@ public class IdeaConfiguration : IEntityTypeConfiguration<Idea>
             .HasForeignKey(i => i.AcademicYearId)
             .OnDelete(DeleteBehavior.SetNull)
             .IsRequired(false);
+        builder.HasOne(x => x.Category)
+            .WithMany(x => x.Ideas)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

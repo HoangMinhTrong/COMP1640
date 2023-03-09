@@ -30,7 +30,7 @@ submitAcademicYearBtn.addEventListener('click', function(event) {
     const finalClosure = new Date(finalClosureDate.value);
     const end = new Date(endDate.value);
 
-    validateClosureDates(closure, finalClosure, endDate);
+    if(!validateClosureDates(closure, finalClosure, endDate)) return;
 
     createAcademicYearForm.submit();
 });
@@ -67,7 +67,7 @@ var editAcademicYearSubmitBtn = document.getElementById("submit-edit-btn");
 editAcademicYearSubmitBtn.addEventListener('click', function(event) {
     // Prevent the form from submitting by default
     event.preventDefault();
-    
+    if(!validateClosureDates(editClosureDate.value, editFinalClosureDate.value, editEndDate.value)) return;
     const requestBody = {
         name: editName.value,
         closureDate: editClosureDate.value,

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
+using NToastNotify;
 using Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,7 +56,11 @@ services
     .AddEmailSender()
     .AddStorageService(configuration);
 
-services.AddRazorPages();
+services.AddRazorPages().AddNToastNotifyNoty(new NotyOptions
+{
+    ProgressBar = true,
+    Timeout = 5000
+});
 
 var app = builder.Build();
 
@@ -78,6 +83,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.UseNToastNotify();
 app.MapRazorPages();
 app.Run();

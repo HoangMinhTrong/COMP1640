@@ -13,6 +13,7 @@ namespace COMP1640.ViewModels.Idea.Requests
         public bool IsAnonymous { get; set; }
         [Required]
         public int CategoryId { get; set; }
+        
 
         [FileSizeAttribute(20 * 1024 * 1024)] // max file size is 20MB
         public List<IFormFile> Formfiles { get; set; } = new List<IFormFile>();

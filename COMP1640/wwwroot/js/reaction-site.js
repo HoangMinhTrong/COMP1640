@@ -2,6 +2,7 @@
 function React(event, ideaId, status)
 {
     event.preventDefault();
+    event.stopPropagation();
     var thumbsUpIcon = document.getElementById("thumbupBtn-" + ideaId);
     var thumbsDownIcon = document.getElementById("thumbdownBtn-" + ideaId);
     var totalThumbsUp = document.getElementById("total-thumbs-up-" + ideaId)
