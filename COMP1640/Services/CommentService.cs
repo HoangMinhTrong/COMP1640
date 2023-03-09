@@ -38,18 +38,22 @@ public class CommentService
 
     public async Task<List<CommentInfoResponse>> CommentList(int ideaId)
     {
-        var comments =  await _commentRepository.GetQuery(x => x.IdeaId == ideaId).ToListAsync();
-        var commentInfos = new List<CommentInfoResponse>();
-        foreach (var comment in comments)
-        {
-            var commentInfo = new CommentInfoResponse(comment.Id, comment.Content, 
-                comment.CreatedByNavigation.UserName, 
-                comment.CreatedByNavigation.Id,
-                comment.IsAnonymous);
-            commentInfos.Add(commentInfo);
-        }
+        var comments =  await _commentRepository.GetQuery(x => x.IdeaId == ideaId)
+            .Select(_ => new CommentInfoResponse
+            {
+                Id = _.Id,
+                Content = _.Content,
+                IdeaId = _.IdeaId,
+                Author = _.IsAnonymous ? null : new CommentAuthor
+                {
+                    Id = _.CreatedBy,
+                    Name = _.CreatedByNavigation.Email,
+                },
+                IsAnonymous = _.IsAnonymous,
+            })
+            .ToListAsync();
 
-        return commentInfos;
+        return comments;
     }
 
     #region Send Mail

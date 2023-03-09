@@ -117,7 +117,7 @@ namespace COMP1640.Services
         {
             var idea = await _ideaRepo
                 .GetById(ideaId)
-                .Select(new GetIdeaDetailResponse().GetSelection())
+                .Select(new GetIdeaDetailResponse().GetSelection(_current.Id))
                 .FirstOrDefaultAsync();
 
             if (idea != null)
