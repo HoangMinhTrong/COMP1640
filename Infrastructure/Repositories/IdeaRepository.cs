@@ -20,6 +20,11 @@ namespace Infrastructure.Repositories
             return GetQuery(_ => _.Id == id);
         }
 
+
+        public IQueryable<Idea> GetDeactive()
+        {
+            return GetQuery(_ => _.IsDeactive && !_.IsDeleted);
+        }
         public async Task<List<Idea>> GetListAsync(int academicYearId)
         {
             return await GetQuery(_ => _.AcademicYearId == academicYearId)
