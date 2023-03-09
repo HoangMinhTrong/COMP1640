@@ -2,6 +2,7 @@ using COMP1640.ViewModels.Attachment.Responses;
 using COMP1640.ViewModels.Common;
 using Domain;
 using System.Linq.Expressions;
+using COMP1640.ViewModels.Catalog.Response;
 
 
 namespace COMP1640.ViewModels.Idea.Responses

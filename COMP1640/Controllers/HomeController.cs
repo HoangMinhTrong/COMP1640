@@ -1,4 +1,5 @@
 ﻿using COMP1640.Services;
+using COMP1640.ViewModels.Catalog.Response;
 using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;

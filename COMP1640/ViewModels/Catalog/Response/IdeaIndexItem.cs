@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Domain;
 
-namespace COMP1640.ViewModels.Common;
+namespace COMP1640.ViewModels.Catalog.Response;
 
 public class IdeaIndexItem
 {

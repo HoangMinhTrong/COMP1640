@@ -1,12 +1,8 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Comment.Requests;
-using COMP1640.ViewModels.Common;
-using COMP1640.ViewModels.Idea.Requests;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Utilities.Helpers;
 using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers
@@ -93,6 +89,13 @@ namespace COMP1640.Controllers
             var comment = await _commentService.CommentList(id);
             ViewBag.Comments = comment;
             return View(idea);
+        }
+        
+        [HttpGet("history")]
+        public async Task<IActionResult> GetIdeaHistories([FromQuery] int ideaId)
+        {
+            var ideaHistories = await _ideaService.GetIdeaHistoriesAsync(ideaId);
+            return Ok(ideaHistories);
         }
     }
 }

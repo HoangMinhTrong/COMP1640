@@ -66,6 +66,8 @@ namespace Infrastructure
                         break;
 
                     case EntityState.Modified:
+                        OnEntryModified(entry);
+                        break;
                     case EntityState.Detached:
                     case EntityState.Unchanged:
                     case EntityState.Deleted:
@@ -91,6 +93,13 @@ namespace Infrastructure
                 var entity = (entry.Entity as ITenantEntity);
                 entity.TenantId = _currentUserInfo.TenantId;
             }
+        }
+        
+        private void OnEntryModified(EntityEntry entry)
+        {
+            if (entry.Entity is not ITenantAuditEntity) return;
+            
+            if (entry.Entity is ITenantAuditEntity entity) entity.UpdatedOn = DateTime.Now;
         }
     }
 }
