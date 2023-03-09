@@ -10,6 +10,11 @@ namespace Infrastructure.Repositories
         {
         }
 
+        public async Task<AcademicYear> GetAsync(int id)
+        {
+            return await GetAsync(_ => _.Id == id);
+        }
+
         public async Task<AcademicYear?> GetLatestAcademicYearAsync()
         {
             return await GetAllQuery()

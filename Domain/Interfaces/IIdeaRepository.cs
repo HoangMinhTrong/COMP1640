@@ -4,5 +4,6 @@
     {
         Task<Idea> GetAsync(int id);
         IQueryable<Idea> GetById(int id);
+        Task<List<Idea>> GetListAsync(int academicYearId);
     }
 }
