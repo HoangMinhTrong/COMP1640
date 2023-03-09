@@ -1,5 +1,7 @@
-﻿using Domain.Interfaces;
+﻿using Domain;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Utilities.Identity.DTOs;
 
@@ -8,10 +10,13 @@ namespace COMP1640.Extentions
     public class MyClaimsTransformation : IClaimsTransformation
     {
         private readonly IUserRepository _userRepo;
+        private readonly SignInManager<User> _signInManager;
 
-        public MyClaimsTransformation(IUserRepository userRepo)
+        public MyClaimsTransformation(IUserRepository userRepo
+            , SignInManager<User> signInManager)
         {
             _userRepo = userRepo;
+            _signInManager = signInManager;
         }
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
@@ -20,8 +25,11 @@ namespace COMP1640.Extentions
                 return principal;
 
             var user = await _userRepo.FindByEmailAsync(principal.Identity.Name);
-            if (user == null)
+            if (user == null || user.LockoutEnabled)
+            {
+                await _signInManager.SignOutAsync();
                 return principal;
+            }
 
             // Create a claims identity for the user
             ClaimsIdentity claimsIdentity = new ClaimsIdentity();
