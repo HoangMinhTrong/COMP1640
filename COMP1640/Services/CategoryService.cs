@@ -53,18 +53,15 @@ public class CategoryService
     public async Task<bool> DeleteCategory(int id)
     {
         var category = await _categoryRepository.GetById(id).FirstOrDefaultAsync();
-        var ideas = _ideaRepository.GetAllQuery().Where(x => x.CategoryId == id);
+        var ideas = _ideaRepository.GetAllQuery().Where(x => x.CategoryId == id).Any(x => !x.IsDeleted);
         if (category == null)
             return false;
-        foreach (var idea in ideas)
+        if (ideas)
         {
-            if (idea.InUse == true)
-            {
-                _toastNotification.AddErrorToastMessage("Can not delete category when in used");
-                throw new NotImplementedException("Can not delete category when in use");
-            }
+            _toastNotification.AddErrorToastMessage("Can not delete category when in used");
+            throw new NotImplementedException("Can not delete category when in use");
         }
-        category.SoftDelete();
+            category.SoftDelete();
         await _unitOfWork.SaveChangesAsync();
         return true;
     }

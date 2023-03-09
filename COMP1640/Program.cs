@@ -32,11 +32,6 @@ var configuration = builder.Configuration
 builder.Services
     .AddControllersWithViews()
     .AddRazorRuntimeCompilation();
-builder.Services.AddRazorPages().AddNToastNotifyNoty(new NotyOptions
-{
-    ProgressBar = true,
-    Timeout = 5000
-});
 
 var services = builder.Services;
 
@@ -61,7 +56,11 @@ services
     .AddEmailSender()
     .AddStorageService(configuration);
 
-services.AddRazorPages();
+services.AddRazorPages().AddNToastNotifyNoty(new NotyOptions
+{
+    ProgressBar = true,
+    Timeout = 5000
+});
 
 var app = builder.Build();
 

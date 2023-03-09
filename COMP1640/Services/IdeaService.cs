@@ -48,7 +48,6 @@ namespace COMP1640.Services
                     request.IsAnonymous,
                     request.CategoryId,
                     1,
-                    request.InUse,
                     _current.DepartmentId
                 );
 
