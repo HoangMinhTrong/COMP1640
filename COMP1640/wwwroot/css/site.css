@@ -224,9 +224,17 @@ p{
     border-radius: 15px;
 }
 
-@media (min-width: 768px) {
-    .chart-area {
-        height: 20rem;
-    }
+#lineChart{
+    width: 860px;
+    height: 400px;
 }
 
+#barChart {
+    width: 500px;
+    height: 100px;
+}
+
+#doughnutChart {
+    width: 305px;
+    height: 100px;
+}

@@ -2,6 +2,9 @@ const lineChart = document.getElementById('lineChart');
 const barChart = document.getElementById('barChart');
 const doughnutChart = document.getElementById('doughnutChart');
 
+
+//Data: Idea submited of each month
+//Label: Months
 new Chart(lineChart, {
     type: 'line',
     data: {
@@ -21,6 +24,8 @@ new Chart(lineChart, {
     }
 });
 
+//Data: Number idea submited of each Category or Department
+//Label: List of Category or Department
 new Chart(barChart, {
     type: 'bar',
     data: {
@@ -33,6 +38,8 @@ new Chart(barChart, {
     },
 });
 
+//Data: Number idea submited of each Category or Department
+//Label: List of Category or Department
 new Chart(doughnutChart, {
     type: 'doughnut',
     data: {
