@@ -4,15 +4,11 @@
 
 <section>
     <div class="container">
-    
-
         <div class="row d-flex justify-content-center align-items-center" style="padding: 30px">
-
-
-            <div class="col col-xl-10" aria-label="Card example">
+            <div class="col col-xl-9" aria-label="Card example">
+                <a class="fw-bold" asp-action="Index" asp-controller="Home"> <-- Back to Home</a>
                 <div class="card mb-5" style="border-radius: 15px;">
                     <div class="card-body p-4">
-
                         <div class="d-flex align-items-center mb-4">
                             <div class="flex-shrink-0">
                                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp"
@@ -22,36 +18,36 @@
                             <div class="flex-grow-1 ms-3">
                                 <div class="d-flex flex-row align-items-center mb-2">
                                     <div class="flex-shrink-0">
-                                        <span class="mx-10"></span>
-                                        <strong>@Model.Author.UserName</strong> @Model.CreatedOn
+                                        @if (@Model.IsAnonymous == true)
+                                        {
+                                            <strong>Anonymous</strong>
+                                        }
+                                        else
+                                        {
+                                            <strong>@Model.Author.UserName</strong>
+                                        }
                                     </div>
                                 </div>
                                 <div>
                                     <div class="btn btn-outline-light btn-rounded btn-sm"
                                          data-mdb-ripple-color="dark">
-                                        @Model.UserRole
+                                        @Model.Category
                                     </div>
-                                    <div class="btn btn-outline-light btn-rounded btn-sm"
-                                         data-mdb-ripple-color="dark">
-                                        @Model.Department
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div class="btn btn-outline-light btn-rounded btn-sm"
-                             data-mdb-ripple-color="dark">
-                            @Model.Category
-                        </div>
                         @foreach (var attach in @Model.Attachments)
                         {
-                          <div class="btn btn-outline-light btn-rounded btn-sm"
+                            <div class="btn btn-outline-light btn-rounded btn-sm"
                              data-mdb-ripple-color="dark">
-                             <a target="_blank" href="@attach.PresignedUrl">@attach.Name</a>
-                             <a href="attachments/@attach.KeyName/download">Download</a>
-                          </div>
+                                <a target="_blank" href="@attach.PresignedUrl">@attach.Name</a>
+                                <a href="attachments/@attach.KeyName/download">Download</a>
+                            </div>
                         }
+                        <div>
+                            <h3>@Model.Title</h3>
+                        </div>
                         <div class="d-flex justify-content-start align-items-center">
                             @Model.Content
                         </div>
@@ -86,14 +82,25 @@
                                                             style="width: 70px;">
                                                    </div>
                                                    <div class="flex-grow-1 ms-3">
-                                                       <div class="d-flex flex-row align-items-center mb-2">
-                                                           <div class="flex-shrink-0">
-                                                               <span class="mx-10"></span>
-                                                               <strong>@comment.UserName</strong>
-                                                           </div>
-                                                       </div>
-
-                                                       <div class="d-flex flex-row align-items-center mb-2">
+                                                        @if (!comment.IsAnonymous)
+                                                               {
+                                                                   <div class="d-flex flex-row align-items-center mb-2">
+                                                                       <div class="flex-shrink-0">
+                                                                           <span class="mx-10"></span>
+                                                                           <strong>@comment.UserName</strong>
+                                                                       </div>
+                                                                   </div>
+                                                               }
+                                                        else
+                                                        {
+                                                            <div class="d-flex flex-row align-items-center mb-2">
+                                                                <div class="flex-shrink-0">
+                                                                    <span class="mx-10"></span>
+                                                                    <strong>Anonymous</strong>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        <div class="d-flex flex-row align-items-center mb-2">
                                                            <div class="flex-shrink-0">
                                                                <span class="mx-10"></span>
                                                                <small>@comment.Content</small>
@@ -107,22 +114,99 @@
                                }
                            </div>
                        </div>
-                        <br />
-                        <div class="d-flex g-3 align-items-center">
+                        <div class="small d-flex justify-content-between">
+                            <div class="small d-flex justify-content-start">
+                                <a href="#!" class="d-flex align-items-center me-3">
+                                    <i class="far fa-thumbs-up me-2"></i>
+                                    <p class="mb-0">@Model.LikeCount</p>
+                                </a>
+                                <a href="#!" class="d-flex align-items-center me-3">
+                                    <i class="far fa-thumbs-down me-2"></i>
+                                    <p class="mb-0">@Model.DislikeCount</p>
+                                </a>
+                                <a href="#!" class="d-flex align-items-center me-3">
+                                    <i class="far fa-comment-dots me-2"></i>
+                                    <p class="mb-0">@Model.CommentCount</p>
+                                </a>
+                            </div>
 
+                            <div class="d-flex align-item-center">
+                                <p>@Model.CreatedOn</p>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="d-flex g-3 align-items-center">
+                            <div class="row">
+                                @foreach (var comment in ViewBag.Comments)
+                                {
+                                    <div class="col col-xl-10 mb-1" aria-label="Card example">
+                                        <div class="card" style="border-radius: 15px;">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center mb-1">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp"
+                                                         alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                                         style="width: 70px;">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <div class="d-flex flex-row align-items-center mb-2">
+                                                            <div class="flex-shrink-0">
+                                                                <span class="mx-10"></span>
+                                                                <strong>@comment.UserName</strong>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex flex-row align-items-center mb-2">
+                                                            <div class="flex-shrink-0">
+                                                                <span class="mx-10"></span>
+                                                                <small>@comment.Content</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="d-flex g-3 align-items-center">
                             <div class="flex-shrink-0">
                                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp"
                                      alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
-                                     style="width: 58px; margin-bottom: 15px">
+                                     style="width: 58px;">
+                            </div>
+
+                            <div style="padding-left: 30px; width: 600px">
+                                @using (Html.BeginForm("CommentIdea", "Idea", new { ideaId = Model.Id }))
+                                {
+                                    <div class="d-flex">
+                                        <input class="form-control" id="content" name="content" placeholder="Enter your comment here" />
+                                        <button type="submit" class="btn btn-primary" style="margin-left: 20px">Send</button>
+                                    </div>                                    
+                                }                         
+                                                                
                             </div>
                             @using (Html.BeginForm("CommentIdea", "Idea", new { ideaId = Model.Id }))
                             {
                                 <div class="form-group">
                                     @Html.TextArea("content", null, new { @class = "form-control" })
                                 </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="true" id="anonymousCheckbox" name="isAnonymous">
+                                    <input type="hidden" value="false" name="isAnonymous">
+                                    <label class="form-check-label" for="anonymousCheckbox">
+                                        Comment anonymously
+                                    </label>
+                                </div>
+                               
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             }
                         </div>
+                        
 
                     </div>
                 </div>

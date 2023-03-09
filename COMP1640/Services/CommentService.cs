@@ -6,6 +6,7 @@ using Domain.DomainEvents;
 using Domain.Interfaces;
 using Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace COMP1640.Services;
@@ -27,7 +28,7 @@ public class CommentService
 
     public async Task<bool> CommentIdea(CommentIdeaRequest commentIdeaRequest)
     {
-        var comment = new Comment(commentIdeaRequest.Content, commentIdeaRequest.IdeaId);
+        var comment = new Comment(commentIdeaRequest.Content, commentIdeaRequest.IdeaId, commentIdeaRequest.IsAnonymous);
         await _commentRepository.InsertAsync(comment);
         await _unitOfWork.SaveChangesAsync();
 
@@ -41,7 +42,10 @@ public class CommentService
         var commentInfos = new List<CommentInfoResponse>();
         foreach (var comment in comments)
         {
-            var commentInfo = new CommentInfoResponse(comment.Id, comment.Content, comment.CreatedByNavigation.UserName, comment.CreatedByNavigation.Id);
+            var commentInfo = new CommentInfoResponse(comment.Id, comment.Content, 
+                comment.CreatedByNavigation.UserName, 
+                comment.CreatedByNavigation.Id,
+                comment.IsAnonymous);
             commentInfos.Add(commentInfo);
         }
 

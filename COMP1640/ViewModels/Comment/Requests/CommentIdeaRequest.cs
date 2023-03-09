@@ -4,4 +4,5 @@ public class CommentIdeaRequest
 {
     public string Content { get; set; }
     public int IdeaId { get; set; }
+    public bool IsAnonymous { get; set; }
 }
