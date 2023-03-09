@@ -28,13 +28,14 @@ public class GetIdeaIndexRequest : PagingRequest
     {
         return SortOption switch
         {
-            IdeaIndexSortingEnum.LatestIdea => q => q.OrderByDescending(x => x.CreatedOn),
+            IdeaIndexSortingEnum.LatestIdea => q => q.OrderByDescending(i => i.CreatedOn),
             IdeaIndexSortingEnum.MostReactPoint => q => q.OrderByDescending(i =>
                 i.Reactions.Count(r => r.Status == ReactionStatusEnum.Like) -
                 i.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike)),
-            IdeaIndexSortingEnum.LatestComment => q => q.OrderByDescending(x => x.Comments.MaxBy(c => c.CreatedOn)),
-            IdeaIndexSortingEnum.MostPopularIdea => q => q.OrderByDescending(x => x.Views),
-            _ => q => q.OrderByDescending(x => x.CreatedOn)
+            IdeaIndexSortingEnum.LatestComment => q => q.OrderByDescending(i => i.Comments.Any())
+                .ThenByDescending(i => i.Comments.OrderByDescending(c => c.Id).FirstOrDefault()),
+            IdeaIndexSortingEnum.MostPopularIdea => q => q.OrderByDescending(i => i.Views),
+            _ => q => q.OrderByDescending(i => i.CreatedOn)
         };
     }
 }
