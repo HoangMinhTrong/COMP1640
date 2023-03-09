@@ -80,7 +80,7 @@ namespace COMP1640.Controllers
         public async Task<IActionResult> CommentIdea(CommentIdeaRequest request)
         {
             await _commentService.CommentIdea(request);
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewDetail", new { id = request.IdeaId });
         }
 
         [HttpGet("{id:int}")]
