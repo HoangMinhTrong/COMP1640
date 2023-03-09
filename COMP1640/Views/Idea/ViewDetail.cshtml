@@ -69,12 +69,12 @@
                                                 <p id="total-thumbs-down-@Model.Id" class="mb-0">@Model.DislikeCount</p>
                                             </a>
                                             <a href="#!" class="d-flex align-items-center me-3">
-                                                <a asp-controller="Idea" asp-action="ViewDetail" asp-route-id="@Model.Id"> <i class="far fa-comment-dots me-2"></i></a>
+                                                <a> <i class="far fa-comment-dots me-2"></i></a>
                                                 <p class="mb-0">@Model.CommentCount </p>
                                             </a>
                                         </div>
                                         <div class="d-flex align-item-center">
-                                            <p class="me-2">@Model.Author?.UserName</p> 
+                                            <p class="me-2">@Model.Author?.UserName.Split("@")[0] </p> 
                                             <p>@Model.CreatedOn</p>
                                         </div>
                                     </div>
@@ -99,11 +99,11 @@
                                                                 <span class="mx-10"></span>
                                                                 @if (comment.IsAnonymous)
                                                                 {
-                                                                   <strong style="color:#8888">anonymous@gmail.com</strong>
+                                                                   <strong style="color:#8888">Anonymous</strong>
                                                                 }
                                                                 else
                                                                 {
-                                                                   <strong>@comment.Author.Name</strong>
+                                                                   <strong>@comment.Author.Name.Split("@")[0]</strong>
                                                                 }
                                                             </div>
                                                         </div>
@@ -138,7 +138,7 @@
                                         <input class="form-control" id="content" name="content" placeholder="Enter your comment here" />
                                         <button type="submit" class="btn btn-primary" style="margin-left: 20px">Send</button>
                                     </div>         
-                                    <div class="form-check">
+                                    <div style="margin-top: 15px" class="form-check">
                                         <input class="form-check-input" type="checkbox" value="true" id="anonymousCheckbox" name="isAnonymous">
                                         <input type="hidden" value="false" name="isAnonymous">
                                         <label class="form-check-label" for="anonymousCheckbox">
@@ -162,3 +162,5 @@
 
     </div>
 </section>
+
+<script src="~/js/reaction-site.js" asp-append-version="true"></script>
