@@ -16,7 +16,7 @@ public class IdeaIndexItem
     public int ThumbsDown { get; set; }
     public int Views { get; set; }
     public int TotalComment { get; set; }
-    public IdeaAuthor Author { get; set; }
+    public IdeaAuthor? Author { get; set; }
     public bool IsAnonymous { get; set; }
 
     public UserReaction? UserReacted { get; set; }

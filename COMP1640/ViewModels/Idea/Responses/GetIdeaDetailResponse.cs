@@ -13,7 +13,7 @@ namespace COMP1640.ViewModels.Idea.Responses
         public string Title { get; set; }
         public string Content { get; set; }
         public string Department { get; set; }
-        public IdeaAuthor Author { get; set; }
+        public IdeaAuthor? Author { get; set; }
         public DateTime CreatedOn { get; set; }
         public string UserRole { get; set; }
         public int LikeCount { get; set; }
