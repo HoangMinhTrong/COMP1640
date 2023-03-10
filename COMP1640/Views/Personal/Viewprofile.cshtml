@@ -13,7 +13,6 @@
                                  alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
                             <h5 class="profile-email"></h5>
                             <p class="profile-role"></p>
-                            <i class="far fa-edit mb-5"></i>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body p-4">
@@ -46,7 +45,7 @@
 
                                     @if (SignInManager.IsSignedIn(User))
                                     {
-                                        if (CurrentUser.RoleId == (int)RoleTypeEnum.Admin){}
+                                        if (CurrentUser.RoleId == (int)RoleTypeEnum.Admin) { }
                                         else
                                         {
                                             <div class="col-6 mb-3">
