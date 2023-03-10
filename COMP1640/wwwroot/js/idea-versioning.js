@@ -4,17 +4,6 @@ var versioningBtn = document.getElementsByClassName("versioningBtn");
 var versioningSpan = document.getElementsByClassName("close")[1];
 
 function ViewVersioningIdea(id) {
-/*    $.ajax({
-        url: window.location.origin + '/history?ideaId=' + id,
-        type: 'GET',
-        success: function (user) {
-            versioningModal.style.display = "block";
-            $(".info-userId").val(user.id);
-            $(".info-email").val(user.email);
-            $(".gender-" + user.gender).prop("selected", true);
-            $(".info-birthday").val(user.birthday);
-        }
-    });*/
     $.ajax({
         url: window.location.origin + '/idea/history?ideaId=' + id,
         method: "GET",
