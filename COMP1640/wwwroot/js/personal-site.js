@@ -37,16 +37,18 @@ function EditIdeaInfo() {
         IsAnonymous: $("#isAnonymous").is(":checked"),
         CategoryId: parseInt($("#category_list").val()),
     };
-    $.ajax({
-        url: window.location.origin + '/personal/editIdea/' + ideaId,
-        type: 'PUT',
-        data: JSON.stringify(myObject),
-        contentType: 'application/json',
-        success: function () {
-            alert('Edit idea successfully');
-            window.location.reload();
-        }
-    });
+    if ($("#agreeTerm").is(':checked')) {
+        $.ajax({
+            url: window.location.origin + '/personal/editIdea/' + ideaId,
+            type: 'PUT',
+            data: JSON.stringify(myObject),
+            contentType: 'application/json',
+            success: function () {
+                alert('Edit idea successfully');
+                window.location.reload();
+            }
+        });
+    }
 }
 
 function ViewIdeaDetail(id) {
