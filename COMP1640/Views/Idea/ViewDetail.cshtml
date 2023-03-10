@@ -19,7 +19,7 @@
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-4">
                             <div class="flex-shrink-0">
-                                <img src="https://i.pravatar.cc/300?u=@Model.Author.Id"
+                                <img src="@GetAuthorImageSource(Model.Author?.Id)"
                                 alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
                                 style="width: 70px;">
                             </div>
@@ -95,10 +95,10 @@
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center mb-1">
                                                     <div class="flex-shrink-0">
-                                                <img src="https://i.pravatar.cc/300?u=@comment.Author.Id"
-                                                alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
-                                                style="width: 70px;">
-                                                </div>
+                                                        <img src="@GetAuthorImageSource(comment.Author?.Id)"
+                                                             alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                                             style="width: 70px;">
+                                                    </div>
                                                     <div class="flex-grow-1 ms-3">
                                                         <div class="d-flex flex-row align-items-center mb-2">
                                                             <div class="flex-shrink-0">
@@ -132,7 +132,7 @@
 
                         <div class="d-flex g-3 align-items-center">
                             <div class="flex-shrink-0">
-                                <img src="https://i.pravatar.cc/300?u=@CurrentUser.Id"
+                                <img src="@GetAuthorImageSource(CurrentUser.Id)"
                                      alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
                                      style="width: 58px;">
                             </div>
