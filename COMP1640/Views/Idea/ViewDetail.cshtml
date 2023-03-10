@@ -8,14 +8,20 @@
     <div class="container">
         <div class="row d-flex justify-content-center align-items-center" style="padding: 30px">
             <div class="col col-xl-9" aria-label="Card example">
-                <a class="fw-bold" asp-action="Index" asp-controller="Home"> <-- Back to Home</a>
+                <div style="display:flex">
+                    <a asp-action="Index" asp-controller="Home">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h4 style="padding-left: 10px">Back to Home</h4>
+
+                </div>              
                 <div class="card mb-5" style="border-radius: 15px;">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-4">
                             <div class="flex-shrink-0">
                                 <img src="https://i.pravatar.cc/300?u=@Model.Author.Id"
-                                     alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
-                                     style="width: 70px;">
+                                alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                style="width: 70px;">
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <div class="d-flex flex-row align-items-center mb-2">
@@ -44,40 +50,40 @@
                         </div>
                         <hr />
                         <div class="d-flex justify-content-between">
-                                        <div class="small d-flex justify-content-start">
-                                            <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.Like))" class="d-flex align-items-center me-3">
-                                                @if (Model.UserReacted?.Status == ReactionStatusEnum.Like)
-                                                {
-                                                    <i class="fas fa-thumbs-up" id="thumbupBtn-@Model.Id"></i>
-                                                }
-                                                else
-                                                {
-                                                    <i class="far fa-thumbs-up me-2" id="thumbupBtn-@Model.Id"></i>
-                                                }
-                                                <p id="total-thumbs-up-@Model.Id" class="mb-0">@Model.LikeCount</p>
+                            <div class="small d-flex justify-content-start">
+                                <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.Like))" class="d-flex align-items-center me-3">
+                                    @if (Model.UserReacted?.Status == ReactionStatusEnum.Like)
+                                    {
+                                        <i class="fas fa-thumbs-up" id="thumbupBtn-@Model.Id"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-thumbs-up me-2" id="thumbupBtn-@Model.Id"></i>
+                                    }
+                                    <p id="total-thumbs-up-@Model.Id" class="mb-0">@Model.LikeCount</p>
 
-                                            </a>
-                                            <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.DisLike))" class="d-flex align-items-center me-3">
-                                                @if (Model.UserReacted?.Status == ReactionStatusEnum.DisLike)
-                                                {
-                                                    <i class="fas fa-thumbs-down" id="thumbupBtn-@Model.Id"></i>
-                                                }
-                                                else
-                                                {
-                                                    <i class="far fa-thumbs-down me-2" id="thumbdownBtn-@Model.Id"></i>
-                                                }
-                                                <p id="total-thumbs-down-@Model.Id" class="mb-0">@Model.DislikeCount</p>
-                                            </a>
-                                            <a href="#!" class="d-flex align-items-center me-3">
-                                                <a> <i class="far fa-comment-dots me-2"></i></a>
-                                                <p class="mb-0">@Model.CommentCount </p>
-                                            </a>
-                                        </div>
-                                        <div class="d-flex align-item-center">
-                                            <p class="me-2">@Model.Author?.UserName.Split("@")[0] </p> 
-                                            <p>@Model.CreatedOn</p>
-                                        </div>
-                                    </div>
+                                </a>
+                                <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.DisLike))" class="d-flex align-items-center me-3">
+                                    @if (Model.UserReacted?.Status == ReactionStatusEnum.DisLike)
+                                    {
+                                        <i class="fas fa-thumbs-down" id="thumbupBtn-@Model.Id"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-thumbs-down me-2" id="thumbdownBtn-@Model.Id"></i>
+                                    }
+                                    <p id="total-thumbs-down-@Model.Id" class="mb-0">@Model.DislikeCount</p>
+                                </a>
+                                <a href="#!" class="d-flex align-items-center me-3">
+                                    <a> <i class="far fa-comment-dots me-2"></i></a>
+                                    <p class="mb-0">@Model.CommentCount </p>
+                                </a>
+                            </div>
+                            <div class="d-flex align-item-center">
+                                <p class="me-2">@Model.Author?.UserName.Split("@")[0] </p>
+                                <p>@Model.CreatedOn</p>
+                            </div>
+                        </div>
                         <br />
 
                         <div class="d-flex g-3 align-items-center">
@@ -89,21 +95,21 @@
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center mb-1">
                                                     <div class="flex-shrink-0">
-                                                        <img src="https://i.pravatar.cc/300?u=@comment.Author.Id"
-                                                         alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
-                                                         style="width: 70px;">
-                                                    </div>
+                                                <img src="https://i.pravatar.cc/300?u=@comment.Author.Id"
+                                                alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                                style="width: 70px;">
+                                                </div>
                                                     <div class="flex-grow-1 ms-3">
                                                         <div class="d-flex flex-row align-items-center mb-2">
                                                             <div class="flex-shrink-0">
                                                                 <span class="mx-10"></span>
                                                                 @if (comment.IsAnonymous)
                                                                 {
-                                                                   <strong style="color:#8888">Anonymous</strong>
+                                                                    <strong style="color:#8888">Anonymous</strong>
                                                                 }
                                                                 else
                                                                 {
-                                                                   <strong>@comment.Author.Name.Split("@")[0]</strong>
+                                                                    <strong>@comment.Author.Name.Split("@")[0]</strong>
                                                                 }
                                                             </div>
                                                         </div>
@@ -137,7 +143,7 @@
                                     <div class="d-flex">
                                         <input class="form-control" id="content" name="content" placeholder="Enter your comment here" />
                                         <button type="submit" class="btn btn-primary" style="margin-left: 20px">Send</button>
-                                    </div>         
+                                    </div>
                                     <div style="margin-top: 15px" class="form-check">
                                         <input class="form-check-input" type="checkbox" value="true" id="anonymousCheckbox" name="isAnonymous">
                                         <input type="hidden" value="false" name="isAnonymous">
@@ -145,11 +151,11 @@
                                             Comment anonymously
                                         </label>
                                     </div>
-                                }                         
-                                                                
+                                }
+
                             </div>
                         </div>
-                        
+
 
                     </div>
                 </div>
