@@ -84,11 +84,10 @@
                 <div class="row d-flex justify-content-center align-items-center">
                     @foreach (var item in Model.IdeaIndexItems)
                     {
-                        <div class="col col-xl-10 mb-5" 
-                            aria-label="Card example"  
-                            onclick="location.href='@Url.Action("ViewDetail", "Idea", new { @item.Id })'"
-                            style="cursor: pointer;"
-                        >
+                        <div class="col col-xl-10 mb-5"
+                     aria-label="Card example"
+                     onclick="location.href='@Url.Action("ViewDetail", "Idea", new { @item.Id })'"
+                     style="cursor: pointer;">
                             <div class="card" style="border-radius: 15px;">
                                 <div class="card-body p-4">
                                     <div class="d-flex align-items-center mb-4">
@@ -99,7 +98,7 @@
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <div class="d-flex flex-row mb-2">
-                                                <div class="mx-1">
+                                                <div class="mx-1 col col-xl-12">
                                                     <h2>
                                                         <strong>@item.Title</strong>
                                                     </h2>
@@ -149,7 +148,7 @@
                                             </a>
                                         </div>
                                         <div class="d-flex align-item-center">
-                                            <p class="me-2">@item.Author?.UserName.Split("@")[0]</p> 
+                                            <p class="me-2">@item.Author?.UserName.Split("@")[0]</p>
                                             <p>@item.CreatedOn</p>
                                         </div>
                                     </div>

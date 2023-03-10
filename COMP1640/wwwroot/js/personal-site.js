@@ -51,7 +51,9 @@ function EditIdeaInfo() {
     }
 }
 
-function ViewIdeaDetail(id) {
+function ViewIdeaDetail(event, id) {
+    event.stopPropagation();
+
     $.ajax({
         url: window.location.origin + '/personal/edit/' + id,
         type: 'GET',
