@@ -1,4 +1,5 @@
 using COMP1640.ViewModels.Attachment.Responses;
+using COMP1640.ViewModels.Comment.Responses;
 using COMP1640.ViewModels.Common;
 using Domain;
 using System.Linq.Expressions;
@@ -22,6 +23,7 @@ namespace COMP1640.ViewModels.Idea.Responses
         public string Category { get; set; }
         public bool IsAnonymous { get; set; }
         public List<AttachmentResponse> Attachments{ get; set; }
+        public List<CommentInfoResponse> Comments { get; set; }
         public UserReaction? UserReacted { get; set; }
 
 

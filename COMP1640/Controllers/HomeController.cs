@@ -2,22 +2,24 @@
 using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using Utilities.Helpers;
 
 namespace COMP1640.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IdeaService _ideaService;
         private readonly CategoryService _categoryService;
-        
+        private readonly IToastNotification _toastNotification;
 
-        public HomeController(ILogger<HomeController> logger, IdeaService ideaService, CategoryService categoryService)
+        public HomeController(IdeaService ideaService
+            , CategoryService categoryService
+            , IToastNotification toastNotification)
         {
-            _logger = logger;
             _ideaService = ideaService;
             _categoryService = categoryService;
+            _toastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -49,7 +51,15 @@ namespace COMP1640.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateIdeaRequest request)
         {
-            if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
+            if (!ModelState.IsValid)
+            {
+                var modelErrors = ModelState.Values.SelectMany(_ => _.Errors).ToList();
+                foreach (var modelError in modelErrors)
+                    _toastNotification.AddErrorToastMessage("Error: " + modelError.ErrorMessage);
+
+                return RedirectToAction("Index", "Home");
+            } 
+
 
             var isSucceed = await _ideaService.CreateIdeaAsync(request);
             if (isSucceed) return RedirectToAction("Index", "Home");

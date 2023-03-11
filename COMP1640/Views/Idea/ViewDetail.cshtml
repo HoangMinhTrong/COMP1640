@@ -38,13 +38,13 @@
                         <hr>
                         @foreach (var attach in @Model.Attachments)
                         {
-                            <div class="btn btn-outline-light btn-rounded btn-sm"
+                            <div class="btn btn-outline-light btn-rounded btn-sm mb-2"
                              data-mdb-ripple-color="dark">
                                 <a target="_blank" href="@attach.PresignedUrl">@attach.Name</a>
                                 <a href="attachments/@attach.KeyName/download">Download</a>
                             </div>
                         }
-                        <div class="col col-xl-12">
+                        <div class="col col-xl-12 mt-3">
                             @Model.Content
                         </div>
                         <hr />
@@ -87,7 +87,7 @@
 
                         <div class="d-flex g-3 align-items-center">
                             <div class="row">
-                                @foreach (CommentInfoResponse comment in ViewBag.Comments)
+                                @foreach (var comment in Model.Comments)
                                 {
                                     <div class="col col-xl-10 mb-1" aria-label="Card example">
                                         <div class="card" style="border-radius: 15px;">
