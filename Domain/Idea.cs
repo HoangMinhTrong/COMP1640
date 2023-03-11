@@ -39,10 +39,6 @@ namespace Domain
 
         public void AddAttachment(Attachment attachment)
         {
-            var existed = IdeaAttachments.Any(_ => _.Attachment.Id == attachment.Id);
-            if (existed)
-                return;
-
             IdeaAttachments.Add(new IdeaAttachment(this, attachment));
         }
 

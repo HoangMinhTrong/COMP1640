@@ -90,8 +90,7 @@ namespace COMP1640.Controllers
             var idea = await _ideaService.GetIdeaDetailsAsync(id);
             if(idea == null) return NotFound();
 
-            var comment = await _commentService.CommentList(id);
-            ViewBag.Comments = comment;
+            idea.Comments = await _commentService.CommentList(id);
             return View(idea);
         }
     }
