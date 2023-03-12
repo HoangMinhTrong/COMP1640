@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using COMP1640.ViewModels.Comment.Responses
 @model GetIdeaDetailResponse
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 
 <section>
     <div class="container">
@@ -53,28 +52,28 @@
                                 <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.Like))" class="d-flex align-items-center me-3">
                                     @if (Model.UserReacted?.Status == ReactionStatusEnum.Like)
                                     {
-                                        <i class="fas fa-thumbs-up" id="thumbupBtn-@Model.Id"></i>
+                                        <i class="fas fa-thumbs-up me-2" id="thumbupBtn-@Model.Id"></i>
                                     }
                                     else
                                     {
                                         <i class="far fa-thumbs-up me-2" id="thumbupBtn-@Model.Id"></i>
                                     }
-                                    <p id="total-thumbs-up-@Model.Id" class="mb-0">@Model.LikeCount</p>
+                                    <p id="total-thumbs-up-@Model.Id" class="me-2">@Model.LikeCount</p>
 
                                 </a>
                                 <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.DisLike))" class="d-flex align-items-center me-3">
                                     @if (Model.UserReacted?.Status == ReactionStatusEnum.DisLike)
                                     {
-                                        <i class="fas fa-thumbs-down" id="thumbupBtn-@Model.Id"></i>
+                                        <i class="fas fa-thumbs-down me-2" id="thumbdownBtn-@Model.Id"></i>
                                     }
                                     else
                                     {
                                         <i class="far fa-thumbs-down me-2" id="thumbdownBtn-@Model.Id"></i>
                                     }
-                                    <p id="total-thumbs-down-@Model.Id" class="mb-0">@Model.DislikeCount</p>
+                                    <p id="total-thumbs-down-@Model.Id" class="me-2">@Model.DislikeCount</p>
                                 </a>
                                 <a href="#!" class="d-flex align-items-center me-3">
-                                    <a> <i class="far fa-comment-dots me-2"></i></a>
+                                    <i class="far fa-comment-dots me-2"></i>
                                     <p class="mb-0">@Model.CommentCount </p>
                                 </a>
                             </div>
@@ -164,4 +163,6 @@
     </div>
 </section>
 
-<script src="~/js/reaction-site.js" asp-append-version="true"></script>
+@section Scripts{
+    <script src="~/js/reaction-site.js" asp-append-version="true"></script>
+}
