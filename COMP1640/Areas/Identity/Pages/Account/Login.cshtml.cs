@@ -5,13 +5,10 @@
 using Domain;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
-using Utilities.Identity.DTOs;
 
 namespace WebMVC.Areas.Identity.Pages.Account
 {
@@ -110,6 +107,14 @@ namespace WebMVC.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                // Validate Lockout User
+                var isLockout = await _userRepo.IsUserLockoutEnableAsync(Input.Email);
+                if (isLockout)
+                {
+                    ModelState.AddModelError(string.Empty, "Your account has been locked");
+                    return Page();
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);

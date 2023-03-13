@@ -2,8 +2,10 @@ using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Category.Responses;
 using Domain;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 
 namespace COMP1640.Services;
@@ -12,10 +14,14 @@ public class CategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
-    public CategoryService(ICategoryRepository category, IUnitOfWork unitOfWork)
+    private readonly IIdeaRepository _ideaRepository;
+    private readonly IToastNotification _toastNotification;
+    public CategoryService(ICategoryRepository category, IUnitOfWork unitOfWork, IIdeaRepository ideaRepository, IToastNotification toastNotification)
     {
         _categoryRepository = category;
         _unitOfWork = unitOfWork;
+        _ideaRepository = ideaRepository;
+        _toastNotification = toastNotification;
     }
 
     public async Task<bool> CreateCategory(CreateCategoryRequest categoryRequest)
@@ -47,10 +53,15 @@ public class CategoryService
     public async Task<bool> DeleteCategory(int id)
     {
         var category = await _categoryRepository.GetById(id).FirstOrDefaultAsync();
+        var ideas = _ideaRepository.GetAllQuery().Where(x => x.CategoryId == id).Any(x => !x.IsDeleted);
         if (category == null)
             return false;
-
-        category.SoftDelete();
+        if (ideas)
+        {
+            _toastNotification.AddErrorToastMessage("Can not delete category when in used");
+            throw new NotImplementedException("Can not delete category when in use");
+        }
+            category.SoftDelete();
         await _unitOfWork.SaveChangesAsync();
         return true;
     }

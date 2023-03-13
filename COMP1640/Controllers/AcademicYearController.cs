@@ -71,4 +71,14 @@ public class AcademicYearController : Controller
 
         return isSuccess ? Ok() : BadRequest("Failure to update");
     }
+
+    [HttpGet("{id:int}/data/export")]
+    public async Task<IActionResult> DataExport([FromRoute] int id)
+    {
+        var response = await _academicYearService.ExportAcademicYearDataAsync(id);
+        if (response == null)
+            return NoContent();
+
+        return File(response.Data, response.Type, response.Name);
+    }
 }

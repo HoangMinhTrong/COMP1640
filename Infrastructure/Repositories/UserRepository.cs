@@ -19,5 +19,10 @@ namespace Infrastructure.Repositories
         {
             return GetQuery(_ => _.Id == id);
         }
+
+        public Task<bool> IsUserLockoutEnableAsync(string email)
+        {
+            return GetQuery(_ => _.Email == email && _.LockoutEnabled).AnyAsync();
+        }
     }
 }

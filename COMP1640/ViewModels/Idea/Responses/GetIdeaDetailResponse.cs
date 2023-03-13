@@ -1,4 +1,5 @@
 using COMP1640.ViewModels.Attachment.Responses;
+using COMP1640.ViewModels.Comment.Responses;
 using COMP1640.ViewModels.Common;
 using Domain;
 using System.Linq.Expressions;
@@ -13,7 +14,7 @@ namespace COMP1640.ViewModels.Idea.Responses
         public string Title { get; set; }
         public string Content { get; set; }
         public string Department { get; set; }
-        public IdeaAuthor Author { get; set; }
+        public IdeaAuthor? Author { get; set; }
         public DateTime CreatedOn { get; set; }
         public string UserRole { get; set; }
         public int LikeCount { get; set; }
@@ -22,19 +23,24 @@ namespace COMP1640.ViewModels.Idea.Responses
         public string Category { get; set; }
         public bool IsAnonymous { get; set; }
         public List<AttachmentResponse> Attachments{ get; set; }
+        public List<CommentInfoResponse> Comments { get; set; }
+        public UserReaction? UserReacted { get; set; }
 
-        public Expression<Func<Domain.Idea , GetIdeaDetailResponse>> GetSelection()
+
+        public Expression<Func<Domain.Idea , GetIdeaDetailResponse>> GetSelection(int userId)
         {
+            var userReactionSelection = new UserReaction().GetSelection().Compile();
+
             return _ => new GetIdeaDetailResponse
             {
                 Id = _.Id,
                 Title = _.Title,
                 Content = _.Content,
                 Department = _.Department.Name,
-                Author = new IdeaAuthor
+                Author = _.IsAnonymous ? null : new IdeaAuthor
                 {
-                    Id = _.CreatedBy,
-                    UserName = _.CreatedByNavigation.UserName
+                    Id = _.CreatedByNavigation.Id,
+                    UserName = _.CreatedByNavigation.UserName,
                 },
                 CreatedOn = _.CreatedOn,
                 UserRole = _.CreatedByNavigation.RoleUsers.Select(r => r.Role.Name).FirstOrDefault(),
@@ -43,6 +49,7 @@ namespace COMP1640.ViewModels.Idea.Responses
                 CommentCount = _.Comments.Count(),
                 Category = _.Category.Name,
                 IsAnonymous = _.IsAnonymous,
+                UserReacted = userReactionSelection(_.Reactions.FirstOrDefault(r => r.UserId == userId && r.IdeaId == _.Id)),
             };
         }       
 

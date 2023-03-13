@@ -32,7 +32,6 @@ public class DepartmentService
             return false;
         var department = new Department(departmentRequest.Name, departmentRequest.QacoordinatorId);
 
-
         await _departmentRepository.InsertAsync(department);
         await _unitOfWork.SaveChangesAsync();
         return true;
@@ -56,11 +55,15 @@ public class DepartmentService
 
     public async Task<List<SelectCoordinatorForCreateDepartmentResponse>> GetCoordinatorForCreateDepartmentAsync()
     {
+        var existedCoordinator = await _departmentRepository
+            .GetQuery(_ => _.QaCoordinatorId != null)
+            .Select(x => x.QaCoordinatorId).ToListAsync();
         return await _userRepo.GetAllQuery()
             .Select(c => new SelectCoordinatorForCreateDepartmentResponse()
             {
                 Id = c.Id,
-                Name = c.UserName
+                Name = c.UserName,
+                IsEnable = !existedCoordinator.Contains(c.Id)
             })
             .AsNoTracking()
             .ToListAsync();

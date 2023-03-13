@@ -26,3 +26,4 @@ function getCategoriesForCreateIdea() {
 function CloseAddIdeaPopup() {
     addIdeaPopup.style.display = "none";
 }
+

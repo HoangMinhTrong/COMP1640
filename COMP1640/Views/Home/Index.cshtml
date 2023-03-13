@@ -1,5 +1,221 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model COMP1640.ViewModels.Common.IdeaIndexResponse
 
-<h1>Empty</h1>
+@if (SignInManager.IsSignedIn(User))
+{
+    <partial name="Create" />
+    <section>
+        <div class="container mx-auto" style="max-width:900px">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="pt-4 col col-xl-10">
+                    <div class="d-flex justify-content-between align-self-center">
+                        <div id="addIdeaBtn" class="d-flex mb-4">
+                            <div class="d-flex align-items-center">
+                                <a class="btn btn-info text-white text-center" onclick="ShowPopupCreateIdea()">
+                                    <i class="bi bi-plus-circle"></i>
+                                </a>
+                                <form asp-controller="Home" asp-action="Index" method="get">
+                                    <div class="d-flex justify-content-center text-center">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="search">
+                                                <input type="text" name="SearchString" class="search-input" value="@Model.CurrentSearchString" />
+                                                <button type="submit" value="Search" class="btn btn-success search-icon">
+                                                    <i class="bi bi-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <form asp-controller="Home" asp-action="Index" method="get">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-funnel"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+
+                                    <div class="d-flex flex-column p-2">
+                                        @if (Model.CurrentCategoryFilter != null)
+                                        {
+                                            <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter form-select">
+                                                <option selected disabled>Filter by Category</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter form-select">
+                                                <option selected disabled>Filter by Category</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex flex-column p-2">
+                                        @if (Model.CurrentSort != null)
+                                        {
+                                            <select asp-for="@Model.CurrentSort" asp-items="@Model.SortOptionPicklist" name="sortOption" class="esh-catalog-filter form-select">
+                                                <option selected disabled>Sort Options</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select asp-for="@Model.CurrentSort" name="sortOption" asp-items="@Model.SortOptionPicklist" class="esh-catalog-filter form-select">
+                                                <option selected disabled>Sort Options</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex flex-column p-2">
+                                        <div class="d-flex justify-content-between">
+                                            <button type="submit" value="Search" class="btn btn-success"><i class="bi bi-funnel"></i></button>
+                                            <button asp-controller="Home" asp-action="Index" class="btn btn-danger"><i class="bi bi-funnel"></i></button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center align-items-center">
+                @foreach (var item in Model.IdeaIndexItems)
+                {
+                    <div class="col col-xl-10 mb-5"
+                         aria-label="Card example"
+                         onclick="location.href='@Url.Action("ViewDetail", "Idea", new { @item.Id })'"
+                         style="cursor: pointer;">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-4">
+                                    <div class="flex-shrink-0">
+                                        <img src="@GetAuthorImageSource(item.Author?.Id)"
+                                             alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                             style="width: 70px;">
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <div class="d-flex flex-row mb-2">
+                                            <div class="mx-1 col col-xl-12">
+                                                <h2>
+                                                    <strong>@item.Title</strong>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div class="btn btn-outline-light btn-rounded btn-sm">
+                                            @item.Category
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div>
+                                    @item.Content
+                                </div>
+
+                                <hr />
+                                <div class="d-flex justify-content-between">
+                                    <div class="small d-flex justify-content-start">
+                                        <a onclick="React(event, @item.Id, @((int)ReactionStatusEnum.Like))" class="d-flex align-items-center me-3">
+                                            @if (item.UserReacted?.Status == ReactionStatusEnum.Like)
+                                            {
+                                                <i class="fas fa-thumbs-up me-2" id="thumbupBtn-@item.Id"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-thumbs-up me-2" id="thumbupBtn-@item.Id"></i>
+                                            }
+                                            <p id="total-thumbs-up-@item.Id" class="mb-0">@item.ThumbsUp</p>
+
+                                        </a>
+                                        <a onclick="React(event, @item.Id, @((int)ReactionStatusEnum.DisLike))" class="d-flex align-items-center me-3">
+                                            @if (item.UserReacted?.Status == ReactionStatusEnum.DisLike)
+                                            {
+                                                <i class="fas fa-thumbs-down me-2" id="thumbdownBtn-@item.Id"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-thumbs-down me-2" id="thumbdownBtn-@item.Id"></i>
+                                            }
+                                            <p id="total-thumbs-down-@item.Id" class="mb-0">@item.ThumbsDown</p>
+                                        </a>
+                                        <a href="#!" class="d-flex align-items-center me-3">
+                                            <a asp-controller="Idea" asp-action="ViewDetail" asp-route-id="@item.Id"> <i class="far fa-comment-dots me-2"></i></a>
+                                            <p class="mb-0">@item.TotalComment</p>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex align-item-center">
+                                        <p class="me-2">@item.Author?.UserName.Split("@")[0]</p>
+                                        <p>@item.CreatedOn</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="row" style="margin-top: 50px">
+                <div class="col-xs-8 col-xs-offset-2">
+                    @{
+                        var prevDisabled = !Model.PaginationInfo.Previous ? "disabled" : "";
+                        var nextDisabled = !Model.PaginationInfo.Next ? "disabled" : "";
+                    }
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a class="page-link @prevDisabled"
+                               asp-action="Index"
+                               asp-route-pageNo="@(Model.PaginationInfo.ActualPage - 1)"
+                               asp-route-sortOption="@Model.CurrentSort"
+                               asp-route-CurrentSearch="@Model.CurrentSearchString"
+                               asp-route-CategoryFilterOption="@Model.CurrentCategoryFilter">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link  @nextDisabled"
+                               asp-action="Index"
+                               asp-route-pageNo="@(Model.PaginationInfo.ActualPage + 1)"
+                               asp-route-sortOption="@Model.CurrentSort"
+                               asp-route-CurrentSearch="@Model.CurrentSearchString"
+                               asp-route-CategoryFilterOption="@Model.CurrentCategoryFilter">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <form asp-action="Index" method="get">
+                        <div class="d-flex justify-content-center text-center">
+                            <div class="d-flex">
+                                <div class="d-flex align-item-center m-2">
+                                    <h6 class="">Page </h6>
+                                </div>
+                                <input type="text" name="pageNo" value="" class="page-input" />
+                                <div class="d-flex m-2" style="width: 25px">| @Model.PaginationInfo.TotalPages</div>
+                                <input type="hidden" asp-for="@Model.CurrentSearchString" name="searchString" />
+                                <input type="hidden" asp-for="@Model.CurrentSort" name="SortOrder" />
+                                <input type="hidden" asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" />
+                                <button type="submit" value="Search" class="navigation-btn"><i class="bi bi-book"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- end col-xs-8 -->
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <br />
+    <h2 class="text-center">You need to be logged in to view all ideas</h2>
+}
+@section Scripts{
+    <script src="~/js/idea-site.js" asp-append-version="true"></script>
+    <script src="~/js/reaction-site.js" asp-append-version="true"></script>
+}
+
+
 

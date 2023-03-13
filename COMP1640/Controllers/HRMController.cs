@@ -31,9 +31,6 @@ namespace COMP1640.Controllers
             return Json(vm);
         }
 
-
-
-
         [HttpPut("user/{id:int}")]
         public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditUserRequest request)
         {
@@ -85,6 +82,5 @@ namespace COMP1640.Controllers
             var allowedRoleForCreateAccount = await _hRMService.GetRolesForCreateAccountAsync();
             return Ok(allowedRoleForCreateAccount);
         }
-
     }
 }

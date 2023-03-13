@@ -79,10 +79,10 @@ namespace COMP1640.Services
                 .ToListAsync();
         }
 
-        public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request)
+        public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request, int? userId = null)
         {
 
-            var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter()));
+            var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter(userId)));
 
             var totalCount = queryable.Count();
 
@@ -99,6 +99,11 @@ namespace COMP1640.Services
                 request.PageSize);
         }
 
+        public async Task<PaginatedList<IdeaIndexItem>> GetPersonalIdeaIndexAsync(GetIdeaIndexRequest request, int? userId = null)
+        {
+            return await GetIdeaIndexAsync(request, _current.Id);
+        }
+
         #region Send Mail
         private async Task HandleSendMailOnCreateIdeaAsync(Idea idea)
         {
@@ -112,7 +117,7 @@ namespace COMP1640.Services
         {
             var idea = await _ideaRepo
                 .GetById(ideaId)
-                .Select(new GetIdeaDetailResponse().GetSelection())
+                .Select(new GetIdeaDetailResponse().GetSelection(_current.Id))
                 .FirstOrDefaultAsync();
 
             if (idea != null)
@@ -120,6 +125,63 @@ namespace COMP1640.Services
 
             return idea;
         }
+        public async Task<IdeaDetailsResponse> GetIdeaByIdAsync(int ideaId)
+        {
+            var idea = await _ideaRepo
+                .GetById(ideaId)
+                .Select(new IdeaDetailsResponse().GetSelection())
+                .FirstOrDefaultAsync();
+            return idea;
+        }
 
+        public async Task<bool> EditIdeaAsync(int ideaId, EditIdeaRequest request)
+        {
+            var existIdea = await _ideaRepo.GetById(ideaId).FirstOrDefaultAsync();
+            if (existIdea == null) return false;
+
+            existIdea.EditInfo(
+                request.Title, 
+                request.Content, 
+                request.IsAnonymous, 
+                request.CategoryId
+            );
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ToggleDeactiveIdeaAsync(int ideaId)
+        {
+            var existIdea = await _ideaRepo.GetById(ideaId).FirstOrDefaultAsync();
+            if (existIdea == null) return false;
+
+            existIdea.ToggleIsDeactive();
+
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+
+
+        public async Task<List<IdeaDetailsResponse>> GetDeactiveIdeaAsync()
+        {
+            var deletedIdeas = await _ideaRepo
+                .GetDeactive()
+                .Select(new IdeaDetailsResponse().GetSelection())
+                .ToListAsync();
+
+            return deletedIdeas;
+        }
+
+        public async Task<bool> SoftDeleteIdeaAsync(int id)
+        {
+            var idea = await _ideaRepo.GetById(id).FirstOrDefaultAsync();
+            if (idea == null)
+                return false;
+
+            idea.SoftDelete();
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

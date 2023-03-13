@@ -2,7 +2,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
         </li>
         if (CurrentUser.RoleId == (int)RoleTypeEnum.Admin)
         {
@@ -10,7 +10,7 @@
                 <a class="nav-link" asp-controller="HRM" asp-action="Index">HRM</a>
             </li>
         }
-        else if(CurrentUser.RoleId == (int)RoleTypeEnum.QAManager)
+        else if (CurrentUser.RoleId == (int)RoleTypeEnum.QAManager)
         {
             <li>
                 <a class="nav-link" asp-controller="AcademicYear" asp-action="Index">Academic Year</a>
@@ -19,13 +19,14 @@
                 <a class="nav-link" asp-controller="Department" asp-action="ViewDepartment">Department</a>
             </li>
             <li>
-                <a class="nav-link" asp-controller="Idea" asp-action="Index">Idea</a>
+                <a class="nav-link" asp-controller="Idea" asp-action="ViewCategory">Category</a>
             </li>
         }
         else
         {
+           
             <li>
-                <a class="nav-link" asp-controller="Idea" asp-action="Index">Idea</a>
+                <a class="nav-link" asp-controller="Idea" asp-action="ViewCategory">Category</a>
             </li>
         }
     }
