@@ -143,7 +143,7 @@ namespace COMP1640.Services
                 .AsNoTracking()
                 .ToListAsync();
 
-            var departments = await _departmentRepo.GetAllQuery()
+            var departments = await _departmentRepo.GetQuery(d => !d.IsDeleted)
                 .Select(d => new DropDownListBaseResponse()
                 {
                     Id = d.Id,

@@ -73,8 +73,9 @@ namespace COMP1640.Services
                 .Select(c => new CategoryForCreateIdeaResponse()
                 {
                     Id = c.Id,
-                    Name = c.Name
-                })
+                    Name = c.Name,
+                    IsDeleted = c.IsDeleted
+                }).Where(x => !x.IsDeleted)
                 .AsNoTracking()
                 .ToListAsync();
         }
