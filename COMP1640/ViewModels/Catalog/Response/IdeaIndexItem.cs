@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Domain;
 
-namespace COMP1640.ViewModels.Common;
+namespace COMP1640.ViewModels.Catalog.Response;
 
 public class IdeaIndexItem
 {
@@ -57,7 +57,7 @@ public class IdeaAuthor
 {
     public int Id { get; set; }
     public string UserName { get; set; }
-    
+
     public Expression<Func<User, IdeaAuthor>> GetSelection()
     {
         return user => new IdeaAuthor
@@ -75,7 +75,7 @@ public class UserReaction
 
     public Expression<Func<Domain.Reaction?, UserReaction?>> GetSelection()
     {
-        return _ => _ == null ? null: new UserReaction
+        return _ => _ == null ? null : new UserReaction
         {
             Id = _.Id,
             Status = _.Status,

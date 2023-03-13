@@ -1,4 +1,5 @@
 ﻿using COMP1640.Services;
+using COMP1640.ViewModels.Catalog.Response;
 using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.PersonalDetail;
@@ -16,8 +17,8 @@ namespace COMP1640.Controllers
         private readonly CategoryService _categoryService;
 
         public PersonalController(
-            PersonalService personalService, 
-            IdeaService ideaService, 
+            PersonalService personalService,
+            IdeaService ideaService,
             CategoryService categoryService)
         {
             _personalService = personalService;
