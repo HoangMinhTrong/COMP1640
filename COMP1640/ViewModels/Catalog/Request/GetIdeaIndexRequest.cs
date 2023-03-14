@@ -21,7 +21,9 @@ public class GetIdeaIndexRequest : PagingRequest
             &&
             (string.IsNullOrWhiteSpace(SearchString)
              || (EF.Functions.ILike(_.Title, $"%{SearchString}%")
-                 || (EF.Functions.ILike(_.Content, $"%{SearchString}%"))));
+                 || (EF.Functions.ILike(_.Content, $"%{SearchString}%"))))
+            && !_.IsDeactive 
+            && !_.IsDeleted;
     }
 
     public Func<IQueryable<Domain.Idea>, IQueryable<Domain.Idea>> Sort()
