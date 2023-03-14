@@ -7,6 +7,7 @@ using Domain.DomainEvents;
 using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using PagedList;
 using Utilities.Identity.Interfaces;
 
@@ -20,20 +21,23 @@ namespace COMP1640.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserInfo _currentUser;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IToastNotification _toastNotification;
 
         public HRMService(IUserRepository userRepo
             , IUnitOfWork unitOfWork
             , IDepartmentRepository departmentRepo
             , IRoleRepository roleRepo
             , ICurrentUserInfo currentUser
-            , IServiceProvider serviceProvider)
+            , IServiceProvider serviceProvider
+            , IToastNotification toastNotification)
         {
             _userRepo = userRepo;
             _unitOfWork = unitOfWork;
             _departmentRepo = departmentRepo;
             _roleRepo = roleRepo;
-            _currentUser = currentUser;           
+            _currentUser = currentUser;
             _serviceProvider = serviceProvider;
+            _toastNotification = toastNotification;
         }
         public async Task<IPagedList<UserBasicInfoResponse>> GetListUserAsync(GetListUserRequest request)
         {
@@ -56,9 +60,12 @@ namespace COMP1640.Services
        
         public async Task<bool> CreateUserAsync(CreateUserRequest request)
         {
-            var existedEmail = await _userRepo.AnyAsync(_ => _.Email == request.Email);
-            if (existedEmail)
+            var emailExisted = await _userRepo.FindByEmailAsync(request.Email);
+            if (emailExisted != null)
+            {
+                _toastNotification.AddErrorToastMessage("Error: Email has been existed");
                 return false;
+            }
             
             var department = await _departmentRepo.GetAsync(request.DepartmentId);
             if (department == null)
@@ -96,6 +103,13 @@ namespace COMP1640.Services
             var user = await _userRepo.GetById(id).FirstOrDefaultAsync();
             if (user == null)
                 return false;
+
+            var emailExisted = await _userRepo.FindByEmailAsync(request.Email);
+            if(emailExisted != null)
+            {
+                _toastNotification.AddErrorToastMessage("Error: Email has been existed");
+                return false;
+            }
 
             user.EditInfo(request.Email
                 , request.RoleId

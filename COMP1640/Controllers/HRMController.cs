@@ -3,6 +3,7 @@ using COMP1640.ViewModels.HRM.Requests;
 using COMP1640.ViewModels.HRM.Responses;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers
@@ -12,9 +13,13 @@ namespace COMP1640.Controllers
     public class HRMController : Controller
     {
         private readonly HRMService _hRMService;
-        public HRMController(HRMService hRMService)
+        private readonly IToastNotification _toastNotification;
+
+        public HRMController(HRMService hRMService
+            , IToastNotification toastNotification)
         {
             _hRMService = hRMService;
+            _toastNotification = toastNotification;
         }
 
         [HttpGet]
@@ -34,12 +39,20 @@ namespace COMP1640.Controllers
         [HttpPut("user/{id:int}")]
         public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditUserRequest request)
         {
-            if (!ModelState.IsValid) return RedirectToAction("Index");
-            var isSucceed = await _hRMService.EditUserInfoAsync(id, request);
-            if (isSucceed) return Ok();
+            if (!ModelState.IsValid)
+            {
+                var modelErrors = ModelState.Values.SelectMany(_ => _.Errors).ToList();
+                foreach (var modelError in modelErrors)
+                    _toastNotification.AddErrorToastMessage("Error: " + modelError.ErrorMessage);
 
-            ModelState.AddModelError("delete_failure", "Failure to delete an account.");
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            } 
+            var isSucceed = await _hRMService.EditUserInfoAsync(id, request);
+            if (!isSucceed)
+                return RedirectToAction("Index");
+
+            return Ok();
+
         }
 
         [HttpPost]
