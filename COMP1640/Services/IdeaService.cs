@@ -19,6 +19,7 @@ namespace COMP1640.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserInfo _current;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IAcademicYearRepository _academicYearRepo;
         private readonly AttachmentService attachmentService;
 
         public IdeaService(
@@ -28,7 +29,8 @@ namespace COMP1640.Services
             ICurrentUserInfo current,
             IServiceProvider serviceProvider,
             AttachmentService attachmentService,
-            IIdeaHistoryRepository ideaHistoryRepository)
+            IIdeaHistoryRepository ideaHistoryRepository, 
+            IAcademicYearRepository cademicYearRepo)
         {
             _ideaRepo = ideaRepo;
             _unitOfWork = unitOfWork;
@@ -37,6 +39,7 @@ namespace COMP1640.Services
             _serviceProvider = serviceProvider;
             this.attachmentService = attachmentService;
             _ideaHistoryRepository = ideaHistoryRepository;
+            _academicYearRepo = cademicYearRepo;
         }
 
         public async Task<bool> CreateIdeaAsync(CreateIdeaRequest request)
@@ -45,13 +48,17 @@ namespace COMP1640.Services
             if (category == null)
                 return false;
 
+            var currentAcademicYear = await _academicYearRepo.GetCurrentAsync();
+            if (currentAcademicYear == null)
+                return false;
+
             var idea = new Idea
                 (
                     request.Title,
                     request.Content,
                     request.IsAnonymous,
-                    request.CategoryId,
-                    1,
+                    category.Id,
+                    currentAcademicYear.Id,
                     _current.DepartmentId
                 );
 

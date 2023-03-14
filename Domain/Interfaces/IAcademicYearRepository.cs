@@ -4,5 +4,6 @@
     {
         Task<AcademicYear> GetAsync(int id);
         Task<AcademicYear?> GetLatestAcademicYearAsync();
+        Task<AcademicYear> GetCurrentAsync();
     }
 }

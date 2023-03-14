@@ -33,7 +33,7 @@ public partial class AcademicYearService
     public async Task<IEnumerable<AcademicYearResponse>> GetAcademicYearsAsync()
     {
         var academicYearResponses = await _academicYearRepo.GetAllQuery()
-            .OrderByDescending(y => y.EndDate)
+            .OrderByDescending(y => y.OpenDate)
             .Select(new AcademicYearResponse().GetSelection())
             .ToListAsync();
 
@@ -42,12 +42,11 @@ public partial class AcademicYearService
 
     public async Task<bool> CreateAcademicYearAsync(UpsertAcademicYearRequest request)
     {
-        var isValid = await IsGreaterThanLatestAcademicYearAsync(request.ClosureDate);
-
+        var isValid = await ValidationOnCreateAsync(request);
         if (!isValid) return false;
 
         var academicYear =
-            new AcademicYear(request.Name, request.ClosureDate, request.FinalClosureDate, request.EndDate);
+            new AcademicYear(request.Name, request.OpenDate, request.ClosureDate, request.FinalClosureDate);
 
         await _academicYearRepo.InsertAsync(academicYear);
         await _unitOfWork.SaveChangesAsync();
@@ -61,7 +60,7 @@ public partial class AcademicYearService
         var existedAcademicYear = await _academicYearRepo.GetAsync(a => a.Id == academicYearId);
         if (existedAcademicYear == null) return false;
 
-        existedAcademicYear.UpdateAcademicYear(request.Name, request.ClosureDate, request.FinalClosureDate, request.EndDate);
+        existedAcademicYear.UpdateAcademicYear(request.Name, request.OpenDate, request.ClosureDate, request.FinalClosureDate);
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -85,15 +84,27 @@ public partial class AcademicYearService
         return new Either<bool, Failure>(true);
     }
 
-    private async Task<bool> IsGreaterThanLatestAcademicYearAsync(DateTime requestClosureDate)
+    private async Task<bool> ValidationOnCreateAsync(UpsertAcademicYearRequest request)
     {
-        var latestAcademicYear = await _academicYearRepo.GetLatestAcademicYearAsync();
-        if (latestAcademicYear == null) return true;
-        return requestClosureDate > latestAcademicYear.EndDate;
+        var highestFinalClosuredate = await _academicYearRepo
+            .GetQuery(_ => true)
+            .OrderByDescending(_ => _.FinalClosureDate)
+            .FirstOrDefaultAsync();
+
+        if (highestFinalClosuredate == null)
+            return true;
+
+        if (request.OpenDate <= highestFinalClosuredate.FinalClosureDate)
+            return false;
+
+        return true;
     }
 
     private async Task<bool> IsHasAnyIdea(int academicId)
     {
-        return await _academicYearRepo.AnyAsync(_ => _.Ideas.Any());
+        return await _academicYearRepo
+            .AnyAsync(_ => 
+                _.Ideas.Any(_ => _.AcademicYearId == academicId)
+            );
     }
 }

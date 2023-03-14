@@ -13,20 +13,20 @@ namespace Infrastructure.SeedData
                 {
                     Id = 1,
                     Name = "2022 - 2023",
-                    ClosureDate = new DateTime(2022, 10, 30).ToUniversalTime(),
-                    FinalClosureDate = new DateTime(2023, 3, 30).ToUniversalTime(),
-                    EndDate = new DateTime(2023, 5, 1).ToUniversalTime(),
-                    TenantId = 1
+                    OpenDate = new DateTime(2022, 2, 1),
+                    ClosureDate = new DateTime(2022, 12, 30),
+                    FinalClosureDate = new DateTime(2023, 1, 20),
+                    TenantId = tenant.Id
                 },
                 
                 new AcademicYear
                 {
                     Id = 2,
                     Name = "2023 - 2024",
-                    ClosureDate = new DateTime(2023, 11, 30).ToUniversalTime(),
-                    FinalClosureDate = new DateTime(2024, 4, 25).ToUniversalTime(),
-                    EndDate = new DateTime(2023, 6, 1).ToUniversalTime(),
-                    TenantId = 1
+                    OpenDate = new DateTime(2023, 2, 1),
+                    ClosureDate = new DateTime(2023, 12, 30),
+                    FinalClosureDate = new DateTime(2024, 1, 20),
+                    TenantId = tenant.Id
                 },
             };
 

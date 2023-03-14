@@ -104,6 +104,7 @@ namespace Infrastructure
 
             builder.ApplyConfiguration(new IdeaConfiguration());
             builder.ApplyConfiguration(new CommentConfiguration());
+            builder.ApplyConfiguration(new AcademicYearConfiguration());
         }
 
         public void RemoveDefaultAspTableName(ModelBuilder builder)

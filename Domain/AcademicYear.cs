@@ -1,34 +1,33 @@
-﻿namespace Domain
+﻿using Domain.Base;
+
+namespace Domain
 {
-    public class AcademicYear
+    public class AcademicYear : TenantEntity<int>
     {
         public AcademicYear()
         {
         }
 
-        public AcademicYear(string name, DateTime closureDate, DateTime finalClosureDate, DateTime endDate)
+        public AcademicYear(string name, DateTime openDate, DateTime closureDate, DateTime finalClosureDate)
         {
             Name = name;
             ClosureDate = closureDate;
             FinalClosureDate = finalClosureDate;
-            EndDate = endDate;
+            OpenDate = openDate;
         }
-        public int Id { get; set; }
         public string Name { get; set; }
+        public DateTime OpenDate { get; set; }
         public DateTime ClosureDate { get; set; }
         public DateTime FinalClosureDate { get; set; }
-        public DateTime EndDate { get; set; }
-
-        public int TenantId { get; set; }
 
         public virtual ICollection<Idea> Ideas { get; set; } = new HashSet<Idea>();
 
-        public void UpdateAcademicYear(string name, DateTime closureDate, DateTime finalClosureDate, DateTime endDate)
+        public void UpdateAcademicYear(string name, DateTime openDate, DateTime closureDate, DateTime finalClosureDate)
         {
             Name = name;
+            OpenDate = openDate;
             ClosureDate = closureDate;
             FinalClosureDate = finalClosureDate;
-            EndDate = endDate;
         }
         
     }
