@@ -1,11 +1,8 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Comment.Requests;
-using COMP1640.ViewModels.Common;
-using COMP1640.ViewModels.Idea.Requests;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Utilities.Helpers;
 using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers
@@ -40,29 +37,9 @@ namespace COMP1640.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] GetIdeaIndexRequest request)
+        public async Task<IActionResult> Index()
         {
-            var ideas = await _ideaService.GetIdeaIndexAsync(request);
-
-            var response = new IdeaIndexResponse()
-            {
-                IdeaIndexItems = ideas,
-                SortOptionPicklist = EnumHelper.GetSelectListItems<IdeaIndexSortingEnum>(),
-                Categories = await _categoryService.GetCategoryPicklistAsync(),
-                CurrentSearchString = request.SearchString,
-                CurrentCategoryFilter = request.CategoryFilterOption,
-                CurrentSort = request.SortOption,
-                PaginationInfo = new PaginationInfo
-                {
-                    ActualPage = request.PageNo,
-                    TotalItems = ideas.TotalItems,
-                    ItemsPerPage = ideas.Count,
-                    TotalPages = ideas.TotalPages,
-                    Next = ideas.HasNextPage,
-                    Previous = ideas.HasPreviousPage
-                }
-            };
-            return View("Index", response);
+            return View("Index");
         }
 
         [HttpGet("categories-selection")]
@@ -70,18 +47,6 @@ namespace COMP1640.Controllers
         {
             var categories = await _ideaService.GetCategoryForCreateIdeaAsync();
             return Ok(categories);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateIdeaRequest request)
-        {
-            if (!ModelState.IsValid) return RedirectToAction("Index", "Idea");
-
-            var isSucceed = await _ideaService.CreateIdeaAsync(request);
-            if (isSucceed) return RedirectToAction("Index", "Idea");
-
-            ModelState.AddModelError("create_exception", "Failure to create a new idea.");
-            return View();
         }
 
         [HttpGet("category")]
@@ -112,18 +77,24 @@ namespace COMP1640.Controllers
         public async Task<IActionResult> CommentIdea(CommentIdeaRequest request)
         {
             await _commentService.CommentIdea(request);
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewDetail", new { id = request.IdeaId });
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> ViewDetail([FromRoute] int id)
         {
             var idea = await _ideaService.GetIdeaDetailsAsync(id);
-            if(idea == null) return NotFound();
+            if (idea == null) return NotFound();
 
-            var comment = await _commentService.CommentList(id);
-            ViewBag.Comments = comment;
+            idea.Comments = await _commentService.CommentList(id);
             return View(idea);
+        }
+
+        [HttpGet("history")]
+        public async Task<IActionResult> GetIdeaHistories([FromQuery] int ideaId)
+        {
+            var ideaHistories = await _ideaService.GetIdeaHistoriesAsync(ideaId);
+            return Ok(ideaHistories);
         }
     }
 }

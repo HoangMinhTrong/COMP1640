@@ -25,6 +25,8 @@ namespace Domain
         public int DepartmentId { get; set; }
         public int AcademicYearId { get; set; }
         public int CategoryId { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsDeactive { get; set; }
         public int Views { get; set; }
 
         public virtual AcademicYear AcademicYear { get; set; }
@@ -37,11 +39,28 @@ namespace Domain
 
         public void AddAttachment(Attachment attachment)
         {
-            var existed = IdeaAttachments.Any(_ => _.Attachment.Id == attachment.Id);
-            if (existed)
-                return;
-
             IdeaAttachments.Add(new IdeaAttachment(this, attachment));
+        }
+
+        public void EditInfo(string title
+            , string content
+            , bool isAnonymous
+            , int categoryId)
+        {
+            Title = title;
+            Content = content;
+            IsAnonymous = isAnonymous;
+            CategoryId = categoryId;
+        }
+
+        public void ToggleIsDeactive()
+        {
+            IsDeactive = !IsDeactive;
+        }
+
+        public void SoftDelete()
+        {
+            IsDeleted = true;
         }
     }
 }

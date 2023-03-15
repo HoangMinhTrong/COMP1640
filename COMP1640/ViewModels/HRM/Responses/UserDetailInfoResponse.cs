@@ -12,7 +12,7 @@ namespace COMP1640.ViewModels.HRM.Responses
         public string Role { get; set; }
         public int DepartmentId { get; set; }
         public string Department { get; set; }
-        public string? Gender { get; set; }
+        public UserGenderEnum? Gender { get; set; }
         public DateTime? Birthday { get; set; }
         public string? PhoneNumber { get; set; }
 
@@ -28,7 +28,7 @@ namespace COMP1640.ViewModels.HRM.Responses
                 Role = _.RoleUsers.Select(_ => _.Role.Name).FirstOrDefault(),
                 DepartmentId = _.UserDepartments.Select(_ => _.DepartmentId).FirstOrDefault(),
                 Department = _.UserDepartments.Select(_ => _.Department.Name).FirstOrDefault(),
-                Gender = _.Gender.ToString(),
+                Gender = _.Gender,
                 Birthday =  _.Birthday,
                 PhoneNumber = _.PhoneNumber
             };

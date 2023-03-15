@@ -38,6 +38,15 @@
                                    type="text" name="name" placeholder="Academic Year"
                                    required="required"/>
                         </div>
+                        
+                        <div class="mb-3">
+                            <input id="open_date" name="openDate" class="form-control"
+                                   placeholder="Open Date"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+
                         <div class="mb-3">
                             <input id="closure_date" name="closureDate" class="form-control"
                                    placeholder="Closure Date"
@@ -49,14 +58,6 @@
                         <div class="mb-3">
                             <input id="final_closure_date" name="finalClosureDate" class="form-control"
                                    placeholder="Final Closure Date"
-                                   type="text"
-                                   onfocus="(this.type='date')"
-                                   onblur="(this.type='text')"/>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <input id="end_date" name="endDate" class="form-control"
-                                   placeholder="End Date"
                                    type="text"
                                    onfocus="(this.type='date')"
                                    onblur="(this.type='text')"/>
@@ -89,6 +90,14 @@
                                    required="required"/>
                         </div>
                         <div class="mb-3">
+                            <label for="edit_open_date">Open Date</label>
+                            <input id="edit_open_date" name="openDate" class="form-control"
+                                   placeholder="Open Date"
+                                   type="text"
+                                   onfocus="(this.type='date')"
+                                   onblur="(this.type='text')"/>
+                        </div>
+                        <div class="mb-3">
                             <label for="edit_closure_date">Closure Date</label>
                             <input id="edit_closure_date" name="closureDate" class="form-control"
                                    placeholder="Closure Date"
@@ -101,15 +110,6 @@
                             <label for="edit_final_closure_date">Final Cloxsure Date</label>
                             <input id="edit_final_closure_date" name="finalClosureDate" class="form-control"
                                    placeholder="Final Closure Date"
-                                   type="text"
-                                   onfocus="(this.type='date')"
-                                   onblur="(this.type='text')"/>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit_end_date">End Date</label>
-                            <input id="edit_end_date" name="endDate" class="form-control"
-                                   placeholder="End Date"
                                    type="text"
                                    onfocus="(this.type='date')"
                                    onblur="(this.type='text')"/>
@@ -128,9 +128,9 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Title</th>
+            <th scope="col">Open Date</th>
             <th scope="col">Closure Date</th>
             <th scope="col">Final Closure Date</th>
-            <th scope="col">End Date</th>
             <th scope="col" style="width: 250px"></th>
         </tr>
         </thead>
@@ -140,9 +140,9 @@
             <tr>
                 <th scope="row">@(index += 1)</th>
                 <td>@item.Name</td>
-                <td>@item.ClosureDate</td>
-                <td>@item.FinalClosureDate</td>
-                <td>@item.EndDate</td>
+                <td>@item.OpenDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.ClosureDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.FinalClosureDate.ToString("dd/MM/yyyy")</td>
                 <td>
                     <div class="d-flex justify-content-around">
                         <div class="align-items-center">
@@ -152,13 +152,22 @@
                                 </i>
                             </a>
                         </div>
-                            <div class="align-items-center">
-                                <a onclick="deleteAcademicYear(@item.Id)" class="deleteAcademicYearBtn btn btn-info text-white text-center">
-                                    <i class="material-icons text-white">
-                                        Delete
-                                    </i>
-                                </a>
-                            </div>
+                        <div class="align-items-center">
+                            <a onclick="deleteAcademicYear(@item.Id)" class="deleteAcademicYearBtn btn btn-info text-white text-center">
+                                <i class="material-icons text-white">
+                                    Delete
+                                </i>
+                            </a>
+                        </div>
+                        <div class="align-items-center">
+                            <a href="academic-year/@item.Id/data/export" 
+                               class="deleteAcademicYearBtn btn btn-info text-white text-center"
+                            >
+                                <i class="material-icons text-white">
+                                    Export Data
+                                </i>
+                            </a>
+                        </div>
                     </div>
                 </td>
                 

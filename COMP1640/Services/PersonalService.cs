@@ -1,7 +1,9 @@
 ﻿#nullable disable
 
+using COMP1640.ViewModels.Idea.Responses;
 using COMP1640.ViewModels.PersonalDetail;
 using COMP1640.ViewModels.PersonalDetail.Responses;
+using Domain;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Utilities.Identity.Interfaces;
@@ -12,15 +14,18 @@ namespace COMP1640.Services
     {
         private readonly IUserRepository _userRepo;
         private readonly ICurrentUserInfo _currentUser;
+        private readonly IIdeaRepository _ideaRepo;
         private readonly IUnitOfWork _unitOfWork;
 
         public PersonalService(IUserRepository userRepo
             , IUnitOfWork unitOfWork
-            , ICurrentUserInfo currentUser)
+            , ICurrentUserInfo currentUser,
+                IIdeaRepository ideaRepo)
         {
             _userRepo = userRepo;
             _currentUser = currentUser;
             _unitOfWork = unitOfWork;
+            _ideaRepo = ideaRepo;
         }
 
         public async Task<PersonalProfileInfoResponse> GetProfileDetailsAsync()

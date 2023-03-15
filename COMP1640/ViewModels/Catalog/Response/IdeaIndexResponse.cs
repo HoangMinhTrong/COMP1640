@@ -1,6 +1,7 @@
+using COMP1640.ViewModels.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace COMP1640.ViewModels.Common;
+namespace COMP1640.ViewModels.Catalog.Response;
 
 public class IdeaIndexResponse
 {

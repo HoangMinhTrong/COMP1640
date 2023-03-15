@@ -7,28 +7,33 @@ using Utilities.Types;
 
 namespace COMP1640.Services;
 
-public class AcademicYearService
+public partial class AcademicYearService
 {
-    private readonly IAcademicYearRepository _academicYearRepository;
+    private readonly IIdeaRepository _ideaRepo;
+    private readonly IAcademicYearRepository _academicYearRepo;
     private readonly IUnitOfWork _unitOfWork;
-
-
-    public AcademicYearService(IAcademicYearRepository academicYearRepository, IUnitOfWork unitOfWork)
+    private readonly AttachmentService _attachmentService;
+    public AcademicYearService(IAcademicYearRepository academicYearRepository
+        , IUnitOfWork unitOfWork
+        , IIdeaRepository ideaRepo
+        , AttachmentService attachmentService)
     {
-        _academicYearRepository = academicYearRepository;
+        _academicYearRepo = academicYearRepository;
         _unitOfWork = unitOfWork;
+        _ideaRepo = ideaRepo;
+        _attachmentService = attachmentService;
     }
 
     public async Task<AcademicYearResponse?> GetAcademicYearById(int id)
     {
-        return await _academicYearRepository.GetQuery(a => a.Id == id)
+        return await _academicYearRepo.GetQuery(a => a.Id == id)
             .Select(new AcademicYearResponse().GetSelection())
             .FirstOrDefaultAsync();
     }
     public async Task<IEnumerable<AcademicYearResponse>> GetAcademicYearsAsync()
     {
-        var academicYearResponses = await _academicYearRepository.GetAllQuery()
-            .OrderByDescending(y => y.EndDate)
+        var academicYearResponses = await _academicYearRepo.GetAllQuery()
+            .OrderByDescending(y => y.OpenDate)
             .Select(new AcademicYearResponse().GetSelection())
             .ToListAsync();
 
@@ -37,14 +42,13 @@ public class AcademicYearService
 
     public async Task<bool> CreateAcademicYearAsync(UpsertAcademicYearRequest request)
     {
-        var isValid = await IsGreaterThanLatestAcademicYearAsync(request.ClosureDate);
-
+        var isValid = await ValidationOnCreateAsync(request);
         if (!isValid) return false;
 
         var academicYear =
-            new AcademicYear(request.Name, request.ClosureDate, request.FinalClosureDate, request.EndDate);
+            new AcademicYear(request.Name, request.OpenDate, request.ClosureDate, request.FinalClosureDate);
 
-        await _academicYearRepository.InsertAsync(academicYear);
+        await _academicYearRepo.InsertAsync(academicYear);
         await _unitOfWork.SaveChangesAsync();
 
         return true;
@@ -53,11 +57,11 @@ public class AcademicYearService
     public async Task<bool> UpdateAcademicYearAsync(int academicYearId, UpsertAcademicYearRequest request)
     {
         // TODO: Clarify requirement, implement validation when update academic year.
-        var existedAcademicYear = await _academicYearRepository.GetAsync(a => a.Id == academicYearId);
+        var existedAcademicYear = await _academicYearRepo.GetAsync(a => a.Id == academicYearId);
         if (existedAcademicYear == null) return false;
-        
-        existedAcademicYear.UpdateAcademicYear(request.Name, request.ClosureDate, request.FinalClosureDate, request.EndDate);
-        
+
+        existedAcademicYear.UpdateAcademicYear(request.Name, request.OpenDate, request.ClosureDate, request.FinalClosureDate);
+
         await _unitOfWork.SaveChangesAsync();
 
         return true;
@@ -65,7 +69,7 @@ public class AcademicYearService
 
     public async Task<Either<bool, Failure>> DeleteAcademicYearAsync(int id)
     {
-        var existedAcademicYear = await _academicYearRepository.GetAsync(a => a.Id == id);
+        var existedAcademicYear = await _academicYearRepo.GetAsync(a => a.Id == id);
         if (existedAcademicYear == null) return new Either<bool, Failure>(new Failure("Not found academic year"));
 
         if (await IsHasAnyIdea(id))
@@ -73,22 +77,34 @@ public class AcademicYearService
             return new Either<bool, Failure>(
                 new Failure("Can not delete this academic year. There are ideas in this year."));
         }
-        
-        await _academicYearRepository.DeleteAsync(existedAcademicYear);
-        
+
+        await _academicYearRepo.DeleteAsync(existedAcademicYear);
+
         await _unitOfWork.SaveChangesAsync();
         return new Either<bool, Failure>(true);
     }
-    
-    private async Task<bool> IsGreaterThanLatestAcademicYearAsync(DateTime requestClosureDate)
+
+    private async Task<bool> ValidationOnCreateAsync(UpsertAcademicYearRequest request)
     {
-        var latestAcademicYear = await _academicYearRepository.GetLatestAcademicYearAsync();
-        if (latestAcademicYear == null) return true;
-        return requestClosureDate > latestAcademicYear.EndDate;
+        var highestFinalClosuredate = await _academicYearRepo
+            .GetQuery(_ => true)
+            .OrderByDescending(_ => _.FinalClosureDate)
+            .FirstOrDefaultAsync();
+
+        if (highestFinalClosuredate == null)
+            return true;
+
+        if (request.OpenDate <= highestFinalClosuredate.FinalClosureDate)
+            return false;
+
+        return true;
     }
-    
+
     private async Task<bool> IsHasAnyIdea(int academicId)
     {
-       return  await _academicYearRepository.AnyAsync(_ => _.Ideas.Any());
+        return await _academicYearRepo
+            .AnyAsync(_ => 
+                _.Ideas.Any(_ => _.AcademicYearId == academicId)
+            );
     }
 }

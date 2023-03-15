@@ -2,6 +2,7 @@
 function React(event, ideaId, status)
 {
     event.preventDefault();
+    event.stopPropagation();
     var thumbsUpIcon = document.getElementById("thumbupBtn-" + ideaId);
     var thumbsDownIcon = document.getElementById("thumbdownBtn-" + ideaId);
     var totalThumbsUp = document.getElementById("total-thumbs-up-" + ideaId)
@@ -25,12 +26,12 @@ function React(event, ideaId, status)
 
             switch (responseStatus) {
                 case 1:
-                    thumbsUpIcon.className = "fas fa-thumbs-up";
+                    thumbsUpIcon.className = "fas fa-thumbs-up me-2";
                     thumbsDownIcon.className = "far fa-thumbs-down me-2"
                     break;
                 case 2:
                     thumbsUpIcon.className = "far fa-thumbs-up me-2";
-                    thumbsDownIcon.className = "fas fa-thumbs-down";
+                    thumbsDownIcon.className = "fas fa-thumbs-down me-2";
                     break;
                 default:
                     thumbsUpIcon.className = "far fa-thumbs-up me-2";

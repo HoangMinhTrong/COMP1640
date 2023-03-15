@@ -20,7 +20,7 @@ window.onclick = function (event) {
 submitAcademicYearBtn.addEventListener('click', function(event) {
     const closureDate = document.getElementById('closure_date');
     const finalClosureDate = document.getElementById('final_closure_date');
-    const endDate = document.getElementById('end_date');
+    const openDate = document.getElementById('open_date');
 
     const submitButton = document.getElementById('submitButton');
     // Prevent the form from submitting by default
@@ -28,9 +28,9 @@ submitAcademicYearBtn.addEventListener('click', function(event) {
 
     const closure = new Date(closureDate.value);
     const finalClosure = new Date(finalClosureDate.value);
-    const end = new Date(endDate.value);
+    const open = new Date(openDate.value);
 
-    validateClosureDates(closure, finalClosure, endDate);
+    if (!validateClosureDates(open, closure, finalClosure)) return;
 
     createAcademicYearForm.submit();
 });
@@ -58,7 +58,7 @@ var editAcademicYearId;
 const editName = document.getElementById('edit_name');
 const editClosureDate = document.getElementById('edit_closure_date');
 const editFinalClosureDate = document.getElementById('edit_final_closure_date');
-const editEndDate = document.getElementById('edit_end_date');
+const editOpenDate = document.getElementById('edit_open_date');
 
 // Form, btn
 var editAcademicYearSubmitBtn = document.getElementById("submit-edit-btn");
@@ -67,12 +67,12 @@ var editAcademicYearSubmitBtn = document.getElementById("submit-edit-btn");
 editAcademicYearSubmitBtn.addEventListener('click', function(event) {
     // Prevent the form from submitting by default
     event.preventDefault();
-    
+    if (!validateClosureDates(editOpenDate.value, editClosureDate.value, editFinalClosureDate.value)) return;
     const requestBody = {
         name: editName.value,
+        openDate: editOpenDate.value,
         closureDate: editClosureDate.value,
         finalClosureDate: editFinalClosureDate.value,
-        endDate: editEndDate.value,
     };
     
     const requestUrl = `${window.location.origin}/academic-year/${editAcademicYearId}`;
@@ -97,9 +97,9 @@ async function openEditModal(id)
     var academicYear = await getAcademicYearById(id)
     editAcademicYearId = id;
     editName.setAttribute("value", academicYear.name);
-    editClosureDate.setAttribute("value", new Date(academicYear.closureDate).toISOString().split('T')[0]);
-    editFinalClosureDate.setAttribute("value", new Date(academicYear.finalClosureDate).toISOString().split('T')[0]);
-    editEndDate.setAttribute("value", new Date(academicYear.endDate).toISOString().split('T')[0]);
+    editClosureDate.setAttribute("value", academicYear.closureDate);
+    editFinalClosureDate.setAttribute("value", academicYear.finalClosureDate);
+    editOpenDate.setAttribute("value", academicYear.openDate);
 
     editAcademicYearModal.style.display = "block";
 }
@@ -145,19 +145,24 @@ function getAcademicYearById(id)
     })
 }
 
-function validateClosureDates(closure, finalClosure, end) {
-    if (closure <= Date.now()) {
-        alert('Closure date must be greater than today');
+function validateClosureDates(open, closure, finalClosure) {
+    if (open < Date.now()) {
+        alert('Open date must be greater than today');
         return false;
     }
 
-    if (closure >= finalClosure) {
-        alert('Closure date must be before Final Closure date');
+    if (closure <= open) {
+        alert('Closure date must be greater than Open date');
         return false;
     }
 
-    if (finalClosure >= end) {
-        alert('Final Closure date must be before End date');
+    if (finalClosure <= closure) {
+        alert('Final date must be greater than Closure date');
+        return false;
+    }
+
+    if (finalClosure <= open) {
+        alert('Final date must be smaller than Open date');
         return false;
     }
 

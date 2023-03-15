@@ -27,7 +27,7 @@ function fillDropDownListForCreateDepartment() {
             var qacoordinators = data;
             $.each(qacoordinators, function (i, qacoordinator) {
                 $("#qacoordinators_list").append(
-                    $('<option></option>').val(qacoordinator.id).html(qacoordinator.name));
+                    $('<option></option>').val(qacoordinator.id).html(qacoordinator.name).prop("disabled", !qacoordinator.isEnable))
             });
 
         }
@@ -82,10 +82,10 @@ function ViewDepartmentDetail(id) {
         type: 'GET',
         success: function (department) {
             editDepartmentModal.style.display = "block";
-            fillDropDownListForCreateDepartment();
             $(".info-departmentId").val(department.id);
             $(".info-name").val(department.name);
             fillDropDownListForEditDepartment(department.qacoordinatorId);
+            console.log(department)
         }
     });
 }
@@ -101,8 +101,7 @@ function fillDropDownListForEditDepartment(coordinatorId) {
             var coodinators = data;
             $.each(coodinators, function (i, coodinator) {
                 $("#qacoordinators_list_edit").append(
-                    $('<option></option>').val(coodinator.id).html(coodinator.name).prop("selected", coodinator.id == coordinatorId)
-                );
+                    $('<option></option>').val(coodinator.id).html(coodinator.name).prop("selected", coodinator.id == coordinatorId))
             });
         }
     })
