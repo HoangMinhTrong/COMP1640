@@ -161,6 +161,25 @@ namespace COMP1640.Services
                 request.CategoryId
             );
 
+            if (request?.Formfiles.Count > 0)
+            {
+                var existedAttachs = existIdea.IdeaAttachments.Select(_ => _.Attachment).ToList();
+                if (existedAttachs.Any())
+                    await attachmentService.DeleteListAsync(existedAttachs);
+
+                var attachments = await attachmentService.UploadListAsync(request.Formfiles);
+                foreach (var attachment in attachments)
+                {
+                    existIdea.AddAttachment(attachment);
+                }
+            }
+            else
+            {
+                var existedAttachs = existIdea.IdeaAttachments.Select(_ => _.Attachment).ToList();
+                if (existedAttachs.Any())
+                    await attachmentService.DeleteListAsync(existedAttachs);
+            }
+
             await _unitOfWork.SaveChangesAsync();
             return true;
         }

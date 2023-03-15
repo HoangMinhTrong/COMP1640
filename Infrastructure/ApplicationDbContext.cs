@@ -23,7 +23,7 @@ namespace Infrastructure
         public virtual DbSet<RoleUser> RoleUsers { get; set; }
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<IdeaAttachment> IdeaAttachments { get; set; }
-
+        public virtual DbSet<AcademicYear> AcademicYears { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

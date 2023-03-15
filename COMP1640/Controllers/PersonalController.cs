@@ -66,7 +66,7 @@ namespace COMP1640.Controllers
         }
 
         [HttpPut("editIdea/{id:int}")]
-        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditIdeaRequest request)
+        public async Task<IActionResult> EditIdea([FromRoute] int id, [FromForm] EditIdeaRequest request)
         {
             if (!ModelState.IsValid) return RedirectToAction("ViewYourIdea");
 
