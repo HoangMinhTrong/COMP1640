@@ -104,11 +104,14 @@ namespace COMP1640.Services
             if (user == null)
                 return false;
 
-            var emailExisted = await _userRepo.FindByEmailAsync(request.Email);
-            if(emailExisted != null)
+            if(user.Email != request.Email)
             {
-                _toastNotification.AddErrorToastMessage("Error: Email has been existed");
-                return false;
+                var emailExisted = await _userRepo.FindByEmailAsync(request.Email);
+                if (emailExisted != null)
+                {
+                    _toastNotification.AddErrorToastMessage("Error: Email has been existed");
+                    return false;
+                }
             }
 
             user.EditInfo(request.Email

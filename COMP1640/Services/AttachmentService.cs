@@ -21,9 +21,14 @@ namespace COMP1640.Services
             _ideaRepo = ideaRepo;
         }
 
-        public async Task<GetObjectResponse> GetAsync(string fileKey)
+        public async Task<GetObjectResponse> GetS3Object(string fileKey)
         {
             return await _s3Service.GetAsync(fileKey);
+        }
+
+        public async Task<Attachment> GetAsync(string fileKey)
+        {
+            return await _attachmentRepo.GetAsync(fileKey);
         }
 
         public async Task<Attachment> UploadAsync(IFormFile formFile)
@@ -46,6 +51,18 @@ namespace COMP1640.Services
 
             await _attachmentRepo.InsertRangeAsync(attachments);
             return attachments;
+        }
+
+        public async Task<bool> DeleteListAsync(List<Attachment> attachments)
+        {
+            var fileKeys = attachments.Select(_ => _.KeyName).ToList();
+            foreach (var fileKey in fileKeys)
+            {
+                await _s3Service.DeleteAsync(fileKey);
+            }
+
+            await _attachmentRepo.DeleteRangeAsync(attachments);
+            return true;
         }
 
         public async Task<List<AttachmentResponse>> GetAttachmentsAsync(int ideaId)

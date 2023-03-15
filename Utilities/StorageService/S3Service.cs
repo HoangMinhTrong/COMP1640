@@ -32,17 +32,24 @@ namespace Utilities.StorageService
 
         public async Task<string> UploadAsync(IFormFile formFile)
         {
-            var request = new PutObjectRequest
+            try
             {
-                BucketName = _s3Settings.BucketName,
-                Key = Guid.NewGuid().ToString(),
-                InputStream = formFile.OpenReadStream(),
-                ContentType = formFile.ContentType,
-            };
-            request.Metadata.Add("FileName", formFile.FileName);
+                var request = new PutObjectRequest
+                {
+                    BucketName = _s3Settings.BucketName,
+                    Key = Guid.NewGuid().ToString(),
+                    InputStream = formFile.OpenReadStream(),
+                    ContentType = formFile.ContentType,
+                };
 
-            await _client.PutObjectAsync(request);
-            return request.Key;
+                await _client.PutObjectAsync(request);
+                return request.Key;
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
 
         public async Task<string> GetPresignedUrl(string keyName)
@@ -54,7 +61,7 @@ namespace Utilities.StorageService
                 Expires = DateTime.UtcNow.AddMinutes(1)
             };
 
-           return _client.GetPreSignedURL(request);
+            return _client.GetPreSignedURL(request);
         }
     }
 }

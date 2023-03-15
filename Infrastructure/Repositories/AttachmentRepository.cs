@@ -8,5 +8,10 @@ namespace Infrastructure.Repositories
         public AttachmentRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
+
+        public async Task<Attachment> GetAsync(string fileKey)
+        {
+            return await GetAsync(_ => _.KeyName == fileKey);
+        }
     }
 }

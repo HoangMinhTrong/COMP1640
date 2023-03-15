@@ -30,10 +30,12 @@ namespace COMP1640.Controllers
         [HttpGet("attachments/{keyName}/download")]
         public async Task<IActionResult> DownloadAttachment([FromRoute] string keyName)
         {
-            var s3Object = await _attachmentService.GetAsync(keyName);
+            var s3Object = await _attachmentService.GetS3Object(keyName);
+            var file = await _attachmentService.GetAsync(keyName);
+
             return File(s3Object.ResponseStream
                 , s3Object.Headers.ContentType
-                , s3Object.Metadata["FileName"]);
+                , file.Name);
         }
 
         [HttpGet]
