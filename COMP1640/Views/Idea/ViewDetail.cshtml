@@ -8,7 +8,7 @@
         <div class="row d-flex justify-content-center align-items-center" style="padding: 30px">
             <div class="col col-xl-9" aria-label="Card example">
                 <div class="d-flex">
-                    <a href="javascript: history.go(-1)">
+                    <a asp-controller="Home" asp-action="Index">
                         <i class="fas fa-arrow-left"> Go Back</i>
                     </a>
                 </div>
@@ -127,31 +127,30 @@
                                 }
                             </div>
                         </div>
-                        <br />
+                        <hr />
 
-                        <div class="d-flex g-3 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="@GetAuthorImageSource(CurrentUser.Id)"
-                                     alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
-                                     style="width: 58px;">
-                            </div>
-
-                            <div style="padding-left: 30px; width: 600px">
+                        <div class="d-flex align-items-center">
+                            <div class="w-100">
                                 @using (Html.BeginForm("CommentIdea", "Idea", new { ideaId = Model.Id }))
                                 {
                                     <div class="d-flex">
-                                        <input class="form-control" id="content" name="content" placeholder="Enter your comment here" required />
-                                        <button type="submit" class="btn btn-primary" style="margin-left: 20px">Send</button>
+                                        <img src="@GetAuthorImageSource(CurrentUser.Id)"
+                                             alt="Generic placeholder image" class="img-fluid rounded-circle" style="width:70px">
+                                        <input class="form-control ms-4" type="text" id="content" name="content" placeholder="Enter your comment here" required />
                                     </div>
-                                    <div style="margin-top: 15px" class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="true" id="anonymousCheckbox" name="isAnonymous">
-                                        <input type="hidden" value="false" name="isAnonymous">
-                                        <label class="form-check-label" for="anonymousCheckbox">
-                                            Comment anonymously
-                                        </label>
+                                    <div class="d-flex flex-wrap justify-content-between align-content-center mt-3">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input type="hidden" value="false" name="isAnonymous">
+                                            <label class="form-check-label" for="anonymousCheckbox">
+                                                <input class="form-check-input" type="checkbox" value="true" id="anonymousCheckbox" name="isAnonymous">
+                                                Comment anonymously
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <button type="submit" class="btn btn-primary">Send</button>
+                                        </div>
                                     </div>
                                 }
-
                             </div>
                         </div>
                         

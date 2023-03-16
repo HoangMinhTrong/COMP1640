@@ -84,38 +84,35 @@
                 {
                     <div class="col col-xl-10 mb-5"
                          aria-label="Card example">
-                        <div class="card" style="border-radius: 15px; cursor: pointer;" onclick="location.href='@Url.Action("ViewDetail", "Idea", new { @item.Id })'"
-                                     >
+                        <div class="card" style="border-radius: 15px; cursor: pointer;" onclick="location.href='@Url.Action("ViewDetail", "Idea", new { @item.Id })'">
                             <div class="card-body p-4">
-                                <div class="d-flex align-items-center mb-4">
-                                    <div class="flex-shrink-0">
-                                        <img src="@GetAuthorImageSource(item.Author?.Id)"
-                                             alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
-                                             style="width: 70px;">
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <div class="d-flex flex-row justify-content-between mb-2">
-                                            <div class="mx-1">
+
+                                <div class="flex">
+                                    <div class="d-flex justify-content-between align-content-center mb-3">
+                                        <div class="d-flex justify-content-center align-content-center">
+                                            <img src="@GetAuthorImageSource(item.Author?.Id)"
+                                                 alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3 me-3"
+                                                 style="width: 70px;">
+                                            <div class="d-flex flex-column">
                                                 <h2>
                                                     <strong>@item.Title</strong>
                                                 </h2>
-                                            </div>
-                                            <div class="dropdown no-arrow">
-                                                <button onclick="event.stopPropagation();" class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                                                <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in" style="z-index: 1">
-                                                    <a class="dropdown-item versioningBtn" onclick="ViewVersioningIdea(event, @item.Id)"> Idea Versioning</a>
-                                                </div>
-                                                @*<partial name="_ModalVersioning" />*@
+                                                <h5>@item.Author?.UserName.Split("@")[0]</h5>
                                             </div>
                                         </div>
-                                        <div class="btn btn-outline-light btn-rounded btn-sm">
-                                            @item.Category
+                                        <div class="dropdown no-arrow">
+                                            <button onclick="event.stopPropagation();" class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in" style="z-index: 1">
+                                                <a class="dropdown-item versioningBtn" onclick="ViewVersioningIdea(event, @item.Id)"> Idea Versioning</a>
+                                            </div>
+                                            @*<partial name="_ModalVersioning" />*@
                                         </div>
-
+                                    </div>
+                                    <div class="btn btn-outline-light btn-rounded btn-sm">
+                                        @item.Category
                                     </div>
                                 </div>
                                 <hr>
-
                                 <div>
                                     @item.Content
                                 </div>
@@ -146,13 +143,12 @@
                                             }
                                             <p id="total-thumbs-down-@item.Id" class="mb-0">@item.ThumbsDown</p>
                                         </a>
-                                        <a href="#!" class="d-flex align-items-center me-3">
+                                        <a href="#!" class="d-flex align-items-center">
                                             <a asp-controller="Idea" asp-action="ViewDetail" asp-route-id="@item.Id"> <i class="far fa-comment-dots me-2"></i></a>
                                             <p class="mb-0">@item.TotalComment</p>
                                         </a>
                                     </div>
                                     <div class="d-flex align-item-center">
-                                        <p class="me-2">@item.Author?.UserName.Split("@")[0]</p>
                                         <p>@item.CreatedOn</p>
                                     </div>
                                 </div>
