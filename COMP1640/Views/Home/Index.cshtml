@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         <form asp-controller="Home" asp-action="Index" method="get">
-                            <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" title="Dropdown" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-funnel"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -69,8 +69,8 @@
                                 <li>
                                     <div class="d-flex flex-column p-2">
                                         <div class="d-flex justify-content-between">
-                                            <button type="submit" value="Search" class="btn btn-success"><i class="bi bi-funnel"></i></button>
-                                            <button asp-controller="Home" asp-action="Index" class="btn btn-danger"><i class="bi bi-funnel"></i></button>
+                                            <button type="submit" value="Search" title="Submit" class="btn btn-success"><i class="bi bi-funnel"></i></button>
+                                            <button id="clearFilterButton" onclick="clearFilters()" class="btn btn-danger" title="Clear"><i class="bi bi-x-circle"></i></button>
                                         </div>
                                     </div>
                                 </li>
