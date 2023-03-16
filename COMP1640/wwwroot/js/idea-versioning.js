@@ -1,9 +1,11 @@
-﻿//Modal Versioning
+﻿
+//Modal Versioning
 var versioningModal = document.getElementById("versioningModal");
 var versioningBtn = document.getElementsByClassName("versioningBtn");
 var versioningSpan = document.getElementsByClassName("close")[1];
 
-function ViewVersioningIdea(id) {
+function ViewVersioningIdea(event, id) {
+    event.stopPropagation();
     $.ajax({
         url: window.location.origin + '/idea/history?ideaId=' + id,
         method: "GET",
@@ -38,11 +40,13 @@ function ViewVersioningIdea(id) {
     });
 }
 
-versioningSpan.onclick = function () {
+versioningSpan.onclick = function (event) {
+    event.stopPropagation();
     versioningModal.style.display = "none";
 }
 
 window.onclick = function (event) {
+    event.stopPropagation();
     if (event.target == versioningModal) {
         versioningModal.style.display = "none";
     }
