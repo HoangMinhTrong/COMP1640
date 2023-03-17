@@ -1,12 +1,8 @@
 ﻿using COMP1640.Services;
 using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Comment.Requests;
-using COMP1640.ViewModels.Common;
-using COMP1640.ViewModels.Idea.Requests;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Utilities.Helpers;
 using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers
@@ -34,15 +30,17 @@ namespace COMP1640.Controllers
         [HttpGet("attachments/{keyName}/download")]
         public async Task<IActionResult> DownloadAttachment([FromRoute] string keyName)
         {
-            var s3Object = await _attachmentService.GetAsync(keyName);
+            var s3Object = await _attachmentService.GetS3Object(keyName);
+            var file = await _attachmentService.GetAsync(keyName);
+
             return File(s3Object.ResponseStream
                 , s3Object.Headers.ContentType
-                , s3Object.Metadata["FileName"]);
+                , file.Name);
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
-        {            
+        {
             return View("Index");
         }
 
@@ -51,7 +49,7 @@ namespace COMP1640.Controllers
         {
             var categories = await _ideaService.GetCategoryForCreateIdeaAsync();
             return Ok(categories);
-        }       
+        }
 
         [HttpGet("category")]
         public async Task<IActionResult> ViewCategory([FromQuery] GetListCategoryRequest request)
@@ -88,10 +86,17 @@ namespace COMP1640.Controllers
         public async Task<IActionResult> ViewDetail([FromRoute] int id)
         {
             var idea = await _ideaService.GetIdeaDetailsAsync(id);
-            if(idea == null) return NotFound();
+            if (idea == null) return NotFound();
 
             idea.Comments = await _commentService.CommentList(id);
             return View(idea);
+        }
+
+        [HttpGet("history")]
+        public async Task<IActionResult> GetIdeaHistories([FromQuery] int ideaId)
+        {
+            var ideaHistories = await _ideaService.GetIdeaHistoriesAsync(ideaId);
+            return Ok(ideaHistories);
         }
     }
 }

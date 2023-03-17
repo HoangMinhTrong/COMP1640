@@ -15,6 +15,7 @@ namespace Infrastructure
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Idea> Ideas { get; set; }
+        public virtual DbSet<IdeaHistory> IdeaHistories { get; set; }
         public virtual DbSet<Reaction> Reactions { get; set; }
         public virtual DbSet<Tenant> Tenants { get; set; }
         public virtual DbSet<TenantUser> TenantUsers { get; set; }
@@ -22,7 +23,7 @@ namespace Infrastructure
         public virtual DbSet<RoleUser> RoleUsers { get; set; }
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<IdeaAttachment> IdeaAttachments { get; set; }
-
+        public virtual DbSet<AcademicYear> AcademicYears { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -103,6 +104,7 @@ namespace Infrastructure
 
             builder.ApplyConfiguration(new IdeaConfiguration());
             builder.ApplyConfiguration(new CommentConfiguration());
+            builder.ApplyConfiguration(new AcademicYearConfiguration());
         }
 
         public void RemoveDefaultAspTableName(ModelBuilder builder)

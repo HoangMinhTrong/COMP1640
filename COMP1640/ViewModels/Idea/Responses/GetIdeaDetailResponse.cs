@@ -1,9 +1,8 @@
 using COMP1640.ViewModels.Attachment.Responses;
+using COMP1640.ViewModels.Catalog.Response;
 using COMP1640.ViewModels.Comment.Responses;
-using COMP1640.ViewModels.Common;
 using Domain;
 using System.Linq.Expressions;
-
 
 namespace COMP1640.ViewModels.Idea.Responses
 {
@@ -22,12 +21,12 @@ namespace COMP1640.ViewModels.Idea.Responses
         public int CommentCount { get; set; }
         public string Category { get; set; }
         public bool IsAnonymous { get; set; }
-        public List<AttachmentResponse> Attachments{ get; set; }
+        public List<AttachmentResponse> Attachments { get; set; }
         public List<CommentInfoResponse> Comments { get; set; }
         public UserReaction? UserReacted { get; set; }
 
 
-        public Expression<Func<Domain.Idea , GetIdeaDetailResponse>> GetSelection(int userId)
+        public Expression<Func<Domain.Idea, GetIdeaDetailResponse>> GetSelection(int userId)
         {
             var userReactionSelection = new UserReaction().GetSelection().Compile();
 
@@ -51,7 +50,7 @@ namespace COMP1640.ViewModels.Idea.Responses
                 IsAnonymous = _.IsAnonymous,
                 UserReacted = userReactionSelection(_.Reactions.FirstOrDefault(r => r.UserId == userId && r.IdeaId == _.Id)),
             };
-        }       
+        }
 
     }
 }

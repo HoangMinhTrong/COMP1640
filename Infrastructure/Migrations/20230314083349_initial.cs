@@ -17,9 +17,9 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    ClosureDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    FinalClosureDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    OpenDate = table.Column<DateTime>(type: "date", nullable: false),
+                    ClosureDate = table.Column<DateTime>(type: "date", nullable: false),
+                    FinalClosureDate = table.Column<DateTime>(type: "date", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -39,7 +39,8 @@ namespace Infrastructure.Migrations
                     Extension = table.Column<string>(type: "text", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -310,7 +311,8 @@ namespace Infrastructure.Migrations
                     Views = table.Column<int>(type: "integer", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -326,7 +328,7 @@ namespace Infrastructure.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Ideas_Departments_DepartmentId",
                         column: x => x.DepartmentId,
@@ -376,7 +378,8 @@ namespace Infrastructure.Migrations
                     IsAnonymous = table.Column<bool>(type: "boolean", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<int>(type: "integer", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -420,6 +423,39 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IdeaHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    IdeaId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    RealCreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TenantId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<int>(type: "integer", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdeaHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IdeaHistories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IdeaHistories_Ideas_IdeaId",
+                        column: x => x.IdeaId,
+                        principalTable: "Ideas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reactions",
                 columns: table => new
                 {
@@ -448,11 +484,11 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "AcademicYear",
-                columns: new[] { "Id", "ClosureDate", "EndDate", "FinalClosureDate", "Name", "TenantId" },
+                columns: new[] { "Id", "ClosureDate", "FinalClosureDate", "Name", "OpenDate", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 10, 29, 17, 0, 0, 0, DateTimeKind.Utc), new DateTime(2023, 4, 30, 17, 0, 0, 0, DateTimeKind.Utc), new DateTime(2023, 3, 29, 17, 0, 0, 0, DateTimeKind.Utc), "2022 - 2023", 1 },
-                    { 2, new DateTime(2023, 11, 29, 17, 0, 0, 0, DateTimeKind.Utc), new DateTime(2023, 5, 31, 17, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 4, 24, 17, 0, 0, 0, DateTimeKind.Utc), "2023 - 2024", 1 }
+                    { 1, new DateTime(2022, 12, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "2022 - 2023", new DateTime(2022, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 2, new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "2023 - 2024", new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -469,10 +505,10 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "e3957b01-4596-4398-8433-8b4ba92d2e21", "Admin", "ADMIN" },
-                    { 2, "51c5e17d-c3fa-4a69-a1f2-d5377bfd7f25", "University QA Manager", "UNIVERSITY QA MANAGER" },
-                    { 3, "345040c4-0bd2-4254-b3ba-7a204de9d31b", "Department QA Coordinator", "DEPARTMENT QA COORDINATOR" },
-                    { 4, "5b96086d-20fc-4117-aa2f-301483352180", "Staff", "STAFF" }
+                    { 1, "589e75d6-4ccd-4fe3-8e14-31fddca4e2ad", "Admin", "ADMIN" },
+                    { 2, "4716c7bc-0190-4701-9ad5-9917a783d52c", "University QA Manager", "UNIVERSITY QA MANAGER" },
+                    { 3, "d3c4f55b-7042-47a8-8c86-93461e39eacf", "Department QA Coordinator", "DEPARTMENT QA COORDINATOR" },
+                    { 4, "c2ee56de-af76-4a25-b7dc-a2289b5092d6", "Staff", "STAFF" }
                 });
 
             migrationBuilder.InsertData(
@@ -485,12 +521,12 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Birthday", "ConcurrencyStamp", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, null, "fb099031-4747-46b9-a3c2-9e068a08012f", "admin@gmail.com", false, (byte)1, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEGL4SGW+XhubzPKzd++VIql8CAu+aTO873IUptvbk8WEyOqIdT9addJxWfoHThpi1g==", null, false, "6dbae9e4-b111-4f22-ae59-bb101fb85b1b", false, "admin@gmail.com" },
-                    { 2, 0, null, "b0a887af-9132-43bb-b1ce-270d63c1ed10", "qamanager@gmail.com", false, (byte)1, false, null, "QAMANAGER@GMAIL.COM", "QAMANAGER@GMAIL.COM", "AQAAAAEAACcQAAAAEEP6m10rGZCfT8p1PomWJmDy+aRl60pDbwU8y40gnEXw471emHX2aEBHQAmsGGcS7Q==", null, false, "4ae9dbfc-68c2-4331-b126-48cb36f8938f", false, "qamanager@gmail.com" },
-                    { 3, 0, null, "97feb5a4-1aec-4329-9928-e4ef67650683", "computingdepartmentqa@gmail.com", false, (byte)1, false, null, "COMPUTINGDEPARTMENTQA@GMAIL.COM", "COMPUTINGDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEG+JDR/rYe5Qar+ZnuIGRSGizkTGPA9z+vfeeWBu2MHI2i2SnNPFXod7GMZVauu7hg==", null, false, "93107242-cf07-42d9-9b5c-ab37a16e99d2", false, "computingdepartmentqa@gmail.com" },
-                    { 4, 0, null, "e33c171f-21af-40cf-8563-5cb2d61abad7", "businessDepartmentQA@gmail.com", false, (byte)1, false, null, "BUSINESSDEPARTMENTQA@GMAIL.COM", "BUSINESSDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAELzMI7j30PFDN+V6+LlthOr2VIeJzHl1BLe6K94J5xJ9M8EXUq7i0tEv27ArHlqZzw==", null, false, "6176447e-b530-4ab9-b9dd-763e85f761b6", false, "businessDepartmentQA@gmail.com" },
-                    { 5, 0, null, "ac69a8d2-3648-4637-a414-ad05beb88800", "designDepartmentQA@gmail.com", false, (byte)1, false, null, "DESIGNDEPARTMENTQA@GMAIL.COM", "DESIGNDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEB07JMjm+tNn0+6eakTWbLpgbyI3Z6eqPBEblFYzl0swFBHefHxlx/3hg6hi5JbngA==", null, false, "876c2069-0d17-4b80-84bc-9a3e52350c80", false, "designDepartmentQA@gmail.com" },
-                    { 6, 0, null, "cd7edea3-fa78-4e06-9818-1eea432e0cf5", "staff@gmail.com", false, (byte)1, false, null, "STAFF@GMAIL.COM", "STAFF@GMAIL.COM", "AQAAAAEAACcQAAAAEAllfllAN1cErApmEkf0JaNUqwtgvcLQUHqmhHhDqcsI5ld5Yd8HzE8EV0OEhZX1hw==", null, false, "a8f70484-4c33-401b-9b2a-dba0b91b6333", false, "staff@gmail.com" }
+                    { 1, 0, null, "017ca2aa-c535-4b08-bad7-9f11cb08bd4b", "admin@gmail.com", false, (byte)1, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAELCyaBpMgw5qRAYLehDMJxOV88S1xcPhR3tBVuKQWvvLI4s1GPOzzBlZ979OvEep1g==", null, false, "7b29f952-f017-4fbb-ac72-aa17ae200b89", false, "admin@gmail.com" },
+                    { 2, 0, null, "bb603712-dc88-4903-a2c6-a652edbd94f1", "qamanager@gmail.com", false, (byte)1, false, null, "QAMANAGER@GMAIL.COM", "QAMANAGER@GMAIL.COM", "AQAAAAEAACcQAAAAENfB2OC/DfPtXPS9daZL5gSnXli1AIgUlE5M4+3sz5GB3wrFSYaxdbxq89cStCy1qg==", null, false, "f5f87d50-8120-444d-bd2d-c739521108ea", false, "qamanager@gmail.com" },
+                    { 3, 0, null, "90bc9c8f-fe4e-415c-895b-9847d7587437", "computingdepartmentqa@gmail.com", false, (byte)1, false, null, "COMPUTINGDEPARTMENTQA@GMAIL.COM", "COMPUTINGDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEJpkExUSGFdd4jfCOye5guXVW4x8kM9yTXpJCwRvxxfVmxqenyRLWWh/h8v8Wzc3nA==", null, false, "0e53775c-0d3c-4a4c-9b9f-5547ab9f518e", false, "computingdepartmentqa@gmail.com" },
+                    { 4, 0, null, "386b08cd-50bb-4d4d-b196-910369363e15", "businessDepartmentQA@gmail.com", false, (byte)1, false, null, "BUSINESSDEPARTMENTQA@GMAIL.COM", "BUSINESSDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEJZRLD+/MPhEppK3vPaQQZMCPJEVwd6A/7VYQgvAomPSSsw2M5jRrDshqGnsrhCFgg==", null, false, "8b2e723f-b087-492c-bf19-d713f4722dbc", false, "businessDepartmentQA@gmail.com" },
+                    { 5, 0, null, "d99230af-10a0-4fef-b185-e9bd39d5795b", "designDepartmentQA@gmail.com", false, (byte)1, false, null, "DESIGNDEPARTMENTQA@GMAIL.COM", "DESIGNDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEC/4H9WqIqTpLt4jdQSJQiU7xFuNIw6SutKODZRC1xQgKIjGyuzvLSBBedbDO0jUfA==", null, false, "691068fd-df1d-4f27-9080-0d6e8b4f7d63", false, "designDepartmentQA@gmail.com" },
+                    { 6, 0, null, "1992a5e6-5e9a-4bcb-ba2e-1122b547968a", "staff@gmail.com", false, (byte)1, false, null, "STAFF@GMAIL.COM", "STAFF@GMAIL.COM", "AQAAAAEAACcQAAAAEDODxHs47taif3W2YCj50hd7SPdql1M6adS6ZHyc9NPkaxoRED6fhkaihEqi5WIieA==", null, false, "fb9b055f-b7d8-4478-9dc3-90803a8db6ef", false, "staff@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -563,6 +599,16 @@ namespace Infrastructure.Migrations
                 name: "IX_IdeaAttachments_AttachmentId",
                 table: "IdeaAttachments",
                 column: "AttachmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IdeaHistories_CategoryId",
+                table: "IdeaHistories",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IdeaHistories_IdeaId",
+                table: "IdeaHistories",
+                column: "IdeaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ideas_AcademicYearId",
@@ -654,6 +700,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "IdeaAttachments");
+
+            migrationBuilder.DropTable(
+                name: "IdeaHistories");
 
             migrationBuilder.DropTable(
                 name: "Reactions");

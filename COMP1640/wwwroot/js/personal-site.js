@@ -31,18 +31,29 @@ var editIdeaSpan = document.getElementsByClassName("close")[1];
 
 function EditIdeaInfo() {
     var ideaId = $("#info-edit-ideaId").val();
-    var myObject = {
+    var formData = new FormData();
+    formData.append('Title', $("#info-edit-title").val());
+    formData.append('Content', $("#info-edit-content").val());
+    formData.append('IsAnonymous', $("#isAnonymous").is(":checked"));
+    formData.append('CategoryId', parseInt($("#category_list").val()));
+    var filesInput = document.getElementById('formfiles');
+    for (var i = 0; i < filesInput.files.length; i++) {
+        formData.append('Formfiles', filesInput.files[i]);
+    }
+    /*var myObject = {
         Title: $("#info-edit-title").val(),
         Content: $("#info-edit-content").val(),
         IsAnonymous: $("#isAnonymous").is(":checked"),
         CategoryId: parseInt($("#category_list").val()),
-    };
+        Formfiles: $("#formfiles").val(),
+    };*/
     if ($("#agreeTerm").is(':checked')) {
         $.ajax({
             url: window.location.origin + '/personal/editIdea/' + ideaId,
             type: 'PUT',
-            data: JSON.stringify(myObject),
-            contentType: 'application/json',
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function () {
                 alert('Edit idea successfully');
                 window.location.reload();
@@ -106,7 +117,8 @@ function SoftDeleteIdea(id) {
 }
 
 //Toggle deactive Idea
-function ToggleDeactiveIdea(id) {
+function ToggleDeactiveIdea(event, id) {
+    event.stopPropagation();
     var confirmResult = confirm("Are you sure?");
     if (!confirmResult)
         return;

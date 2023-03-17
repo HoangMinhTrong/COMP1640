@@ -1,4 +1,5 @@
 ﻿using COMP1640.Services;
+using COMP1640.ViewModels.Catalog.Response;
 using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +60,7 @@ namespace COMP1640.Controllers
                     _toastNotification.AddErrorToastMessage("Error: " + modelError.ErrorMessage);
 
                 return RedirectToAction("Index", "Home");
-            } 
+            }
 
 
             var isSucceed = await _ideaService.CreateIdeaAsync(request);

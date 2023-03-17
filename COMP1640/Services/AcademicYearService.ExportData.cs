@@ -75,9 +75,10 @@ namespace COMP1640.Services
                 {
                     foreach (var fileKey in fileKeys)
                     {
-                        var s3Object = await _attachmentService.GetAsync(fileKey);
+                        var file = await _attachmentService.GetAsync(fileKey);
+                        var s3Object = await _attachmentService.GetS3Object(fileKey);
                         var documentData = s3Object.ResponseStream.ReadAllBytes();
-                        var entry = archive.CreateEntry(s3Object.Metadata["FileName"]);
+                        var entry = archive.CreateEntry(file.Name);
                         using (var entryStream = entry.Open())
                         {
                             entryStream.Write(documentData

@@ -3,6 +3,7 @@ using COMP1640.ViewModels.AcademicYear;
 using COMP1640.ViewModels.AcademicYear.Request;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers;
@@ -12,10 +13,13 @@ namespace COMP1640.Controllers;
 public class AcademicYearController : Controller
 {
     private readonly AcademicYearService _academicYearService;
+    private readonly IToastNotification _toastNotification;
 
-    public AcademicYearController(AcademicYearService academicYearService)
+    public AcademicYearController(AcademicYearService academicYearService
+        , IToastNotification toastNotification)
     {
         _academicYearService = academicYearService;
+        _toastNotification = toastNotification;
     }
 
     [HttpGet]
@@ -45,11 +49,9 @@ public class AcademicYearController : Controller
         if (!ModelState.IsValid) return RedirectToAction("Index");
 
         var isSuccess = await _academicYearService.CreateAcademicYearAsync(request);
-
         if (!isSuccess)
-        {
-            TempData.Add("ErrorMessage", "Failure to create academic year");
-        }
+            _toastNotification.AddErrorToastMessage("Exception: Failure to create academic year");
+
         return RedirectToAction("Index");
     }
 
@@ -77,7 +79,10 @@ public class AcademicYearController : Controller
     {
         var response = await _academicYearService.ExportAcademicYearDataAsync(id);
         if (response == null)
-            return NoContent();
+        {
+            _toastNotification.AddErrorToastMessage("Exception: Empty Data");
+            return RedirectToAction("Index");
+        }
 
         return File(response.Data, response.Type, response.Name);
     }

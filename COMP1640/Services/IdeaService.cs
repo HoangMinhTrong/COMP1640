@@ -1,4 +1,5 @@
-﻿using COMP1640.ViewModels.Common;
+﻿using COMP1640.ViewModels.Catalog.Response;
+using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.Idea.Responses;
 using Domain;
@@ -13,10 +14,12 @@ namespace COMP1640.Services
     public class IdeaService
     {
         private readonly IIdeaRepository _ideaRepo;
+        private readonly IIdeaHistoryRepository _ideaHistoryRepository;
         private readonly ICategoryRepository _categoryRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserInfo _current;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IAcademicYearRepository _academicYearRepo;
         private readonly AttachmentService attachmentService;
 
         public IdeaService(
@@ -25,7 +28,9 @@ namespace COMP1640.Services
             ICategoryRepository categoryRepo,
             ICurrentUserInfo current,
             IServiceProvider serviceProvider,
-            AttachmentService attachmentService)
+            AttachmentService attachmentService,
+            IIdeaHistoryRepository ideaHistoryRepository, 
+            IAcademicYearRepository cademicYearRepo)
         {
             _ideaRepo = ideaRepo;
             _unitOfWork = unitOfWork;
@@ -33,6 +38,8 @@ namespace COMP1640.Services
             _current = current;
             _serviceProvider = serviceProvider;
             this.attachmentService = attachmentService;
+            _ideaHistoryRepository = ideaHistoryRepository;
+            _academicYearRepo = cademicYearRepo;
         }
 
         public async Task<bool> CreateIdeaAsync(CreateIdeaRequest request)
@@ -41,13 +48,17 @@ namespace COMP1640.Services
             if (category == null)
                 return false;
 
+            var currentAcademicYear = await _academicYearRepo.GetCurrentAsync();
+            if (currentAcademicYear == null)
+                return false;
+
             var idea = new Idea
                 (
                     request.Title,
                     request.Content,
                     request.IsAnonymous,
-                    request.CategoryId,
-                    1,
+                    category.Id,
+                    currentAcademicYear.Id,
                     _current.DepartmentId
                 );
 
@@ -73,8 +84,9 @@ namespace COMP1640.Services
                 .Select(c => new CategoryForCreateIdeaResponse()
                 {
                     Id = c.Id,
-                    Name = c.Name
-                })
+                    Name = c.Name,
+                    IsDeleted = c.IsDeleted
+                }).Where(x => !x.IsDeleted)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -139,12 +151,34 @@ namespace COMP1640.Services
             var existIdea = await _ideaRepo.GetById(ideaId).FirstOrDefaultAsync();
             if (existIdea == null) return false;
 
+            // Copy current version as new history record
+            await _ideaHistoryRepository.InsertAsync(new IdeaHistory(existIdea));
+
             existIdea.EditInfo(
-                request.Title, 
-                request.Content, 
-                request.IsAnonymous, 
+                request.Title,
+                request.Content,
+                request.IsAnonymous,
                 request.CategoryId
             );
+
+            if (request?.Formfiles.Count > 0)
+            {
+                var existedAttachs = existIdea.IdeaAttachments.Select(_ => _.Attachment).ToList();
+                if (existedAttachs.Any())
+                    await attachmentService.DeleteListAsync(existedAttachs);
+
+                var attachments = await attachmentService.UploadListAsync(request.Formfiles);
+                foreach (var attachment in attachments)
+                {
+                    existIdea.AddAttachment(attachment);
+                }
+            }
+            else
+            {
+                var existedAttachs = existIdea.IdeaAttachments.Select(_ => _.Attachment).ToList();
+                if (existedAttachs.Any())
+                    await attachmentService.DeleteListAsync(existedAttachs);
+            }
 
             await _unitOfWork.SaveChangesAsync();
             return true;
@@ -182,6 +216,14 @@ namespace COMP1640.Services
             await _unitOfWork.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<IList<IdeaHistoryResponse>?> GetIdeaHistoriesAsync(int ideaId)
+        {
+            return await _ideaHistoryRepository.GetQuery(_ => _.IdeaId == ideaId)
+                .OrderByDescending(_ => _.RealCreatedOn)
+                .Select(new IdeaHistoryResponse().GetSelection())
+                .ToListAsync();
         }
     }
 }

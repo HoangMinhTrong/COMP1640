@@ -67,7 +67,7 @@ public class CategoryService
     }
     public async Task<IEnumerable<SelectListItem>> GetCategoryPicklistAsync()
     {
-        return await _categoryRepository.GetAllQuery()
+        return await _categoryRepository.GetQuery(c => !c.IsDeleted)
             .Select(_ => new SelectListItem()
             {
                 Text = _.Name,
