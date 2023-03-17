@@ -16,7 +16,7 @@ namespace COMP1640.Controllers
         private readonly IToastNotification _toastNotification;
 
 
-        public HomeController(ILogger<HomeController> logger, IdeaService ideaService, CategoryService categoryService)
+        public HomeController(ILogger<HomeController> logger, IdeaService ideaService, CategoryService categoryService, IToastNotification toastNotification)
         {
             _logger = logger;
             _ideaService = ideaService;
