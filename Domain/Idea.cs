@@ -62,5 +62,10 @@ namespace Domain
         {
             IsDeleted = true;
         }
+        
+        public void IncreasesView()
+        {
+            Views += 1;
+        }
     }
 }
