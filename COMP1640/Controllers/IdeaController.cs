@@ -89,6 +89,8 @@ namespace COMP1640.Controllers
             if (idea == null) return NotFound();
 
             idea.Comments = await _commentService.CommentList(id);
+            // Call IncreasesViewAsync asynchronously and continue execution
+            await _ideaService.IncreasesViewAsync(id);
             return View(idea);
         }
 

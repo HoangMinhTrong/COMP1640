@@ -1,4 +1,5 @@
-﻿using Domain.Base;
+﻿using Domain;
+using Domain.Base;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -13,7 +14,8 @@ namespace Infrastructure
         private readonly ICurrentUserInfo _currentUserInfo;
         private readonly ApplicationDbContext _context;
 
-        public UnitOfWork(IServiceProvider serviceProvider, ApplicationDbContext context, ICurrentUserInfo currentUserInfo)
+        public UnitOfWork(IServiceProvider serviceProvider, ApplicationDbContext context,
+            ICurrentUserInfo currentUserInfo)
         {
             _serviceProvider = serviceProvider;
             _context = context;
@@ -99,7 +101,14 @@ namespace Infrastructure
         {
             if (entry.Entity is not ITenantAuditEntity) return;
 
-            if (entry.Entity is ITenantAuditEntity entity) entity.UpdatedOn = DateTime.Now;
+            if (entry.Entity is ITenantAuditEntity entity)
+            {
+                if (!entry.Property(nameof(Idea.Views)).IsModified)
+                {
+                    entity.UpdatedOn = DateTime.Now;
+                }
+            }
+
         }
     }
 }

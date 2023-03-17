@@ -225,5 +225,14 @@ namespace COMP1640.Services
                 .Select(new IdeaHistoryResponse().GetSelection())
                 .ToListAsync();
         }
+        
+        public async Task IncreasesViewAsync(int ideaId)
+        {
+            var idea = await _ideaRepo.GetAsync(i => i.Id == ideaId);
+            if(idea.CreatedBy == _current.Id ) return;
+            
+            idea.IncreasesView();
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }
