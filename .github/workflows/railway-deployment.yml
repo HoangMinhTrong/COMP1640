@@ -2,13 +2,6 @@
 
 on:
   push:
-    paths:
-      - '**/COMP1640/**'
-      - '**/Domain/**'
-      - '**/Infrastructure/**'
-      - '**/Utilities/**'
-      - '**/UnitTest/**'
-      - '**/Dockerfile'
     branches:
       - main
       - develop
