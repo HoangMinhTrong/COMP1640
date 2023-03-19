@@ -92,6 +92,12 @@
                                         <a asp-action="ViewDetail" asp-route-id="@item.Id"> <i class="far fa-comment-dots me-2"></i></a>
                                         <p>@item.TotalComment</p>
                                     </a>
+                                    <a href="#!" class="d-flex align-items-center me-3">
+                                        <a asp-controller="Idea" asp-action="ViewDetail" asp-route-id="@item.Id">
+                                            <i class="bi bi-eye me-2"></i>
+                                        </a>
+                                        <p class="mb-0">@item.Views</p>
+                                    </a>
                                     <div class="d-flex align-item-center">
                                         <p>@item.CreatedOn</p>
                                     </div>

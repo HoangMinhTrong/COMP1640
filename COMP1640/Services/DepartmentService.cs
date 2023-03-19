@@ -42,11 +42,11 @@ public class DepartmentService
     {
         return await _departmentRepository
         .GetQuery(request.Filter())
-
             .Select(_ => new InforDepartmentResponse
             {
                 Id = _.Id,
                 Name = _.Name,
+                QaCoordinatorName = _.QaCoordinator.Email,
                 TenantId = _.TenantId,
                 IsDelete = _.IsDeleted,
             }).Where(x => !x.IsDelete)

@@ -31,12 +31,12 @@ public class GetIdeaIndexRequest : PagingRequest
         return SortOption switch
         {
             IdeaIndexSortingEnum.LatestIdea => q => q.OrderByDescending(i => i.CreatedOn),
-            IdeaIndexSortingEnum.MostReactPoint => q => q.OrderByDescending(i =>
+            IdeaIndexSortingEnum.MostPopularPoint => q => q.OrderByDescending(i =>
                 i.Reactions.Count(r => r.Status == ReactionStatusEnum.Like) -
                 i.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike)),
             IdeaIndexSortingEnum.LatestComment => q => q.OrderByDescending(i => i.Comments.Any())
                 .ThenByDescending(i => i.Comments.OrderByDescending(c => c.Id).FirstOrDefault()),
-            IdeaIndexSortingEnum.MostPopularIdea => q => q.OrderByDescending(i => i.Views),
+            IdeaIndexSortingEnum.MostViewIdea => q => q.OrderByDescending(i => i.Views),
             _ => q => q.OrderByDescending(i => i.CreatedOn)
         };
     }
@@ -44,8 +44,8 @@ public class GetIdeaIndexRequest : PagingRequest
 
 public enum IdeaIndexSortingEnum : int
 {
-    [EnumMember(Value = "Most favo")]
-    MostReactPoint = 1,
+    [EnumMember(Value = "Most popular")]
+    MostPopularPoint = 1,
 
     [EnumMember(Value = "Latest comment")]
     LatestComment = 2,
@@ -53,6 +53,6 @@ public enum IdeaIndexSortingEnum : int
     [EnumMember(Value = "Latest idea")]
     LatestIdea = 3,
 
-    [EnumMember(Value = "Most popular")]
-    MostPopularIdea = 4
+    [EnumMember(Value = "Most views")]
+    MostViewIdea = 4
 }
