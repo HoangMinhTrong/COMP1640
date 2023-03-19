@@ -1,20 +1,23 @@
 ﻿<ul class="navbar-nav mx-auto">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-        </li>
+        if (CurrentUser.RoleId != (int)RoleTypeEnum.Admin)
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+        }
         if (CurrentUser.RoleId == (int)RoleTypeEnum.Admin)
         {
             <li>
                 <a class="nav-link" asp-controller="HRM" asp-action="Index">HRM</a>
             </li>
-        }
-        else if (CurrentUser.RoleId == (int)RoleTypeEnum.QAManager)
-        {
             <li>
                 <a class="nav-link" asp-controller="AcademicYear" asp-action="Index">Academic Year</a>
             </li>
+        }
+        else if (CurrentUser.RoleId == (int)RoleTypeEnum.QAManager)
+        {
             <li>
                 <a class="nav-link" asp-controller="Department" asp-action="ViewDepartment">Department</a>
             </li>
@@ -22,18 +25,12 @@
                 <a class="nav-link" asp-controller="Idea" asp-action="ViewCategory">Category</a>
             </li>
         }
-        else
+        else if (CurrentUser.RoleId == (int)RoleTypeEnum.DepartmentQA)
         {
            
             <li>
-                <a class="nav-link" asp-controller="Idea" asp-action="ViewCategory">Category</a>
+                <a class="nav-link" asp-controller="Idea" asp-action="ViewRequestList">Request List</a>
             </li>
         }
-    }
-    else
-    {
-        <li>
-            <a class="nav-link" asp-controller="Home" asp-action="Privacy">Customer Page</a>
-        </li>
     }
 </ul>

@@ -27,3 +27,26 @@ function CloseAddIdeaPopup() {
     addIdeaPopup.style.display = "none";
 }
 
+
+function ApproveIdea(id) {
+    $.ajax({
+        url: window.location.origin + '/idea/' + id + '/approve',
+        type: 'PUT',
+        success: function () {
+            alert('Approve successfully.');
+            window.location.reload();
+        }
+    });
+}
+
+
+function RejectIdea(id) {
+    $.ajax({
+        url: window.location.origin + '/idea/' + id + '/reject',
+        type: 'PUT',
+        success: function () {
+            alert('Reject successfully.');
+            window.location.reload();
+        }
+    });
+}

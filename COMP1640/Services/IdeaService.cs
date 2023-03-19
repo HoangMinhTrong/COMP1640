@@ -91,10 +91,12 @@ namespace COMP1640.Services
                 .ToListAsync();
         }
 
-        public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request, int? userId = null)
+        public async Task<PaginatedList<IdeaIndexItem>> GetIdeaIndexAsync(GetIdeaIndexRequest request
+            , int? userId = null
+            , int? departmentId = null
+            , IdeaStatusEnum status = IdeaStatusEnum.Approved)
         {
-
-            var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter(userId)));
+            var queryable = request.Sort()(_ideaRepo.GetQuery(request.Filter(userId, departmentId, status)));
 
             var totalCount = queryable.Count();
 
@@ -232,6 +234,24 @@ namespace COMP1640.Services
             if(idea.CreatedBy == _current.Id ) return;
             
             idea.IncreasesView();
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task ApproveAsync(int ideaId)
+        {
+            var idea = await _ideaRepo.GetAsync(ideaId);
+            if(idea == null) return;
+
+            idea.UpdateStatus(IdeaStatusEnum.Approved);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task RejectAsync(int ideaId)
+        {
+            var idea = await _ideaRepo.GetAsync(ideaId);
+            if (idea == null) return;
+
+            idea.UpdateStatus(IdeaStatusEnum.Rejected);
             await _unitOfWork.SaveChangesAsync();
         }
     }

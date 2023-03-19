@@ -28,4 +28,13 @@ namespace Domain
         [EnumMember(Value = "Staff")]
         Staff = 4
     }
+
+    public enum IdeaStatusEnum : byte
+    {
+        Waiting = 1,
+
+        Approved = 2,
+
+        Rejected = 3,
+    }
 }

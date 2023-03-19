@@ -84,7 +84,7 @@ namespace COMP1640.Controllers
             if (isSucceed) return Ok();
 
             ModelState.AddModelError("delete_failure", "Failure to delete an idea.");
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewYourIdea");
         }
 
         [HttpGet("recyclebin")]
@@ -101,7 +101,7 @@ namespace COMP1640.Controllers
             if (isSucceed) return Ok();
 
             ModelState.AddModelError("delete_failure", "Failure to delete an idea.");
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewYourIdea");
         }
 
         [HttpPut("change-password")]

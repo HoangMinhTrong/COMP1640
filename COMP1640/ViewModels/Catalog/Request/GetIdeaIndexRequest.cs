@@ -12,9 +12,13 @@ public class GetIdeaIndexRequest : PagingRequest
     public string SearchString { get; set; } = string.Empty;
     public int? CategoryFilterOption { get; set; }
 
-    public Expression<Func<Domain.Idea, bool>> Filter(int? createdById = null)
+    public Expression<Func<Domain.Idea, bool>> Filter(int? createdById = null
+        , int? departmentId = null
+        , IdeaStatusEnum status = IdeaStatusEnum.Approved)
     {
         return _ =>
+            (departmentId == null || _.DepartmentId == departmentId)
+            &&
             (createdById == null || _.CreatedBy == createdById)
             &&
             (CategoryFilterOption == null || _.CategoryId == CategoryFilterOption)
@@ -23,7 +27,8 @@ public class GetIdeaIndexRequest : PagingRequest
              || (EF.Functions.ILike(_.Title, $"%{SearchString}%")
                  || (EF.Functions.ILike(_.Content, $"%{SearchString}%"))))
             && !_.IsDeactive 
-            && !_.IsDeleted;
+            && !_.IsDeleted
+            && _.Status == status;
     }
 
     public Func<IQueryable<Domain.Idea>, IQueryable<Domain.Idea>> Sort()
@@ -31,12 +36,12 @@ public class GetIdeaIndexRequest : PagingRequest
         return SortOption switch
         {
             IdeaIndexSortingEnum.LatestIdea => q => q.OrderByDescending(i => i.CreatedOn),
-            IdeaIndexSortingEnum.MostReactPoint => q => q.OrderByDescending(i =>
+            IdeaIndexSortingEnum.MostPopularPoint => q => q.OrderByDescending(i =>
                 i.Reactions.Count(r => r.Status == ReactionStatusEnum.Like) -
                 i.Reactions.Count(r => r.Status == ReactionStatusEnum.DisLike)),
             IdeaIndexSortingEnum.LatestComment => q => q.OrderByDescending(i => i.Comments.Any())
                 .ThenByDescending(i => i.Comments.OrderByDescending(c => c.Id).FirstOrDefault()),
-            IdeaIndexSortingEnum.MostPopularIdea => q => q.OrderByDescending(i => i.Views),
+            IdeaIndexSortingEnum.MostViewIdea => q => q.OrderByDescending(i => i.Views),
             _ => q => q.OrderByDescending(i => i.CreatedOn)
         };
     }
@@ -44,8 +49,8 @@ public class GetIdeaIndexRequest : PagingRequest
 
 public enum IdeaIndexSortingEnum : int
 {
-    [EnumMember(Value = "Most favo")]
-    MostReactPoint = 1,
+    [EnumMember(Value = "Most popular")]
+    MostPopularPoint = 1,
 
     [EnumMember(Value = "Latest comment")]
     LatestComment = 2,
@@ -53,6 +58,6 @@ public enum IdeaIndexSortingEnum : int
     [EnumMember(Value = "Latest idea")]
     LatestIdea = 3,
 
-    [EnumMember(Value = "Most popular")]
-    MostPopularIdea = 4
+    [EnumMember(Value = "Most views")]
+    MostViewIdea = 4
 }

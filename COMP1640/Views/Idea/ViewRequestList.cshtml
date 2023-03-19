@@ -1,0 +1,60 @@
+﻿
+<div class="container mx-auto pt-4" style="max-width:900px">
+    <div class="row d-flex justify-content-center align-items-center">
+        @foreach (var item in Model.IdeaIndexItems)
+        {
+            <div class="col col-xl-10 mb-5"
+                    aria-label="Card example">
+                <div class="card" style="border-radius: 15px; cursor: pointer;">
+                    <div class="card-body p-4">
+
+                        <div class="flex">
+                            <div class="d-flex justify-content-between align-content-center mb-3">
+                                <div class="d-flex justify-content-center align-content-center">
+                                    <img src="@GetAuthorImageSource(item.Author?.Id)"
+                                            alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3 me-3"
+                                            style="width: 70px;">
+                                    <div class="d-flex flex-column">
+                                        <h2>
+                                            <strong>@item.Title</strong>
+                                        </h2>
+                                        <h5>@item.Author?.UserName.Split("@")[0]</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn btn-outline-light btn-rounded btn-sm">
+                                @item.Category
+                            </div>
+                        </div>
+                        <hr>
+                        <div>
+                            @item.Content
+                        </div>
+
+                        <hr />
+                        <div class="d-flex justify-content-between">
+                            <div class="small d-flex justify-content-start">
+                                <a onclick="ApproveIdea(@item.Id)" class="btn btn-success d-flex align-items-center me-3">
+                                    Approve
+                                </a>
+                                <a onclick="RejectIdea(@item.Id)" class="btn btn-danger d-flex align-items-center me-3">
+                                    Reject
+                                </a>
+                            </div>
+                            <div class="d-flex align-item-center">
+                                <p>@item.CreatedOn</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<script src="~/js/idea-site.js" asp-append-version="true"></script>
+
+
+

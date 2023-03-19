@@ -69,11 +69,11 @@ namespace Infrastructure.SeedData
             var admin = new User
             {
                 Id = 1,
-                UserName = "admin@gmail.com",
-                Email = "admin@gmail.com",
-                NormalizedEmail = "admin@gmail.com".ToUpper(),
+                UserName = "admin@qa.team",
+                Email = "admin@qa.team",
+                NormalizedEmail = "admin@qa.team".ToUpper(),
                 Gender = UserGenderEnum.Male,
-                NormalizedUserName = "admin@gmail.com".ToUpper(),
+                NormalizedUserName = "admin@qa.team".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
@@ -82,11 +82,11 @@ namespace Infrastructure.SeedData
             var director = new User
             {
                 Id = 2,
-                UserName = "qamanager@gmail.com",
-                Email = "qamanager@gmail.com",
-                NormalizedEmail = "qamanager@gmail.com".ToUpper(),
+                UserName = "qamanager@qa.team",
+                Email = "qamanager@qa.team",
+                NormalizedEmail = "qamanager@qa.team".ToUpper(),
                 Gender = UserGenderEnum.Male,
-                NormalizedUserName = "qamanager@gmail.com".ToUpper(),
+                NormalizedUserName = "qamanager@qa.team".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
@@ -95,11 +95,11 @@ namespace Infrastructure.SeedData
             var computingDepartmentQA = new User
             {
                 Id = 3,
-                UserName = "computingdepartmentqa@gmail.com",
-                Email = "computingdepartmentqa@gmail.com",
-                NormalizedEmail = "computingdepartmentqa@gmail.com".ToUpper(),
+                UserName = "computingdepartmentqa@qa.team",
+                Email = "computingdepartmentqa@qa.team",
+                NormalizedEmail = "computingdepartmentqa@qa.team".ToUpper(),
                 Gender = UserGenderEnum.Male,
-                NormalizedUserName = "computingdepartmentqa@gmail.com".ToUpper(),
+                NormalizedUserName = "computingdepartmentqa@qa.team".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
@@ -108,11 +108,11 @@ namespace Infrastructure.SeedData
             var businessDepartmentQA = new User
             {
                 Id = 4,
-                UserName = "businessDepartmentQA@gmail.com",
-                Email = "businessDepartmentQA@gmail.com",
-                NormalizedEmail = "businessDepartmentQA@gmail.com".ToUpper(),
+                UserName = "businessDepartmentQA@qa.team",
+                Email = "businessDepartmentQA@qa.team",
+                NormalizedEmail = "businessDepartmentQA@qa.team".ToUpper(),
                 Gender = UserGenderEnum.Male,
-                NormalizedUserName = "businessDepartmentQA@gmail.com".ToUpper(),
+                NormalizedUserName = "businessDepartmentQA@qa.team".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
@@ -121,11 +121,11 @@ namespace Infrastructure.SeedData
             var designDepartmentQA = new User
             {
                 Id = 5,
-                UserName = "designDepartmentQA@gmail.com",
-                Email = "designDepartmentQA@gmail.com",
-                NormalizedEmail = "designDepartmentQA@gmail.com".ToUpper(),
+                UserName = "designDepartmentQA@qa.team",
+                Email = "designDepartmentQA@qa.team",
+                NormalizedEmail = "designDepartmentQA@qa.team".ToUpper(),
                 Gender = UserGenderEnum.Male,
-                NormalizedUserName = "designDepartmentQA@gmail.com".ToUpper(),
+                NormalizedUserName = "designDepartmentQA@qa.team".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
@@ -134,11 +134,11 @@ namespace Infrastructure.SeedData
             var staff = new User
             {
                 Id = 6,
-                UserName = "staff@gmail.com",
-                Email = "staff@gmail.com",
-                NormalizedEmail = "staff@gmail.com".ToUpper(),
+                UserName = "staff@qa.team",
+                Email = "staff@qa.team",
+                NormalizedEmail = "staff@qa.team".ToUpper(),
                 Gender = UserGenderEnum.Male,
-                NormalizedUserName = "staff@gmail.com".ToUpper(),
+                NormalizedUserName = "staff@qa.team".ToUpper(),
                 PasswordHash = hasher.HashPassword(null, "Default@123"),
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
