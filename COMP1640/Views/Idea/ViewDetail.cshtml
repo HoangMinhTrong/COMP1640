@@ -1,7 +1,10 @@
 @using COMP1640.ViewModels.Idea.Responses
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using COMP1640.ViewModels.Comment.Responses
+@using Utilities.Helpers
 @model GetIdeaDetailResponse
+@inject ActivityTimelineValidation ActivityTimelineValidation
+
 
 <section>
     <div class="container">
@@ -139,7 +142,7 @@
                                         </label>
                                     </div>
                                     <div>
-                                        <button type="submit" class="btn btn-primary">Send</button>
+                                        <button type="submit" class="btn btn-primary @(!ActivityTimelineValidation.IsEnableSubmitComment() ? "disabled" : "")">Send</button>
                                     </div>
                                 </div>
                             }

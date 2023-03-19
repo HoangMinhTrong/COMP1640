@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Utilities.Helpers
 @model COMP1640.ViewModels.Catalog.Response.IdeaIndexResponse
-
-@if (SignInManager.IsSignedIn(User))
+@inject ActivityTimelineValidation ActivityTimelineValidation
 {
     <partial name="Create" />
     <section>
@@ -12,7 +12,8 @@
                         <div id="addIdeaBtn" class="d-flex mb-4">
                             <div class="d-flex align-items-center">
                                  @if (CurrentUser.RoleId == (int)RoleTypeEnum.Staff){
-                                    <a class="btn btn-info text-white text-center" onclick="ShowPopupCreateIdea()">
+                                     <a class="btn btn-info text-white text-center" 
+                                        onclick="@(!ActivityTimelineValidation.IsEnableSubmitIdea() ? "alert('Overdue for submission.')" : "ShowPopupCreateIdea()")">
                                         <i class="bi bi-plus-circle"></i>
                                     </a>
                                  }
