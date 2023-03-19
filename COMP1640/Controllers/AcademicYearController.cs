@@ -9,7 +9,7 @@ using Utilities.ValidataionAttributes;
 namespace COMP1640.Controllers;
 
 [Route("academic-year")]
-[COMP1640Authorize(RoleTypeEnum.QAManager)]
+[COMP1640Authorize(RoleTypeEnum.Admin)]
 public class AcademicYearController : Controller
 {
     private readonly AcademicYearService _academicYearService;
