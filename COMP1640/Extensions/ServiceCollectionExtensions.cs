@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Utilities;
 using Utilities.Constants;
 using Utilities.EmailService.DTOs;
+using Utilities.Helpers;
 
 namespace COMP1640.Extentions
 {
@@ -47,7 +48,8 @@ namespace COMP1640.Extentions
                 .AddScoped<AttachmentService>()
                 .AddScoped<DepartmentService>()
                 .AddScoped<CommentService>()
-                .AddScoped<ReactionService>();
+                .AddScoped<ReactionService>()
+                .AddScoped<ActivityTimelineValidation>();
 
 
 

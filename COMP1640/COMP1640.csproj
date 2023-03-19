@@ -9,7 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\EmailTemplates\OnIdeaApprovedEmailTemplate.cshtml" />
+    <Content Remove="Views\EmailTemplates\OnIdeaRejectedEmailTemplate.cshtml" />
     <Content Remove="Views\Idea\ViewRequestList.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\EmailTemplates\OnIdeaApprovedEmailTemplate.cshtml" />
+    <Resource Include="Views\EmailTemplates\OnIdeaRejectedEmailTemplate.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
