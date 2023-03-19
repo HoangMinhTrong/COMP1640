@@ -1,11 +1,17 @@
 ﻿<ul class="navbar-nav mx-auto">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-        </li>
+        if (CurrentUser.RoleId != (int)RoleTypeEnum.Admin)
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+        }
         if (CurrentUser.RoleId == (int)RoleTypeEnum.Admin)
         {
+            <li>
+                <a class="nav-link" asp-controller="HRM" asp-action="Index">HRM</a>
+            </li>
             <li>
                 <a class="nav-link" asp-controller="AcademicYear" asp-action="Index">Academic Year</a>
             </li>
