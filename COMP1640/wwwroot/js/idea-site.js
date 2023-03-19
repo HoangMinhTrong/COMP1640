@@ -45,7 +45,7 @@ function RejectIdea(id) {
         url: window.location.origin + '/idea/' + id + '/reject',
         type: 'PUT',
         success: function () {
-            alert('Approve successfully.');
+            alert('Reject successfully.');
             window.location.reload();
         }
     });
