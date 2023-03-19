@@ -49,6 +49,7 @@ namespace COMP1640.Extentions
                 .AddScoped<DepartmentService>()
                 .AddScoped<CommentService>()
                 .AddScoped<ReactionService>()
+                .AddScoped<AnalysisService>()
                 .AddScoped<ActivityTimelineValidation>();
 
 
