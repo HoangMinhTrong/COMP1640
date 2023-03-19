@@ -2,13 +2,6 @@
 
 on:
   push:
-    paths:
-      - '**/COMP1640/**'
-      - '**/Domain/**'
-      - '**/Infrastructure/**'
-      - '**/Utilities/**'
-      - '**/UnitTest/**'
-      - '**/Dockerfile'
     branches:
       - main
       - develop
@@ -30,6 +23,6 @@ jobs:
         run: npm i -g @railway/cli
         
       - name: Deploy 🚀🚀🚀🚀🚀🚀
-        run: railway up
+        run: railway up -s WEB-MVC
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_API_KEY }}

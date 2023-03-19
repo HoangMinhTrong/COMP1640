@@ -19,6 +19,7 @@ namespace COMP1640.ViewModels.Idea.Responses
         public int LikeCount { get; set; }
         public int DislikeCount { get; set; }
         public int CommentCount { get; set; }
+        public int ViewCount { get; set; }
         public string Category { get; set; }
         public bool IsAnonymous { get; set; }
         public List<AttachmentResponse> Attachments { get; set; }
@@ -46,6 +47,7 @@ namespace COMP1640.ViewModels.Idea.Responses
                 LikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.Like).Count(),
                 DislikeCount = _.Reactions.Where(r => r.Status == ReactionStatusEnum.DisLike).Count(),
                 CommentCount = _.Comments.Count(),
+                ViewCount = _.Views,
                 Category = _.Category.Name,
                 IsAnonymous = _.IsAnonymous,
                 UserReacted = userReactionSelection(_.Reactions.FirstOrDefault(r => r.UserId == userId && r.IdeaId == _.Id)),
