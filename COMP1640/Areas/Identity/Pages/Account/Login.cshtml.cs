@@ -107,6 +107,10 @@ namespace WebMVC.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             var returnAdminUrl = returnUrl = Url.Content("~/hrm");
+            var returnQaUrl = returnUrl = Url.Content("~/home/AdminDashboard");
+            var returnCoordinatorQaUrl = returnUrl = Url.Content("~/idea/request-list");
+
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
@@ -129,6 +133,16 @@ namespace WebMVC.Areas.Identity.Pages.Account
                     {
                         return LocalRedirect(returnAdminUrl); 
                     }
+                    if (await _userManager.IsInRoleAsync(user, "University QA Manager"))
+                    {
+                        return LocalRedirect(returnQaUrl);
+                    }
+                    if (await _userManager.IsInRoleAsync(user, "Department QA Coordinator"))
+                    {
+                        return LocalRedirect(returnCoordinatorQaUrl);
+                    }
+
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                     
