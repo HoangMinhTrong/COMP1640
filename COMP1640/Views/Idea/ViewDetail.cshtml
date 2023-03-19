@@ -5,161 +5,145 @@
 
 <section>
     <div class="container">
-        <div class="row d-flex justify-content-center align-items-center" style="padding: 30px">
-            <div class="col col-xl-9" aria-label="Card example">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col col-xl-9 pt-2" aria-label="Card example">
                 <div class="d-flex">
                     <a asp-controller="Home" asp-action="Index">
                         <i class="fas fa-arrow-left"> Go Back</i>
                     </a>
                 </div>
 
-                <div class="card mb-5" style="border-radius: 15px;">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="@GetAuthorImageSource(Model.Author?.Id)"
-                                alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
-                                style="width: 70px;">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <div class="d-flex flex-row align-items-center mb-2">
-                                    <div class="col col-xl-12 flex-shrink-0">
-                                        <h2>@Model.Title</h2>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="btn btn-outline-light btn-rounded btn-sm">
-                                        @Model.Category
-                                    </div>
-                                </div>
+                <div class="card p-4" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <div class="d-flex align-content-center">
+                            <img src="@GetAuthorImageSource(Model.Author?.Id)"
+                                 alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3 me-3"
+                                 style="width: 70px;">
+                            <div class="d-flex flex-column">
+                                <h2>
+                                    <strong>@Model.Title</strong>
+                                </h2>
+                                <h5>@Model.Author?.UserName.Split("@")[0]</h5>
                             </div>
                         </div>
-                        <hr>
-                        @foreach (var attach in @Model.Attachments)
-                        {
-                            <div class="btn btn-outline-light btn-rounded btn-sm mb-2"
+                        <div>
+                            <div class="btn btn-outline-light btn-rounded btn-sm">
+                                @Model.Category
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    @foreach (var attach in @Model.Attachments)
+                    {
+                        <div class="btn btn-outline-light btn-rounded btn-sm mb-2"
                              data-mdb-ripple-color="dark">
-                                <a target="_blank" href="@attach.PresignedUrl">@attach.Name</a>
-                                <a href="attachments/@attach.KeyName/download">Download</a>
-                            </div>
-                        }
-                        <div class="col col-xl-12 mt-3">
-                            @Model.Content
+                            <a target="_blank" href="@attach.PresignedUrl">@attach.Name</a>
+                            <a href="attachments/@attach.KeyName/download">Download</a>
                         </div>
-                        <hr />
-                        <div class="d-flex justify-content-between">
-                            <div class="small d-flex justify-content-start">
-                                <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.Like))" class="d-flex align-items-center me-3">
-                                    @if (Model.UserReacted?.Status == ReactionStatusEnum.Like)
-                                    {
-                                        <i class="fas fa-thumbs-up me-2" id="thumbupBtn-@Model.Id"></i>
-                                    }
-                                    else
-                                    {
-                                        <i class="far fa-thumbs-up me-2" id="thumbupBtn-@Model.Id"></i>
-                                    }
-                                    <p id="total-thumbs-up-@Model.Id" class="me-2">@Model.LikeCount</p>
-
-                                </a>
-                                <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.DisLike))" class="d-flex align-items-center me-3">
-                                    @if (Model.UserReacted?.Status == ReactionStatusEnum.DisLike)
-                                    {
-                                        <i class="fas fa-thumbs-down me-2" id="thumbdownBtn-@Model.Id"></i>
-                                    }
-                                    else
-                                    {
-                                        <i class="far fa-thumbs-down me-2" id="thumbdownBtn-@Model.Id"></i>
-                                    }
-                                    <p id="total-thumbs-down-@Model.Id" class="me-2">@Model.DislikeCount</p>
-                                </a>
-                                <a href="#!" class="d-flex align-items-center me-3">
-                                    <i class="far fa-comment-dots me-2"></i>
-                                    <p class="mb-0">@Model.CommentCount </p>
-                                </a>
-                                <a href="#!" class="d-flex align-items-center me-3">
-                                        <i class="bi bi-eye me-2"></i>
-                                    </a>
-                                    <p class="mb-0">@Model.ViewCount</p>
-                                </a>
-                            </div>
-                            <div class="d-flex align-item-center">
-                                <p class="me-2">@Model.Author?.UserName.Split("@")[0] </p>
-                                <p>@Model.CreatedOn</p>
-                            </div>
-                        </div>
-                        <br />
-
-                        <div class="d-flex g-3 align-items-center">
-                            <div class="row">
-                                @foreach (var comment in Model.Comments)
+                    }
+                    <div class="col col-xl-12 mt-3">
+                        @Model.Content
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                        <div class="small d-flex justify-content-start">
+                            <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.Like))" class="d-flex align-items-center me-3">
+                                @if (Model.UserReacted?.Status == ReactionStatusEnum.Like)
                                 {
-                                    <div class="col col-xl-10 mb-1" aria-label="Card example">
-                                        <div class="card" style="border-radius: 15px;">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center mb-1">
-                                                    <div class="flex-shrink-0">
-                                                        <img src="@GetAuthorImageSource(comment.Author?.Id)"
-                                                             alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
-                                                             style="width: 70px;">
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <div class="d-flex flex-row align-items-center mb-2">
-                                                            <div class="flex-shrink-0">
-                                                                <span class="mx-10"></span>
-                                                                @if (comment.IsAnonymous)
-                                                                {
-                                                                    <strong style="color:#8888">Anonymous</strong>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <strong>@comment.Author.Name.Split("@")[0]</strong>
-                                                                }
-                                                            </div>
-                                                        </div>
+                                    <i class="fas fa-thumbs-up me-2" id="thumbupBtn-@Model.Id"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-thumbs-up me-2" id="thumbupBtn-@Model.Id"></i>
+                                }
+                                <p id="total-thumbs-up-@Model.Id" class="me-2">@Model.LikeCount</p>
 
-                                                        <div class="col col-xl-12">
-                                                            <div class="flex-shrink-0">
-                                                                <span class="mx-10"></span>
-                                                                <small>@comment.Content</small>
-                                                            </div>
-                                                        </div>
+                            </a>
+                            <a onclick="React(event, @Model.Id, @((int)ReactionStatusEnum.DisLike))" class="d-flex align-items-center me-3">
+                                @if (Model.UserReacted?.Status == ReactionStatusEnum.DisLike)
+                                {
+                                    <i class="fas fa-thumbs-down me-2" id="thumbdownBtn-@Model.Id"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-thumbs-down me-2" id="thumbdownBtn-@Model.Id"></i>
+                                }
+                                <p id="total-thumbs-down-@Model.Id" class="me-2">@Model.DislikeCount</p>
+                            </a>
+                            <a href="#!" class="d-flex align-items-center me-3">
+                                <i class="far fa-comment-dots me-2"></i>
+                                <p class="mb-0">@Model.CommentCount </p>
+                            </a>
+                        </div>
+                    </div>
+                    <br />
 
+                    <div class="d-flex g-3 align-items-center">
+                        <div class="row">
+                            @foreach (var comment in Model.Comments)
+                            {
+                                <div aria-label="Card example">
+                                    <div class="card" style="border-radius: 15px;">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <div class="flex-shrink-0">
+                                                    <img src="@GetAuthorImageSource(comment.Author?.Id)"
+                                                         alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                                         style="width: 70px;">
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <div class="d-flex flex-row align-items-center mb-2">
+                                                        <div class="flex-shrink-0">
+                                                            <span class="mx-10"></span>
+                                                            @if (comment.IsAnonymous)
+                                                            {
+                                                                <strong style="color:#8888">Anonymous</strong>
+                                                            }
+                                                            else
+                                                            {
+                                                                <strong>@comment.Author.Name.Split("@")[0]</strong>
+                                                            }
+                                                        </div>
                                                     </div>
+
+                                                    <div>
+                                                        <span class="mx-10"></span>
+                                                        <small>@comment.Content</small>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                }
-                            </div>
+                                </div>
+                            }
                         </div>
-                        <hr />
+                    </div>
+                    <hr />
 
-                        <div class="d-flex align-items-center">
-                            <div class="w-100">
-                                @using (Html.BeginForm("CommentIdea", "Idea", new { ideaId = Model.Id }))
-                                {
-                                    <div class="d-flex">
-                                        <img src="@GetAuthorImageSource(CurrentUser.Id)"
-                                             alt="Generic placeholder image" class="img-fluid rounded-circle" style="width:70px">
-                                        <input class="form-control ms-4" type="text" id="content" name="content" placeholder="Enter your comment here" required />
+                    <div class="d-flex align-items-center">
+                        <div class="w-100">
+                            @using (Html.BeginForm("CommentIdea", "Idea", new { ideaId = Model.Id }))
+                            {
+                                <div class="d-flex">
+                                    <img src="@GetAuthorImageSource(CurrentUser.Id)"
+                                         alt="Generic placeholder image" class="img-fluid rounded-circle" style="width:70px">
+                                    <input class="form-control ms-4" type="text" id="content" name="content" placeholder="Enter your comment here" required />
+                                </div>
+                                <div class="d-flex flex-wrap justify-content-between align-content-center mt-3">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input type="hidden" value="false" name="isAnonymous">
+                                        <label class="form-check-label" for="anonymousCheckbox">
+                                            <input class="form-check-input" type="checkbox" value="true" id="anonymousCheckbox" name="isAnonymous">
+                                            Comment anonymously
+                                        </label>
                                     </div>
-                                    <div class="d-flex flex-wrap justify-content-between align-content-center mt-3">
-                                        <div class="form-check d-flex align-items-center">
-                                            <input type="hidden" value="false" name="isAnonymous">
-                                            <label class="form-check-label" for="anonymousCheckbox">
-                                                <input class="form-check-input" type="checkbox" value="true" id="anonymousCheckbox" name="isAnonymous">
-                                                Comment anonymously
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <button type="submit" class="btn btn-primary">Send</button>
-                                        </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">Send</button>
                                     </div>
-                                }
-                            </div>
+                                </div>
+                            }
                         </div>
-                        
-
                     </div>
                 </div>
             </div>
