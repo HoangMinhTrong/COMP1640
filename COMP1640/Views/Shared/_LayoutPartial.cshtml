@@ -22,11 +22,11 @@
                 <a class="nav-link" asp-controller="Idea" asp-action="ViewCategory">Category</a>
             </li>
         }
-        else
+        else if (CurrentUser.RoleId == (int)RoleTypeEnum.DepartmentQA)
         {
            
             <li>
-                <a class="nav-link" asp-controller="Idea" asp-action="ViewCategory">Category</a>
+                <a class="nav-link" asp-controller="Idea" asp-action="ViewRequestList">Request List</a>
             </li>
         }
     }

@@ -17,6 +17,7 @@ namespace Domain
             CategoryId = categoryId;
             AcademicYearId = academicYearId;
             DepartmentId = departmentId;
+            Status = IdeaStatusEnum.Waiting;
         }
 
         public string Title { get; set; }
@@ -27,6 +28,7 @@ namespace Domain
         public int CategoryId { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsDeactive { get; set; }
+        public IdeaStatusEnum Status { get; set; }
         public int Views { get; set; }
 
         public virtual AcademicYear AcademicYear { get; set; }
@@ -66,6 +68,11 @@ namespace Domain
         public void IncreasesView()
         {
             Views += 1;
+        }
+
+        public void UpdateStatus(IdeaStatusEnum status)
+        {
+            Status = status;
         }
     }
 }

@@ -12,9 +12,13 @@ public class GetIdeaIndexRequest : PagingRequest
     public string SearchString { get; set; } = string.Empty;
     public int? CategoryFilterOption { get; set; }
 
-    public Expression<Func<Domain.Idea, bool>> Filter(int? createdById = null)
+    public Expression<Func<Domain.Idea, bool>> Filter(int? createdById = null
+        , int? departmentId = null
+        , IdeaStatusEnum status = IdeaStatusEnum.Approved)
     {
         return _ =>
+            (departmentId == null || _.DepartmentId == departmentId)
+            &&
             (createdById == null || _.CreatedBy == createdById)
             &&
             (CategoryFilterOption == null || _.CategoryId == CategoryFilterOption)
@@ -23,7 +27,8 @@ public class GetIdeaIndexRequest : PagingRequest
              || (EF.Functions.ILike(_.Title, $"%{SearchString}%")
                  || (EF.Functions.ILike(_.Content, $"%{SearchString}%"))))
             && !_.IsDeactive 
-            && !_.IsDeleted;
+            && !_.IsDeleted
+            && _.Status == status;
     }
 
     public Func<IQueryable<Domain.Idea>, IQueryable<Domain.Idea>> Sort()
