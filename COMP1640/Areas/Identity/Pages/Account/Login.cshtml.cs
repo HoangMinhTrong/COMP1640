@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using COMP1640.Controllers;
 
 namespace WebMVC.Areas.Identity.Pages.Account
 {
@@ -106,8 +105,10 @@ namespace WebMVC.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            var returnAdminUrl = returnUrl = Url.Content("~/hrm");
-            var returnQaUrl = returnUrl = Url.Content("~/home/AdminDashboard");
+            var returnAdminUrl = Url.Content("~/hrm");
+            var returnQaUrl = Url.Content("~/home/AdminDashboard");
+            var returnCoordinatorQaUrl = Url.Content("~/idea/request-list");
+
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -127,18 +128,14 @@ namespace WebMVC.Areas.Identity.Pages.Account
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (result.Succeeded)
                 {
-                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    var userRole = user.RoleUsers.FirstOrDefault()?.Role.Name;
+                    return userRole switch
                     {
-                        return LocalRedirect(returnAdminUrl); 
-                    }
-                    if (await _userManager.IsInRoleAsync(user, "University QA Manager"))
-                    {
-                        return LocalRedirect(returnQaUrl);
-                    }
-
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                    
+                        "Admin" => LocalRedirect(returnAdminUrl),
+                        "University QA Manager" => LocalRedirect(returnQaUrl),
+                        "Department QA Coordinator" => LocalRedirect(returnCoordinatorQaUrl),
+                        _ => LocalRedirect(returnUrl)
+                    };
                 }
                 else
                 {
