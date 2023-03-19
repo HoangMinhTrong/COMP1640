@@ -2,6 +2,7 @@
 @using Utilities.Helpers
 @model COMP1640.ViewModels.Catalog.Response.IdeaIndexResponse
 @inject ActivityTimelineValidation ActivityTimelineValidation
+@if (SignInManager.IsSignedIn(User))
 {
     <partial name="Create" />
     <section>
