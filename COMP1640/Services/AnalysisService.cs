@@ -8,15 +8,17 @@ namespace COMP1640.Services;
 public class AnalysisService
 {
     private readonly IIdeaRepository _ideaRepository;    
+    private readonly ICommentRepository _commentRepository;
     private readonly IDepartmentRepository _departmentRepository;
 
 
     private readonly IAcademicYearRepository _academicYearRepository;
-    public AnalysisService(IIdeaRepository ideaRepository, IAcademicYearRepository academicYearRepository, IDepartmentRepository departmentRepository)
+    public AnalysisService(IIdeaRepository ideaRepository, IAcademicYearRepository academicYearRepository, IDepartmentRepository departmentRepository, ICommentRepository commentRepository)
     {
         _ideaRepository = ideaRepository;
         _academicYearRepository = academicYearRepository;
         _departmentRepository = departmentRepository;
+        _commentRepository = commentRepository;
     }
 
     public async Task<AnalysisResponse> GetAnalysisAsync(int? academicYearId)
@@ -27,12 +29,14 @@ public class AnalysisService
 
         if (academicYear == null) return new AnalysisResponse();
 
-        return new AnalysisResponse
-        {
-            TotalIdeasTimelines = await GetTotalIdeasTimelinesAsync(academicYear),
-            TotalIdeaDepartments = await GetTotalIdeasDepartmentAsync(academicYear.Id),
-            TotalContributorDepartments = await GetTotalContributorsDepartmentAsync()
-        };
+
+        var totalIdeasTimelines = await GetTotalIdeasTimelinesAsync(academicYear);
+        var totalIdeaDepartments = await GetTotalIdeasDepartmentAsync(academicYear.Id);
+        var totalContributorDepartments = await GetTotalContributorsDepartmentAsync();
+        var exceptionReport = await GetExceptionsReportAsync(academicYear.Id);
+        return new AnalysisResponse(totalIdeasTimelines, totalIdeaDepartments, totalContributorDepartments,
+            exceptionReport);
+
     }
 
     private async Task<List<AnalysisLabelValueItem<int>>> GetTotalIdeasTimelinesAsync(AcademicYear academicYear)
@@ -75,6 +79,7 @@ public class AnalysisService
             .ToListAsync();
     }
     private async Task<List<AnalysisLabelValueItem<int>>> GetTotalContributorsDepartmentAsync()
+    
     {
         return await _departmentRepository.GetAllQuery()
             .Where(d => !d.IsDeleted)
@@ -85,4 +90,43 @@ public class AnalysisService
             })
             .ToListAsync();
     }
+    
+    private async Task<ExceptionReport> GetExceptionsReportAsync(int academicYearId)
+    {
+        var ideas = await _ideaRepository
+            .GetQuery(i => i.AcademicYearId == academicYearId).ToListAsync();
+        var comment = ideas.SelectMany(i => i.Comments).ToList();
+        var totalIdeas = new AnalysisLabelValueItem<int>()
+        {
+            Label = "Total Ideas",
+            Value = ideas.Count
+        };
+
+        var totalIdeaWithoutComment = new AnalysisLabelValueItem<int>()
+        {
+            Label = "Total ideas without comment",
+            Value = ideas.Count(i => !i.Comments.Any())
+        };
+
+        var totalAnonymousIdeas = new AnalysisLabelValueItem<int>()
+        {
+            Label = "Total anonymous ideas",
+            Value = ideas.Count(i => i.IsAnonymous)
+        };
+
+        var totalComments = new AnalysisLabelValueItem<int>()
+        {
+            Label = "Total comment",
+            Value = comment.Count
+        };
+        var totalAnonymousComment = new AnalysisLabelValueItem<int>()
+        {
+            Label = "Total anonymous comment",
+            Value = comment.Count(c => c.IsAnonymous)
+        };
+
+        return new ExceptionReport(totalIdeas, totalIdeaWithoutComment, totalAnonymousIdeas,
+            totalComments, totalAnonymousComment);
+    }
+
 }

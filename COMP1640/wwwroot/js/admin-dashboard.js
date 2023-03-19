@@ -2,7 +2,7 @@ const ideaTimelinesChart = document.getElementById('ideaTimelinesChart')
 const barChartContributorDepartment = document.getElementById('barChartContributorDepartment');
 const totalIdeaDepartmentsChart = document.getElementById('totalIdeaDepartmentsChart');
 const percentIdeaDepartmentsChart = document.getElementById('percentIdeaDepartmentsChart');
-
+const exceptionReportUl = document.getElementById('exception-report-ul')
 async function getAnalysisData() {
     try {
         const response = await $.ajax({
@@ -19,10 +19,12 @@ async function getAnalysisData() {
         // Access the TotalContributorDepartments field from the response
         var totalContributorDepartments = response.totalContributorDepartments;
 
+        var exceptionReport = response.exceptionReport;
+
         fillTotalIdeaChart(totalIdeasTimelines)
         fillTotalIdeaDepartmentsChart(totalIdeaDepartments)
         fillBarChartContributorDepartment(totalContributorDepartments)
-        
+        fillException(exceptionReport)
     } catch (error) {
         console.log(error);
     }
@@ -133,4 +135,12 @@ function fillBarChartContributorDepartment(data) {
 }
 
 
-    
+function fillException(data)
+{
+    for (const key in data) {
+        const item = data[key];
+        const listItem = document.createElement("li");
+        listItem.textContent = `${item.label}: ${item.value}`;
+        exceptionReportUl.appendChild(listItem);
+    }
+}
