@@ -13,11 +13,11 @@ public class ActivityTimelineValidation
 
     public bool IsEnableSubmitIdea ()
     {
-        return DateTime.UtcNow < new DateTime(2023, 2, 18);
+        return DateTime.UtcNow < _academicYear.ClosureDate.ToUniversalTime();
     }
     
     public bool IsEnableSubmitComment ()
     {
-        return DateTime.Now < new DateTime(2023, 2, 18);
+        return DateTime.UtcNow < _academicYear.FinalClosureDate.ToUniversalTime();
     }
 }
