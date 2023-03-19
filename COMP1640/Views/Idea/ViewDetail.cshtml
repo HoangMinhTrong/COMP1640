@@ -38,7 +38,7 @@
                     <hr>
                     @foreach (var attach in @Model.Attachments)
                     {
-                        <div class="btn btn-outline-light btn-rounded btn-sm mb-2"
+                        <div class="btn btn-outline-light d-flex justify-content-between btn-rounded mb-2"
                              data-mdb-ripple-color="dark">
                             <a target="_blank" href="@attach.PresignedUrl">@attach.Name</a>
                             <a href="attachments/@attach.KeyName/download">Download</a>

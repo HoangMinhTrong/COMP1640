@@ -9,21 +9,25 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using COMP1640.Controllers;
 
 namespace WebMVC.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IUserRepository _userRepo;
         public LoginModel(SignInManager<User> signInManager
             , ILogger<LoginModel> logger
-            , IUserRepository userRepo)
+            , IUserRepository userRepo
+            , UserManager<User> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
             _userRepo = userRepo;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -102,7 +106,7 @@ namespace WebMVC.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-
+            var returnAdminUrl = returnUrl = Url.Content("~/hrm");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
@@ -118,10 +122,16 @@ namespace WebMVC.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (result.Succeeded)
                 {
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return LocalRedirect(returnAdminUrl); 
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
+                    
                 }
                 else
                 {
