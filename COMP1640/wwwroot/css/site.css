@@ -229,6 +229,11 @@ p{
     height: 400px;
 }
 
+#barChartContributorDepartment{
+    width: 860px;
+    height: 400px;
+}
+
 #barChart {
     width: 500px;
     height: 100px;

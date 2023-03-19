@@ -33,3 +33,9 @@ function ChangePassword() {
         }
     });
 }
+
+function clearFilters() {
+    document.getElementsByName("CategoryFilterOption")[0].value = null;
+    document.getElementsByName("sortOption")[0].value = null;
+    document.querySelector("form").submit();
+}

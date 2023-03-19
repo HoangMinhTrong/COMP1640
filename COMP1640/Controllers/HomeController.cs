@@ -15,10 +15,10 @@ namespace COMP1640.Controllers
         private readonly CategoryService _categoryService;
         private readonly IToastNotification _toastNotification;
 
-        public HomeController(IdeaService ideaService
-            , CategoryService categoryService
-            , IToastNotification toastNotification)
+
+        public HomeController(ILogger<HomeController> logger, IdeaService ideaService, CategoryService categoryService, IToastNotification toastNotification)
         {
+            _logger = logger;
             _ideaService = ideaService;
             _categoryService = categoryService;
             _toastNotification = toastNotification;

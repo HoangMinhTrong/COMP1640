@@ -96,7 +96,7 @@
 
                             <div class="d-flex align-items-center mb-4">
                                 <div class="flex-shrink-0">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp"
+                                    <img src="@GetAuthorImageSource(item.Author?.Id)"
                                      alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
                                      style="width: 70px;">
                                 </div>
@@ -115,7 +115,7 @@
                                             </a>
                                             <a class="btn btn-danger align-items-center text-white text-center"
                                            style="cursor:pointer; padding: 5px 10px"
-                                           onclick=ToggleDeactiveIdea(@item.Id)>
+                                           onclick="ToggleDeactiveIdea(event, @item.Id)">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>

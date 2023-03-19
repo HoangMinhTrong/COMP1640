@@ -117,7 +117,8 @@ function SoftDeleteIdea(id) {
 }
 
 //Toggle deactive Idea
-function ToggleDeactiveIdea(id) {
+function ToggleDeactiveIdea(event, id) {
+    event.stopPropagation();
     var confirmResult = confirm("Are you sure?");
     if (!confirmResult)
         return;
