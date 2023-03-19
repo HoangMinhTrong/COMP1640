@@ -1,8 +1,12 @@
 ﻿using COMP1640.Services;
+using COMP1640.ViewModels.Catalog.Response;
 using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Comment.Requests;
+using COMP1640.ViewModels.Common;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Utilities.Helpers;
+using Utilities.Identity.Interfaces;
 using Utilities.ValidataionAttributes;
 
 namespace COMP1640.Controllers
@@ -15,16 +19,19 @@ namespace COMP1640.Controllers
         private readonly CategoryService _categoryService;
         private readonly AttachmentService _attachmentService;
         private readonly CommentService _commentService;
+        private readonly ICurrentUserInfo _currentUser;
 
         public IdeaController(IdeaService ideaService
             , CategoryService categoryService
             , AttachmentService attachmentService
-            , CommentService commentService)
+            , CommentService commentService
+            , ICurrentUserInfo currentUser)
         {
             _ideaService = ideaService;
             _categoryService = categoryService;
             _attachmentService = attachmentService;
             _commentService = commentService;
+            _currentUser = currentUser;
         }
 
         [HttpGet("attachments/{keyName}/download")]
@@ -99,6 +106,43 @@ namespace COMP1640.Controllers
         {
             var ideaHistories = await _ideaService.GetIdeaHistoriesAsync(ideaId);
             return Ok(ideaHistories);
+        }
+
+        [HttpGet("request-list")]
+        public async Task<IActionResult> ViewRequestList([FromQuery] GetIdeaIndexRequest request)
+        {;
+            var ideas = await _ideaService.GetIdeaIndexAsync(request
+                , departmentId: _currentUser.DepartmentId
+                , status: IdeaStatusEnum.Waiting);
+
+            var response = new IdeaIndexResponse()
+            {
+                IdeaIndexItems = ideas,
+                PaginationInfo = new PaginationInfo
+                {
+                    ActualPage = request.PageNo,
+                    TotalItems = ideas.TotalItems,
+                    ItemsPerPage = ideas.Count,
+                    TotalPages = ideas.TotalPages,
+                    Next = ideas.HasNextPage,
+                    Previous = ideas.HasPreviousPage
+                }
+            };
+            return View(response);
+        }
+
+        [HttpPut("{id:int}/approve")]
+        public async Task<IActionResult> ApproveIdea([FromRoute] int id)
+        {
+            await _ideaService.ApproveAsync(id);
+            return Ok();
+        }
+
+        [HttpPut("{id:int}/reject")]
+        public async Task<IActionResult> RejectIdea([FromRoute] int id)
+        {
+            await _ideaService.RejectAsync(id);
+            return Ok();
         }
     }
 }

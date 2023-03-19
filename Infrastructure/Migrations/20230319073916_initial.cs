@@ -11,7 +11,7 @@ namespace Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AcademicYear",
+                name: "AcademicYears",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -24,7 +24,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AcademicYear", x => x.Id);
+                    table.PrimaryKey("PK_AcademicYears", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -308,6 +308,7 @@ namespace Infrastructure.Migrations
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     IsDeactive = table.Column<bool>(type: "boolean", nullable: false),
+                    Status = table.Column<byte>(type: "smallint", nullable: false),
                     Views = table.Column<int>(type: "integer", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
                     CreatedBy = table.Column<int>(type: "integer", nullable: false),
@@ -318,9 +319,9 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Ideas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ideas_AcademicYear_AcademicYearId",
+                        name: "FK_Ideas_AcademicYears_AcademicYearId",
                         column: x => x.AcademicYearId,
-                        principalTable: "AcademicYear",
+                        principalTable: "AcademicYears",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -483,7 +484,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AcademicYear",
+                table: "AcademicYears",
                 columns: new[] { "Id", "ClosureDate", "FinalClosureDate", "Name", "OpenDate", "TenantId" },
                 values: new object[,]
                 {
@@ -505,10 +506,10 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, "589e75d6-4ccd-4fe3-8e14-31fddca4e2ad", "Admin", "ADMIN" },
-                    { 2, "4716c7bc-0190-4701-9ad5-9917a783d52c", "University QA Manager", "UNIVERSITY QA MANAGER" },
-                    { 3, "d3c4f55b-7042-47a8-8c86-93461e39eacf", "Department QA Coordinator", "DEPARTMENT QA COORDINATOR" },
-                    { 4, "c2ee56de-af76-4a25-b7dc-a2289b5092d6", "Staff", "STAFF" }
+                    { 1, "4da85010-14ac-410e-a4b8-409ddcfe2392", "Admin", "ADMIN" },
+                    { 2, "94545907-b672-4843-b940-d7ac1ba6058a", "University QA Manager", "UNIVERSITY QA MANAGER" },
+                    { 3, "d3377718-1728-42c2-ba40-4c9006e346e4", "Department QA Coordinator", "DEPARTMENT QA COORDINATOR" },
+                    { 4, "42116019-dd0d-4a3d-9f35-8c2f8182eae7", "Staff", "STAFF" }
                 });
 
             migrationBuilder.InsertData(
@@ -521,12 +522,12 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Birthday", "ConcurrencyStamp", "Email", "EmailConfirmed", "Gender", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, null, "017ca2aa-c535-4b08-bad7-9f11cb08bd4b", "admin@gmail.com", false, (byte)1, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAELCyaBpMgw5qRAYLehDMJxOV88S1xcPhR3tBVuKQWvvLI4s1GPOzzBlZ979OvEep1g==", null, false, "7b29f952-f017-4fbb-ac72-aa17ae200b89", false, "admin@gmail.com" },
-                    { 2, 0, null, "bb603712-dc88-4903-a2c6-a652edbd94f1", "qamanager@gmail.com", false, (byte)1, false, null, "QAMANAGER@GMAIL.COM", "QAMANAGER@GMAIL.COM", "AQAAAAEAACcQAAAAENfB2OC/DfPtXPS9daZL5gSnXli1AIgUlE5M4+3sz5GB3wrFSYaxdbxq89cStCy1qg==", null, false, "f5f87d50-8120-444d-bd2d-c739521108ea", false, "qamanager@gmail.com" },
-                    { 3, 0, null, "90bc9c8f-fe4e-415c-895b-9847d7587437", "computingdepartmentqa@gmail.com", false, (byte)1, false, null, "COMPUTINGDEPARTMENTQA@GMAIL.COM", "COMPUTINGDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEJpkExUSGFdd4jfCOye5guXVW4x8kM9yTXpJCwRvxxfVmxqenyRLWWh/h8v8Wzc3nA==", null, false, "0e53775c-0d3c-4a4c-9b9f-5547ab9f518e", false, "computingdepartmentqa@gmail.com" },
-                    { 4, 0, null, "386b08cd-50bb-4d4d-b196-910369363e15", "businessDepartmentQA@gmail.com", false, (byte)1, false, null, "BUSINESSDEPARTMENTQA@GMAIL.COM", "BUSINESSDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEJZRLD+/MPhEppK3vPaQQZMCPJEVwd6A/7VYQgvAomPSSsw2M5jRrDshqGnsrhCFgg==", null, false, "8b2e723f-b087-492c-bf19-d713f4722dbc", false, "businessDepartmentQA@gmail.com" },
-                    { 5, 0, null, "d99230af-10a0-4fef-b185-e9bd39d5795b", "designDepartmentQA@gmail.com", false, (byte)1, false, null, "DESIGNDEPARTMENTQA@GMAIL.COM", "DESIGNDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEC/4H9WqIqTpLt4jdQSJQiU7xFuNIw6SutKODZRC1xQgKIjGyuzvLSBBedbDO0jUfA==", null, false, "691068fd-df1d-4f27-9080-0d6e8b4f7d63", false, "designDepartmentQA@gmail.com" },
-                    { 6, 0, null, "1992a5e6-5e9a-4bcb-ba2e-1122b547968a", "staff@gmail.com", false, (byte)1, false, null, "STAFF@GMAIL.COM", "STAFF@GMAIL.COM", "AQAAAAEAACcQAAAAEDODxHs47taif3W2YCj50hd7SPdql1M6adS6ZHyc9NPkaxoRED6fhkaihEqi5WIieA==", null, false, "fb9b055f-b7d8-4478-9dc3-90803a8db6ef", false, "staff@gmail.com" }
+                    { 1, 0, null, "377847b7-755b-4c39-8b25-00621031b263", "admin@gmail.com", false, (byte)1, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEGKZ9qySvXDCbOyJKAhDw8RqU8JTa0Rkk9SchnMiOaS+PHGOREhZ2Ed6uy1CMiCtGA==", null, false, "6c2c8533-99b9-4441-9794-5c403cc6e15c", false, "admin@gmail.com" },
+                    { 2, 0, null, "5e679f81-5640-4505-90e2-243d38508f35", "qamanager@gmail.com", false, (byte)1, false, null, "QAMANAGER@GMAIL.COM", "QAMANAGER@GMAIL.COM", "AQAAAAEAACcQAAAAEG38ZzqaBBJhQCSZM3FtSZHfs5i9b9YN8BLHgHnd2cEVkkILIzlfeBkyOccSEq1cLw==", null, false, "9f9646f2-eb54-4579-ae38-634740a6a069", false, "qamanager@gmail.com" },
+                    { 3, 0, null, "8dcfcc84-9f2c-495d-9a3d-7338d72ed1d6", "computingdepartmentqa@gmail.com", false, (byte)1, false, null, "COMPUTINGDEPARTMENTQA@GMAIL.COM", "COMPUTINGDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEINEn3rjrnxwzHQ5hMXmumfqZ6zQRusV+FqLzFn8jQ7cyziDhbYfT+fJd7W7afnO1A==", null, false, "a724574c-4114-473d-a3e2-582ea123364b", false, "computingdepartmentqa@gmail.com" },
+                    { 4, 0, null, "3a991671-613f-4408-91cf-9206973f4ef6", "businessDepartmentQA@gmail.com", false, (byte)1, false, null, "BUSINESSDEPARTMENTQA@GMAIL.COM", "BUSINESSDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAEIZbyTGmeiyPqXXsVO7rLjg55CAIufApr1an+EcM/vIzAMx5MFxlBKRG6sq9iFE4lQ==", null, false, "14ae68cf-ba5d-429c-a699-a03b74de3521", false, "businessDepartmentQA@gmail.com" },
+                    { 5, 0, null, "3d3642ca-5139-476e-b8ab-0f4d762d2b83", "designDepartmentQA@gmail.com", false, (byte)1, false, null, "DESIGNDEPARTMENTQA@GMAIL.COM", "DESIGNDEPARTMENTQA@GMAIL.COM", "AQAAAAEAACcQAAAAENdpk+mjeftWiIYxfnhATGWZyjlCKXtQEvmr17byk7nIFVHzCWj14a0KuCfkh3uTWA==", null, false, "29e7291b-b433-4821-9863-2f433f501629", false, "designDepartmentQA@gmail.com" },
+                    { 6, 0, null, "1080b010-be25-460d-933b-895b013dc95d", "staff@gmail.com", false, (byte)1, false, null, "STAFF@GMAIL.COM", "STAFF@GMAIL.COM", "AQAAAAEAACcQAAAAENr/8LFw4r4uOvFwVrWNLJVBWRz6Vg+Tv7+y+up0zzObDc46jK9f4jKvq77HUd84Rg==", null, false, "ba9ffc6e-8156-476f-b568-f371948feadb", false, "staff@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -744,7 +745,7 @@ namespace Infrastructure.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "AcademicYear");
+                name: "AcademicYears");
 
             migrationBuilder.DropTable(
                 name: "Categories");

@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Idea\ViewRequestList.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.8" />
@@ -33,6 +37,10 @@
   <ItemGroup>
     <Folder Include="ViewModels\PersonalDetail\Requests\" />
     <Folder Include="ViewModels\Shared\Responses\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Idea\ViewRequestList.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -7,14 +7,11 @@
         if (CurrentUser.RoleId == (int)RoleTypeEnum.Admin)
         {
             <li>
-                <a class="nav-link" asp-controller="HRM" asp-action="Index">HRM</a>
+                <a class="nav-link" asp-controller="AcademicYear" asp-action="Index">Academic Year</a>
             </li>
         }
         else if (CurrentUser.RoleId == (int)RoleTypeEnum.QAManager)
         {
-            <li>
-                <a class="nav-link" asp-controller="AcademicYear" asp-action="Index">Academic Year</a>
-            </li>
             <li>
                 <a class="nav-link" asp-controller="Department" asp-action="ViewDepartment">Department</a>
             </li>
@@ -22,11 +19,11 @@
                 <a class="nav-link" asp-controller="Idea" asp-action="ViewCategory">Category</a>
             </li>
         }
-        else
+        else if (CurrentUser.RoleId == (int)RoleTypeEnum.DepartmentQA)
         {
            
             <li>
-                <a class="nav-link" asp-controller="Idea" asp-action="ViewCategory">Category</a>
+                <a class="nav-link" asp-controller="Idea" asp-action="ViewRequestList">Request List</a>
             </li>
         }
     }
