@@ -22,6 +22,7 @@
     <PackageReference Include="NToastNotify" Version="8.0.0" />
     <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
