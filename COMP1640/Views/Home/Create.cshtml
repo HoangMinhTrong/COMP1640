@@ -71,14 +71,6 @@
     </div>
 </div>
 
-@section Scripts{
-    <script asp-append-version="true">
-        document.getElementById('anonymousCheckbox').addEventListener('change', function () {
-            var hiddenInput = document.querySelector('input[name="isAnonymous"]');
-            hiddenInput.value = this.checked ? 'true' : 'false';
-        });
-    </script>
-}
 
 
 
