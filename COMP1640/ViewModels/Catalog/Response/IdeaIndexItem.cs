@@ -12,6 +12,7 @@ public class IdeaIndexItem
     public string Category { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
+    public IdeaStatusEnum Status { get; set; }
     public int ThumbsUp { get; set; }
     public int ThumbsDown { get; set; }
     public int Views { get; set; }
@@ -43,8 +44,8 @@ public class IdeaIndexItem
             TotalComment = _.Comments.Count,
             Views = _.Views,
             IsAnonymous = _.IsAnonymous,
+            Status = _.Status,
             UserReacted = userReactionSelection(_.Reactions.FirstOrDefault(r => r.UserId == userId && r.IdeaId == _.Id)),
-
         };
     }
 }

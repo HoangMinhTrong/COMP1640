@@ -28,7 +28,7 @@ public class GetIdeaIndexRequest : PagingRequest
                  || (EF.Functions.ILike(_.Content, $"%{SearchString}%"))))
             && !_.IsDeactive 
             && !_.IsDeleted
-            && _.Status == status;
+            && createdById.HasValue ? true : _.Status == status;
     }
 
     public Func<IQueryable<Domain.Idea>, IQueryable<Domain.Idea>> Sort()

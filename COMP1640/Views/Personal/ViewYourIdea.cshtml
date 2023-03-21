@@ -26,6 +26,14 @@
                             style="cursor: pointer;">
                     <div class="card" style="border-radius: 15px;">
                         <div class="p-4">
+                            @if(item.Status == IdeaStatusEnum.Rejected)
+                            {
+                                <span class="btn btn-danger" style="">@item.Status</span>
+                                
+                            }else if(item.Status == IdeaStatusEnum.Waiting)
+                            {
+                                <span class="btn btn-success">@item.Status</span>
+                            }
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex mb-2">
