@@ -45,3 +45,7 @@ function React(event, ideaId, status)
     });
 }
 
+document.getElementById('anonymousCheckbox').addEventListener('change', function () {
+    var hiddenInput = document.querySelector('input[name="isAnonymous"]');
+    hiddenInput.value = this.checked ? 'true' : 'false';
+});
