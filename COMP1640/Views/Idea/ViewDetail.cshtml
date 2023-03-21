@@ -142,7 +142,7 @@
                                         </label>
                                     </div>
                                     <div>
-                                        <button type="submit" class="btn btn-primary @(!ActivityTimelineValidation.IsEnableSubmitComment() ? "disabled" : "")">Send</button>
+                                        <button type="submit" class="btn btn-primary @(!await ActivityTimelineValidation.IsEnableSubmitComment() ? "disabled" : "")">Send</button>
                                     </div>
                                 </div>
                             }

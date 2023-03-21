@@ -4,6 +4,8 @@
     {
         Task<AcademicYear> GetAsync(int id);
         Task<AcademicYear?> GetLatestAcademicYearAsync();
-        Task<AcademicYear> GetCurrentAsync();
+        Task<AcademicYear?> GetCurrentAsync();
+        Task<bool> IsEnableSubmitComment();
+        Task<bool> IsEnableSubmitIdea();
     }
 }

@@ -5,19 +5,19 @@ namespace Utilities.Helpers;
 
 public class ActivityTimelineValidation
 {
-    private readonly AcademicYear _academicYear;
+    private readonly IAcademicYearRepository _academicYearRepository;
     public ActivityTimelineValidation(IAcademicYearRepository academicYearRepository)
     {
-        _academicYear = academicYearRepository.GetCurrentAsync().GetAwaiter().GetResult();
+        _academicYearRepository = academicYearRepository;
     }
 
-    public bool IsEnableSubmitIdea ()
+    public async Task<bool> IsEnableSubmitIdea()
     {
-        return DateTime.UtcNow < _academicYear.ClosureDate.ToUniversalTime();
+        return await _academicYearRepository.IsEnableSubmitIdea();
     }
     
-    public bool IsEnableSubmitComment ()
+    public async Task<bool> IsEnableSubmitComment()
     {
-        return DateTime.UtcNow < _academicYear.FinalClosureDate.ToUniversalTime();
+        return await _academicYearRepository.IsEnableSubmitComment();
     }
 }
