@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
             return await GetAsync(_ => _.Id == id);
         }
 
-        public Task<AcademicYear> GetCurrentAsync()
+        public Task<AcademicYear?> GetCurrentAsync()
         {
             DateTime utcTime = DateTime.UtcNow;
             TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
@@ -29,6 +29,20 @@ namespace Infrastructure.Repositories
             return await GetAllQuery()
                 .OrderByDescending(y => y.Id)
                 .FirstOrDefaultAsync();
+        }
+        
+        public async Task<bool> IsEnableSubmitIdea()
+        {
+            var currentAcademicYear = await GetCurrentAsync();
+            if (currentAcademicYear is null) return false;
+            return DateTime.UtcNow < currentAcademicYear.ClosureDate.ToUniversalTime();
+        }
+    
+        public async Task<bool> IsEnableSubmitComment()
+        {
+            var currentAcademicYear = await GetCurrentAsync();
+            if (currentAcademicYear is null) return false;
+            return DateTime.UtcNow < currentAcademicYear.FinalClosureDate.ToUniversalTime();
         }
     }
 }

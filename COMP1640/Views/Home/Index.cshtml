@@ -14,7 +14,7 @@
                             <div class="d-flex align-items-center">
                                  @if (CurrentUser.RoleId == (int)RoleTypeEnum.Staff){
                                      <a class="btn btn-info text-white text-center" 
-                                        onclick="@(!ActivityTimelineValidation.IsEnableSubmitIdea() ? "alert('Overdue for submission.')" : "ShowPopupCreateIdea()")">
+                                        onclick="@(!await ActivityTimelineValidation.IsEnableSubmitIdea() ? "alert('Overdue for submission.')" : "ShowPopupCreateIdea()")">
                                         <i class="bi bi-plus-circle"></i>
                                     </a>
                                  }
