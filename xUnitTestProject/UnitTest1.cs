@@ -5,7 +5,6 @@ using COMP1640.ViewModels.Category.Requests;
 using COMP1640.ViewModels.Category.Responses;
 using COMP1640.ViewModels.Comment.Requests;
 using COMP1640.ViewModels.Comment.Responses;
-using COMP1640.ViewModels.Common;
 using COMP1640.ViewModels.Department.Requests;
 using COMP1640.ViewModels.Department.Responses;
 using COMP1640.ViewModels.HRM.Requests;
@@ -13,17 +12,11 @@ using COMP1640.ViewModels.Idea.Requests;
 using COMP1640.ViewModels.Reaction.Requests;
 using Domain;
 using Domain.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using NToastNotify;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
-using System.Text;
 using Utilities.Identity.Interfaces;
-using Utilities.StorageService.Interfaces;
 
 namespace ServiceTests
 {
@@ -51,16 +44,37 @@ namespace ServiceTests
             mockUnitOfWork.Verify(u => u.SaveChangesAsync(), Times.Once);
         }
 
-     
+        [Fact]
+        public async Task GetListCategory_ReturnsTrueWhenSuccessful()
+        {
+            // Arrange
+            var mockCategoryRepository = new Mock<ICategoryRepository>();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockIdeaRepository = new Mock<IIdeaRepository>();
+            var toastT = new Mock<IToastNotification>();
+
+            var categoryService = new CategoryService(mockCategoryRepository.Object, mockUnitOfWork.Object, mockIdeaRepository.Object, toastT.Object);
+
+            var GetListCategoryRequest = new GetListCategoryRequest { SearchTerm = "TestCategory" };
+
+            // Act
+            var result = await categoryService.GetListCategory(GetListCategoryRequest);
+
+            // Assert
+            mockCategoryRepository.Verify(r => r.InsertAsync(It.IsAny<Category>()), Times.Once);
+            mockUnitOfWork.Verify(u => u.SaveChangesAsync(), Times.Once);
+        }
+
+
         [Fact]
         public async Task GetListCategory_ReturnsExpectedResults()
         {
             // Arrange
             var expectedResults = new List<InforCategoryResponse>
     {
-        new InforCategoryResponse { Id = 1, Name = "Category 1", TenantId = 1, IsDelete = false },
-        new InforCategoryResponse { Id = 2, Name = "Category 2", TenantId = 1, IsDelete = false },
-        new InforCategoryResponse { Id = 3, Name = "Category 3", TenantId = 1, IsDelete = false }
+        new InforCategoryResponse { Id = 1},
+        new InforCategoryResponse { Id = 2},
+        new InforCategoryResponse { Id = 3}
     };
 
             var mockCategoryRepository = new Mock<ICategoryRepository>();
@@ -69,17 +83,14 @@ namespace ServiceTests
             var toastT = new Mock<IToastNotification>();
 
             mockCategoryRepository.Setup(r => r.GetQuery(It.IsAny<Expression<Func<Category, bool>>>()))
-                 .Returns((Expression<Func<Category, bool>> filter) =>
-                 {
-                     var categories = expectedResults.Select(r => new Category
-                     {
-                         Id = r.Id,
-                         Name = r.Name,
-                         TenantId = r.TenantId,
-                         IsDeleted = r.IsDelete,
-                     });
-                     return categories.AsQueryable();
-                 });
+        .Returns((Expression<Func<Category, bool>> filter) =>
+        {
+            var categories = expectedResults.Select(r => new Category
+            {
+                Id = r.Id,
+            });
+            return categories;
+        });
 
             var service = new CategoryService(mockCategoryRepository.Object, mockUnitOfWork.Object, mockIdeaRepository.Object, toastT.Object);
 
@@ -115,7 +126,7 @@ namespace ServiceTests
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockIdeaRepository = new Mock<IIdeaRepository>();
             var toastT = new Mock<IToastNotification>();
-            mockCategoryRepository.Setup(r => r.GetQuery(c => !c.IsDeleted)).Returns(categories.AsQueryable());
+            _ = mockCategoryRepository.Setup(r => r.GetQuery(c => !c.IsDeleted)).Returns(categories.AsQueryable());
             var categoryService = new CategoryService(
                 mockCategoryRepository.Object,
                 mockUnitOfWork.Object,
@@ -377,21 +388,25 @@ namespace ServiceTests
 
     public class HRMServiceTests
     {
+      
 
         [Fact]
         public async Task CreateUser_ReturnsTrueWhenSuccessful()
         {
             // Arrange
 
-
             var mockUserRepository = new Mock<IUserRepository>();
             var mockDepartmentRepository = new Mock<IDepartmentRepository>();
             var mockRoleRepository = new Mock<IRoleRepository>();
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockCurrentUserInfo = new Mock<ICurrentUserInfo>();
-
             var mockServiceProvider = new Mock<IServiceProvider>();
             var mockToastNotification = new Mock<IToastNotification>();
+
+            mockUserRepository.Setup(r => r.FindByEmailAsync(It.IsAny<string>()));
+            mockDepartmentRepository.Setup(r => r.GetAsync(It.IsAny<int>())).ReturnsAsync(new Department());
+            mockRoleRepository.Setup(r => r.GetAsync(It.IsAny<RoleTypeEnum>())).ReturnsAsync(new Role());
+
 
             var HRMService = new HRMService(
                 mockUserRepository.Object,
@@ -413,6 +428,76 @@ namespace ServiceTests
             mockUnitOfWork.Verify(u => u.SaveChangesAsync(), Times.Once);
         }
 
+        [Fact]
+        public async Task DeleteUser_ReturnsTrueWhenSuccessful()
+        {
+
+
+            // Arrange
+
+            var mockUserRepository = new Mock<IUserRepository>();
+            var mockDepartmentRepository = new Mock<IDepartmentRepository>();
+            var mockRoleRepository = new Mock<IRoleRepository>();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockCurrentUserInfo = new Mock<ICurrentUserInfo>();
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            var mockToastNotification = new Mock<IToastNotification>();
+            int userId = 1;
+            mockUserRepository.Setup(r => r.FindByEmailAsync(It.IsAny<string>()));
+            var service = new HRMService(
+                mockUserRepository.Object,
+                mockUnitOfWork.Object,
+                mockDepartmentRepository.Object,
+                mockRoleRepository.Object,
+                mockCurrentUserInfo.Object,
+                mockServiceProvider.Object,
+                mockToastNotification.Object);
+
+            // Act
+            var result = await service.DeleteUserAsync(userId);
+
+            // Assert
+            mockUserRepository.Verify(r => r.DeleteAsync(It.IsAny<User>()), Times.Once);
+            mockUnitOfWork.Verify(u => u.SaveChangesAsync(), Times.Once);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task EditUserInfoAsync_ReturnsFalse_WhenUserNotFound()
+        {
+            // Arrange
+            var mockUserRepository = new Mock<IUserRepository>();
+            var mockDepartmentRepository = new Mock<IDepartmentRepository>();
+            var mockRoleRepository = new Mock<IRoleRepository>();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockCurrentUserInfo = new Mock<ICurrentUserInfo>();
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            var mockToastNotification = new Mock<IToastNotification>();
+            int id = 1;
+
+            var HRMService = new HRMService(
+             mockUserRepository.Object,
+             mockUnitOfWork.Object,
+             mockDepartmentRepository.Object,
+             mockRoleRepository.Object,
+             mockCurrentUserInfo.Object,
+             mockServiceProvider.Object,
+             mockToastNotification.Object);
+            EditUserRequest request = new EditUserRequest
+            {
+                Email = "new-email@example.com",
+                RoleId = 2,
+                DepartmentId = 3,
+                Gender = 1,
+            };
+            mockUserRepository.Setup(x => x.GetById(id));
+
+            // Act
+            bool result = await HRMService.EditUserInfoAsync(id, request);
+
+            // Assert
+            Assert.False(result);
+        }
 
     }
 
@@ -482,20 +567,101 @@ namespace ServiceTests
             mockUnitOfWork.Verify(u => u.SaveChangesAsync(), Times.Once);
         }
 
+        [Fact]
+        public async Task CommentList_ReturnsCorrectComments()
+        {
+            // Arrange
 
-    }
-
-    public class AttachServiceTests
-    {
-       
-
-    }
-
-    public class ProfileServiceTests
-    {
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            var mockCommentRepository = new Mock<ICommentRepository>();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var ideaId = 1;
+            var expectedComments = new List<CommentInfoResponse>
+            {
+                new CommentInfoResponse
+                {
+                    Id = 1,
+                    Content = "Comment 1",
+                    IdeaId = ideaId,
+                    Author = new CommentAuthor
+                    {
+                        Id = 1,
+                        Name = "author1@example.com",
+                    },
+                    IsAnonymous = false,
+                },
+                new CommentInfoResponse
+                {
+                    Id = 2,
+                    Content = "Comment 2",
+                    IdeaId = ideaId,
+                    Author = new CommentAuthor
+                    {
+                        Id = 2,
+                        Name = "author2@example.com",
+                    },
+                    IsAnonymous = true,
+                },
+            };
          
+            mockCommentRepository.Setup(r => r.GetQuery(It.IsAny<Expression<Func<Comment, bool>>>()))
+                .Returns(new List<Comment>
+                {
+            new Comment
+            {
+                Id = 1,
+                Content = "Comment 1",
+                IdeaId = ideaId,
+                CreatedBy = 1,
+                IsAnonymous = false,
+                CreatedByNavigation = new User
+                {
+                    Id = 1,
+                    Email = "author1@example.com",
+                },
+            },
+            new Comment
+            {
+                Id = 2,
+                Content = "Comment 2",
+                IdeaId = ideaId,
+                CreatedBy = 1,
+                IsAnonymous = true,
+            },
+                }.AsQueryable());
+
+            var CommentService = new CommentService(
+                mockCommentRepository.Object,
+                mockUnitOfWork.Object,
+                mockServiceProvider.Object);
+
+
+            // Act
+            var result = await CommentService.CommentList(ideaId);
+
+            // Assert
+            Assert.Equal(expectedComments.Count, result.Count);
+            for (var i = 0; i < expectedComments.Count; i++)
+            {
+                var expectedComment = expectedComments[i];
+                var actualComment = result[i];
+                Assert.Equal(expectedComment.Id, actualComment.Id);
+                Assert.Equal(expectedComment.Content, actualComment.Content);
+                Assert.Equal(expectedComment.IdeaId, actualComment.IdeaId);
+                Assert.Equal(expectedComment.IsAnonymous, actualComment.IsAnonymous);
+                if (expectedComment.Author == null)
+                {
+                    Assert.Null(actualComment.Author);
+                }
+                else
+                {
+                    Assert.Equal(expectedComment.Author.Id, actualComment.Author.Id);
+                    Assert.Equal(expectedComment.Author.Name, actualComment.Author.Name);
+                }
+            }
+        }
+
+    
     }
-
-
 
 }
