@@ -27,12 +27,14 @@ public class GetIdeaIndexRequest : PagingRequest
             &&
             (DepartmentFilterOption == null || _.DepartmentId == DepartmentFilterOption)
             &&
-            (string.IsNullOrWhiteSpace(SearchString)
-             || (EF.Functions.ILike(_.Title, $"%{SearchString}%")
-                 || (EF.Functions.ILike(_.Content, $"%{SearchString}%"))))
+            (
+                string.IsNullOrWhiteSpace(SearchString)
+                    || (EF.Functions.ILike(_.Title, $"%{SearchString}%")
+                    || (EF.Functions.ILike(_.Content, $"%{SearchString}%")))
+            )
             && !_.IsDeactive 
             && !_.IsDeleted
-            && createdById.HasValue ? true : _.Status == status;
+            && (createdById.HasValue ? true : _.Status == status);
     }
 
     public Func<IQueryable<Domain.Idea>, IQueryable<Domain.Idea>> Sort()
