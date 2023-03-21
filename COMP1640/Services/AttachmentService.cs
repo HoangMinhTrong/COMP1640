@@ -56,10 +56,10 @@ namespace COMP1640.Services
         public async Task<bool> DeleteListAsync(List<Attachment> attachments)
         {
             var fileKeys = attachments.Select(_ => _.KeyName).ToList();
-            foreach (var fileKey in fileKeys)
+            /*foreach (var fileKey in fileKeys)
             {
                 await _s3Service.DeleteAsync(fileKey);
-            }
+            }*/
 
             await _attachmentRepo.DeleteRangeAsync(attachments);
             return true;
