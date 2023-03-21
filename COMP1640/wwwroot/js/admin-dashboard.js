@@ -140,6 +140,7 @@ function fillException(data)
     for (const key in data) {
         const item = data[key];
         const listItem = document.createElement("li");
+        listItem.classList.add("list-group-item");
         listItem.textContent = `${item.label}: ${item.value}`;
         exceptionReportUl.appendChild(listItem);
     }
