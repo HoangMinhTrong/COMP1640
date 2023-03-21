@@ -21,9 +21,9 @@ namespace Infrastructure.Repositories
         }
 
 
-        public IQueryable<Idea> GetDeactive()
+        public IQueryable<Idea> GetDeactive(int userId)
         {
-            return GetQuery(_ => _.IsDeactive && !_.IsDeleted);
+            return GetQuery(_ => _.IsDeactive && !_.IsDeleted && _.CreatedBy == userId);
         }
         public async Task<List<Idea>> GetListAsync(int academicYearId)
         {

@@ -201,7 +201,7 @@ namespace COMP1640.Services
         public async Task<List<IdeaDetailsResponse>> GetDeactiveIdeaAsync()
         {
             var deletedIdeas = await _ideaRepo
-                .GetDeactive()
+                .GetDeactive(_current.Id)
                 .Select(new IdeaDetailsResponse().GetSelection())
                 .ToListAsync();
 

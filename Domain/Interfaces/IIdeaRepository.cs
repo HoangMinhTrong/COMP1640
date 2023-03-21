@@ -5,7 +5,7 @@
         Task<Idea> GetAsync(int id);
         IQueryable<Idea> GetById(int id);
 
-        IQueryable<Idea> GetDeactive();
+        IQueryable<Idea> GetDeactive(int userId);
 
         Task<List<Idea>> GetListAsync(int academicYearId);
 
