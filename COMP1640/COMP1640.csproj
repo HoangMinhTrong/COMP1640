@@ -7,12 +7,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>21543e7b-62cb-4d4d-84be-9b18324af75f</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="Views\EmailTemplates\OnIdeaApprovedEmailTemplate.cshtml" />
-    <Content Remove="Views\EmailTemplates\OnIdeaRejectedEmailTemplate.cshtml" />
-    <Content Remove="Views\Idea\ViewRequestList.cshtml" />
-  </ItemGroup>
+  
 
   <ItemGroup>
     <Resource Include="Views\EmailTemplates\OnIdeaApprovedEmailTemplate.cshtml" />
@@ -44,10 +39,6 @@
   <ItemGroup>
     <Folder Include="ViewModels\PersonalDetail\Requests\" />
     <Folder Include="ViewModels\Shared\Responses\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Idea\ViewRequestList.cshtml" />
   </ItemGroup>
 
 </Project>
