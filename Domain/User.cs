@@ -15,6 +15,7 @@ namespace Domain
 
             UserName = email;
             Email = email;
+            NormalizedEmail = email.ToUpper();
             Birthday = birthday;
             Gender = gender;
             NormalizedUserName = email.ToUpper();
