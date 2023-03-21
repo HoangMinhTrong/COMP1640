@@ -11,6 +11,7 @@ public class IdeaIndexResponse
     public IEnumerable<SelectListItem> SortOptionPicklist { get; set; }
 
     public int? CurrentCategoryFilter { get; set; }
+    public int? CurrentDepartmentFilter { get; set; }
     public IdeaIndexSortingEnum? CurrentSort { get; set; }
     public string CurrentSearchString { get; set; }
     public PaginationInfo PaginationInfo { get; set; }

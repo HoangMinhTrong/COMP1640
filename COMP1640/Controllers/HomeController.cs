@@ -13,15 +13,17 @@ namespace COMP1640.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IdeaService _ideaService;
         private readonly CategoryService _categoryService;
+        private readonly DepartmentService _departmentService;
         private readonly IToastNotification _toastNotification;
 
 
-        public HomeController(ILogger<HomeController> logger, IdeaService ideaService, CategoryService categoryService, IToastNotification toastNotification)
+        public HomeController(ILogger<HomeController> logger, IdeaService ideaService, CategoryService categoryService, IToastNotification toastNotification, DepartmentService departmentService)
         {
             _logger = logger;
             _ideaService = ideaService;
             _categoryService = categoryService;
             _toastNotification = toastNotification;
+            _departmentService = departmentService;
         }
 
         [HttpGet]
@@ -34,6 +36,7 @@ namespace COMP1640.Controllers
                 IdeaIndexItems = ideas,
                 SortOptionPicklist = EnumHelper.GetSelectListItems<IdeaIndexSortingEnum>(),
                 Categories = await _categoryService.GetCategoryPicklistAsync(),
+                Departments = await _departmentService.GetDepartmentPicklistAsync(),
                 CurrentSearchString = request.SearchString,
                 CurrentCategoryFilter = request.CategoryFilterOption,
                 CurrentSort = request.SortOption,

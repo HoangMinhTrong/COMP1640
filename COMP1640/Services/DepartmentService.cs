@@ -2,9 +2,8 @@
 using COMP1640.ViewModels.Department.Responses;
 using Domain;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace COMP1640.Services;
 
@@ -105,6 +104,17 @@ public class DepartmentService
         department.SoftDeleteDepartment();
         await _unitOfWork.SaveChangesAsync();
         return true;
+    }
+    
+    public async Task<IEnumerable<SelectListItem>> GetDepartmentPicklistAsync()
+    {
+        return await _departmentRepository.GetQuery(c => !c.IsDeleted)
+            .Select(_ => new SelectListItem()
+            {
+                Text = _.Name,
+                Value = _.Id.ToString()
+            })
+            .ToListAsync();
     }
 }
 

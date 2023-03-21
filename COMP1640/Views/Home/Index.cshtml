@@ -38,7 +38,6 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-
                                     <div class="d-flex flex-column p-2">
                                         @if (Model.CurrentCategoryFilter != null)
                                         {
@@ -50,6 +49,23 @@
                                         {
                                             <select asp-for="@Model.CurrentCategoryFilter" name="CategoryFilterOption" asp-items="@Model.Categories" class="esh-catalog-filter form-select">
                                                 <option selected disabled>Filter by Category</option>
+                                            </select>
+                                        }
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="d-flex flex-column p-2">
+                                        @if (Model.CurrentDepartmentFilter != null)
+                                        {
+                                            <select asp-for="@Model.CurrentDepartmentFilter" name="DepartmentFilterOption" asp-items="@Model.Departments" class="esh-catalog-filter form-select">
+                                                <option selected disabled>Filter by Department</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select asp-for="@Model.CurrentDepartmentFilter" name="DepartmentFilterOption" asp-items="@Model.Departments" class="esh-catalog-filter form-select">
+                                                <option selected disabled>Filter by Department</option>
                                             </select>
                                         }
                                     </div>
