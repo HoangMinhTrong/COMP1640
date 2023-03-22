@@ -106,7 +106,7 @@ namespace WebMVC.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             var returnAdminUrl = Url.Content("~/hrm");
-            var returnQaUrl = Url.Content("~/home/AdminDashboard");
+            var returnQaUrl = Url.Content("~/home/Dashboard");
             var returnCoordinatorQaUrl = Url.Content("~/idea/request-list");
 
 
